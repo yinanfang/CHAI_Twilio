@@ -1,0 +1,29 @@
+{
+  "name": "bower.json",
+  "version": "0.1.0",
+  "homepage": "https://github.com/yinanfang/CHAI",
+  "authors": [
+    "yinanfang <yinan_fang@hotmail.com>"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "core-scaffold": "Polymer/core-scaffold#~0.5.5",
+    "core-item": "Polymer/core-item#~0.5.5",
+    "paper-fab": "Polymer/paper-fab#~0.5.5",
+    "paper-button": "Polymer/paper-button#~0.5.5",
+    "core-menu": "Polymer/core-menu#~0.5.5",
+    "polymer-gestures": "Polymer/polymer-gestures#~0.5.5",
+    "core-dropdown": "Polymer/core-dropdown#~0.5.5",
+    "sortable-table": "~0.11.1"
+  }
+}

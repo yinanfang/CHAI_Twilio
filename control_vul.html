@@ -1,0 +1,3913 @@
+<!DOCTYPE html><html lang="en" ng-app=""><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Pragma" content="no-cache">
+  <title>Twilio Demo</title>
+
+  <!-- Normalize.css -->
+  <link rel="stylesheet" href="css/normalize.css">
+
+  <!-- Bootstrap -->
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <!-- Customized CSS -->
+  <link rel="stylesheet" href="css/control.css">
+  <link rel="stylesheet" href="css/loading.css">
+
+  <!-- AngularJS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
+  <!-- Polymer -->
+  <!-- 1. Load platform support before any code that touches the DOM. -->
+  <script src="components/webcomponentsjs/webcomponents.js"></script>
+  <!-- 2. Load the component using an HTML Import -->
+  <!-- <link rel="import" href="./components/paper-fab/paper-fab.html"> -->
+  <style shim-shadowdom="">
+/*******************************
+          Flex Layout
+*******************************/
+
+html /deep/ [layout][horizontal], html /deep/ [layout][vertical] {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+html /deep/ [layout][horizontal][inline], html /deep/ [layout][vertical][inline] {
+  display: -ms-inline-flexbox;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+}
+
+html /deep/ [layout][horizontal] {
+  -ms-flex-direction: row;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+}
+
+html /deep/ [layout][horizontal][reverse] {
+  -ms-flex-direction: row-reverse;
+  -webkit-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+}
+
+html /deep/ [layout][vertical] {
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
+html /deep/ [layout][vertical][reverse] {
+  -ms-flex-direction: column-reverse;
+  -webkit-flex-direction: column-reverse;
+  flex-direction: column-reverse;
+}
+
+html /deep/ [layout][wrap] {
+  -ms-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+html /deep/ [layout][wrap-reverse] {
+  -ms-flex-wrap: wrap-reverse;
+  -webkit-flex-wrap: wrap-reverse;
+  flex-wrap: wrap-reverse;
+}
+
+html /deep/ [flex] {
+  -ms-flex: 1 1 0.000000001px;
+  -webkit-flex: 1;
+  flex: 1;
+  -webkit-flex-basis: 0.000000001px;
+  flex-basis: 0.000000001px;
+}
+
+html /deep/ [vertical][layout] > [flex][auto-vertical], html /deep/ [vertical][layout]::shadow [flex][auto-vertical] {
+  -ms-flex: 1 1 auto;
+  -webkit-flex-basis: auto;
+  flex-basis: auto;
+}
+
+html /deep/ [flex][auto] {
+  -ms-flex: 1 1 auto;
+  -webkit-flex-basis: auto;
+  flex-basis: auto;
+}
+
+html /deep/ [flex][none] {
+  -ms-flex: none;
+  -webkit-flex: none;
+  flex: none;
+}
+
+html /deep/ [flex][one] {
+  -ms-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+html /deep/ [flex][two] {
+  -ms-flex: 2;
+  -webkit-flex: 2;
+  flex: 2;
+}
+
+html /deep/ [flex][three] {
+  -ms-flex: 3;
+  -webkit-flex: 3;
+  flex: 3;
+}
+
+html /deep/ [flex][four] {
+  -ms-flex: 4;
+  -webkit-flex: 4;
+  flex: 4;
+}
+
+html /deep/ [flex][five] {
+  -ms-flex: 5;
+  -webkit-flex: 5;
+  flex: 5;
+}
+
+html /deep/ [flex][six] {
+  -ms-flex: 6;
+  -webkit-flex: 6;
+  flex: 6;
+}
+
+html /deep/ [flex][seven] {
+  -ms-flex: 7;
+  -webkit-flex: 7;
+  flex: 7;
+}
+
+html /deep/ [flex][eight] {
+  -ms-flex: 8;
+  -webkit-flex: 8;
+  flex: 8;
+}
+
+html /deep/ [flex][nine] {
+  -ms-flex: 9;
+  -webkit-flex: 9;
+  flex: 9;
+}
+
+html /deep/ [flex][ten] {
+  -ms-flex: 10;
+  -webkit-flex: 10;
+  flex: 10;
+}
+
+html /deep/ [flex][eleven] {
+  -ms-flex: 11;
+  -webkit-flex: 11;
+  flex: 11;
+}
+
+html /deep/ [flex][twelve] {
+  -ms-flex: 12;
+  -webkit-flex: 12;
+  flex: 12;
+}
+
+/* alignment in cross axis */
+
+html /deep/ [layout][start] {
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+}
+
+html /deep/ [layout][center], html /deep/ [layout][center-center] {
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+html /deep/ [layout][end] {
+  -ms-flex-align: end;
+  -webkit-align-items: flex-end;
+  align-items: flex-end;
+}
+
+/* alignment in main axis */
+
+html /deep/ [layout][start-justified] {
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+}
+
+html /deep/ [layout][center-justified], html /deep/ [layout][center-center] {
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+html /deep/ [layout][end-justified] {
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+}
+
+html /deep/ [layout][around-justified] {
+  -ms-flex-pack: distribute;
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+}
+
+html /deep/ [layout][justified] {
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+/* self alignment */
+
+html /deep/ [self-start] {
+  -ms-align-self: flex-start;
+  -webkit-align-self: flex-start;
+  align-self: flex-start;
+}
+
+html /deep/ [self-center] {
+  -ms-align-self: center;
+  -webkit-align-self: center;
+  align-self: center;
+}
+
+html /deep/ [self-end] {
+  -ms-align-self: flex-end;
+  -webkit-align-self: flex-end;
+  align-self: flex-end;
+}
+
+html /deep/ [self-stretch] {
+  -ms-align-self: stretch;
+  -webkit-align-self: stretch;
+  align-self: stretch;
+}
+
+/*******************************
+          Other Layout
+*******************************/
+
+html /deep/ [block] {
+  display: block;
+}
+
+/* ie support for hidden */
+html /deep/ [hidden] {
+  display: none !important;
+}
+
+html /deep/ [relative] {
+  position: relative;
+}
+
+html /deep/ [fit] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+body[fullbleed] {
+  margin: 0;
+  height: 100vh;
+}
+
+/*******************************
+            Other
+*******************************/
+
+html /deep/ [segment], html /deep/ segment {
+  display: block;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 1em 0.5em;
+  padding: 1em;
+  background-color: white;
+  -webkit-box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 5px 5px 5px 5px;
+}
+
+</style>
+
+<script src="components/polymer/polymer.js"></script>
+
+
+
+<style shim-shadowdom="">/*
+ * @license
+ * Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+ * This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+ * The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+ * The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+ * Code distributed by Google as part of the polymer project is also
+ * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+ */
+
+html /deep/ paper-shadow,
+html /deep/ paper-animated-shadow {
+  display: block;
+  position: relative;
+}
+
+html /deep/ paper-shadow::shadow #shadow-bottom,
+html /deep/ paper-shadow::shadow #shadow-top {
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+html /deep/ paper-shadow::shadow #shadow-bottom[animated],
+html /deep/ paper-shadow::shadow #shadow-top[animated] {
+  transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html /deep/ .paper-shadow-top-z-1 {
+  box-shadow: none;
+}
+
+html /deep/ .paper-shadow-bottom-z-1 {
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
+}
+
+html /deep/ .paper-shadow-top-z-2 {
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+html /deep/ .paper-shadow-bottom-z-2 {
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3);
+}
+
+html /deep/ .paper-shadow-top-z-3 {
+  box-shadow: 0 11px 7px 0 rgba(0, 0, 0, 0.19);
+}
+
+html /deep/ .paper-shadow-bottom-z-3 {
+  box-shadow: 0 13px 25px 0 rgba(0, 0, 0, 0.3);
+}
+
+html /deep/ .paper-shadow-top-z-4 {
+  box-shadow: 0 14px 12px 0 rgba(0, 0, 0, 0.17);
+}
+
+html /deep/ .paper-shadow-bottom-z-4 {
+  box-shadow: 0 20px 40px 0 rgba(0, 0, 0, 0.3);
+}
+
+html /deep/ .paper-shadow-top-z-5 {
+  box-shadow: 0 17px 17px 0 rgba(0, 0, 0, 0.15);
+}
+
+html /deep/ .paper-shadow-bottom-z-5 {
+  box-shadow: 0 27px 55px 0 rgba(0, 0, 0, 0.3);
+}</style>
+
+
+
+
+<style shim-shadowdom="">
+  html /deep/ core-a11y-keys {
+    display: none;
+  }
+</style>
+
+
+
+
+
+
+<script src="components/core-focusable/polymer-mixin.js"></script>
+<script src="components/core-focusable/core-focusable.js"></script>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+<script>
+
+(function(scope) {
+
+/**
+  `Polymer.CoreResizable` and `Polymer.CoreResizer` are a set of mixins that can be used
+  in Polymer elements to coordinate the flow of resize events between "resizers" (elements
+  that control the size or hidden state of their children) and "resizables" (elements that
+  need to be notified when they are resized or un-hidden by their parents in order to take
+  action on their new measurements).
+
+  Elements that perform measurement should add the `Core.Resizable` mixin to their 
+  Polymer prototype definition and listen for the `core-resize` event on themselves.
+  This event will be fired when they become showing after having been hidden,
+  when they are resized explicitly by a `CoreResizer`, or when the window has been resized.
+  Note, the `core-resize` event is non-bubbling.
+
+  `CoreResizable`'s must manually call the `resizableAttachedHandler` from the element's
+  `attached` callback and `resizableDetachedHandler` from the element's `detached`
+  callback.
+
+    @element CoreResizable
+    @status beta
+    @homepage github.io
+*/
+
+  scope.CoreResizable = {
+
+    /**
+     * User must call from `attached` callback
+     *
+     * @method resizableAttachedHandler
+     */
+    resizableAttachedHandler: function(cb) {
+      cb = cb || this._notifyResizeSelf;
+      this.async(function() {
+        var detail = {callback: cb, hasParentResizer: false};
+        this.fire('core-request-resize', detail);
+        if (!detail.hasParentResizer) {
+          this._boundWindowResizeHandler = cb.bind(this);
+          // log('adding window resize handler', null, this);
+          window.addEventListener('resize', this._boundWindowResizeHandler);
+        }
+      }.bind(this));
+    },
+
+    /**
+     * User must call from `detached` callback
+     *
+     * @method resizableDetachedHandler
+     */
+    resizableDetachedHandler: function() {
+      this.fire('core-request-resize-cancel', null, this, false);
+      if (this._boundWindowResizeHandler) {
+        window.removeEventListener('resize', this._boundWindowResizeHandler);
+      }
+    },
+
+    // Private: fire non-bubbling resize event to self; returns whether
+    // preventDefault was called, indicating that children should not
+    // be resized
+    _notifyResizeSelf: function() {
+      return this.fire('core-resize', null, this, false).defaultPrevented;
+    }
+
+  };
+
+/**
+  `Polymer.CoreResizable` and `Polymer.CoreResizer` are a set of mixins that can be used
+  in Polymer elements to coordinate the flow of resize events between "resizers" (elements
+  that control the size or hidden state of their children) and "resizables" (elements that
+  need to be notified when they are resized or un-hidden by their parents in order to take
+  action on their new measurements).
+
+  Elements that cause their children to be resized (e.g. a splitter control) or hide/show
+  their children (e.g. overlay) should add the `Core.CoreResizer` mixin to their 
+  Polymer prototype definition and then call `this.notifyResize()` any time the element
+  resizes or un-hides its children.
+
+  `CoreResizer`'s must manually call the `resizerAttachedHandler` from the element's
+  `attached` callback and `resizerDetachedHandler` from the element's `detached`
+  callback.
+
+  Note: `CoreResizer` extends `CoreResizable`, and can listen for the `core-resize` event
+  on itself if it needs to perform resize work on itself before notifying children.
+  In this case, returning `false` from the `core-resize` event handler (or calling
+  `preventDefault` on the event) will prevent notification of children if required.
+
+  @element CoreResizer
+  @extends CoreResizable
+  @status beta
+  @homepage github.io
+*/
+
+  scope.CoreResizer = Polymer.mixin({
+
+    /**
+     * User must call from `attached` callback
+     *
+     * @method resizerAttachedHandler
+     */
+    resizerAttachedHandler: function() {
+      this.resizableAttachedHandler(this.notifyResize);
+      this._boundResizeRequested = this._boundResizeRequested || this._handleResizeRequested.bind(this);
+      var listener;
+      if (this.resizerIsPeer) {
+        listener = this.parentElement || (this.parentNode && this.parentNode.host);
+        listener._resizerPeers = listener._resizerPeers || [];
+        listener._resizerPeers.push(this);
+      } else {
+        listener = this;
+      }
+      listener.addEventListener('core-request-resize', this._boundResizeRequested);
+      this._resizerListener = listener;
+    },
+
+    /**
+     * User must call from `detached` callback
+     *
+     * @method resizerDetachedHandler
+     */
+    resizerDetachedHandler: function() {
+      this.resizableDetachedHandler();
+      this._resizerListener.removeEventListener('core-request-resize', this._boundResizeRequested);
+    },
+
+    /**
+     * User should call when resizing or un-hiding children
+     *
+     * @method notifyResize
+     */
+    notifyResize: function() {
+      // Notify self
+      if (!this._notifyResizeSelf()) {
+        // Notify requestors if default was not prevented
+        var r = this.resizeRequestors;
+        if (r) {
+          for (var i=0; i<r.length; i++) {
+            var ri = r[i];
+            if (!this.resizerShouldNotify || this.resizerShouldNotify(ri.target)) {
+              // log('notifying resize', null, ri.target, true);
+              ri.callback.apply(ri.target);
+              // logEnd();
+            }
+          }
+        }
+      }
+    },
+
+    /**
+     * User should implement to introduce filtering when notifying children.
+     * Generally, children that are hidden by the CoreResizer (e.g. non-active
+     * pages) need not be notified during resize, since they will be notified
+     * again when becoming un-hidden.
+     *
+     * Return `true` if CoreResizable passed as argument should be notified of
+     * resize.
+     *
+     * @method resizeerShouldNotify
+     * @param {Element} el
+     */
+     // resizeerShouldNotify: function(el) { }  // User to implement if needed
+
+    /**
+     * Set to `true` if the resizer is actually a peer to the elements it
+     * resizes (e.g. splitter); in this case it will listen for resize requests
+     * events from its peers on its parent.
+     *
+     * @property resizerIsPeer
+     * @type Boolean
+     * @default false
+     */
+
+    // Private: Handle requests for resize
+    _handleResizeRequested: function(e) {
+      var target = e.path[0];
+      if ((target == this) || 
+          (target == this._resizerListener) || 
+          (this._resizerPeers && this._resizerPeers.indexOf(target) < 0)) {
+        return;
+      }
+      // log('resize requested', target, this);
+      if (!this.resizeRequestors) {
+        this.resizeRequestors = [];
+      }
+      this.resizeRequestors.push({target: target, callback: e.detail.callback});
+      target.addEventListener('core-request-resize-cancel', this._cancelResizeRequested.bind(this));
+      e.detail.hasParentResizer = true;
+      e.stopPropagation();
+    },
+
+    // Private: Handle cancellation requests for resize
+    _cancelResizeRequested: function(e) {
+      // Exit early if we're already out of the DOM (resizeRequestors will already be null)
+      if (this.resizeRequestors) {
+        for (var i=0; i<this.resizeRequestors.length; i++) {
+          if (this.resizeRequestors[i].target == e.target) {
+            // log('resizeCanceled', e.target, this);
+            this.resizeRequestors.splice(i, 1);
+            break;
+          }
+        }
+      }
+    }
+
+  }, Polymer.CoreResizable);
+
+  // function prettyName(el) {
+  //   return el.localName + (el.id ? '#' : '') + el.id;
+  // }
+
+  // function log(what, from, to, group) {
+  //   var args = [what];
+  //   if (from) {
+  //     args.push('from ' + prettyName(from));
+  //   }
+  //   if (to) {
+  //     args.push('to ' + prettyName(to));
+  //   }
+  //   if (group) {
+  //     console.group.apply(console, args);
+  //   } else {
+  //     console.log.apply(console, args);
+  //   }
+  // }
+
+  // function logEnd() {
+  //   console.groupEnd();
+  // }
+
+})(Polymer);
+
+</script>
+
+
+<!--
+@element core-key-helper
+-->
+
+
+
+<!--
+@element core-overlay-layer
+-->
+
+
+<!--
+The `core-overlay` element displays overlayed on top of other content. It starts
+out hidden and is displayed by setting its `opened` property to true.
+A `core-overlay's` opened state can be toggled by calling the `toggle`
+method.
+
+The `core-overlay` will, by default, show/hide itself when it's opened. The 
+`target` property may be set to another element to cause that element to 
+be shown when the overlay is opened.
+
+It's common to want a `core-overlay` to animate to its opened
+position. The `core-overlay` element uses a `core-transition` to handle
+animation. The default transition is `core-transition-fade` which 
+causes the overlay to fade in when displayed. See 
+<a href="../core-transition/">`core-transition`</a> for more
+information about customizing a `core-overlay's` opening animation. The
+`backdrop` property can be set to true to show a backdrop behind the overlay
+that will darken the rest of the window.
+
+An element that should close the `core-overlay` will automatically
+do so if it's given the `core-overlay-toggle` attribute. This attribute
+can be customized with the `closeAttribute` property. You can also use
+`closeSelector` if more general matching is needed.
+
+By default  `core-overlay` will close whenever the user taps outside it or
+presses the escape key. This behavior can be turned off via the
+`autoCloseDisabled` property.
+
+    <core-overlay>
+      <h2>Dialog</h2>
+      <input placeholder="say something..." autofocus>
+      <div>I agree with this wholeheartedly.</div>
+      <button core-overlay-toggle>OK</button>
+    </core-overlay>
+
+`core-overlay` will automatically size and position itself according to the 
+following rules. The overlay's size is constrained such that it does not
+overflow the screen. This is done by setting maxHeight/maxWidth on the 
+`sizingTarget`. If the `sizingTarget` already has a setting for one of these
+properties, it will not be overridden. The overlay should
+be positioned via css or imperatively using the `core-overlay-position` event.
+If the overlay is not positioned vertically via setting `top` or `bottom`, it
+will be centered vertically. The same is true horizontally via a setting to 
+`left` or `right`. In addition, css `margin` can be used to provide some space
+around the overlay. This can be used to ensure
+that, for example, a drop shadow is always visible around the overlay.
+
+@group Core Elements
+@element core-overlay
+@mixins Polymer.CoreResizer https://github.com/polymer/core-resizable
+@homepage github.io
+-->
+<!--
+Fired when the `core-overlay`'s `opened` property changes.
+
+@event core-overlay-open
+@param {Object} detail
+@param {Object} detail.opened the opened state
+-->
+<!--
+Fired when the `core-overlay` has completely opened.
+
+@event core-overlay-open-completed
+-->
+<!--
+Fired when the `core-overlay` has completely closed.
+
+@event core-overlay-close-completed
+-->
+<!--
+Fired when the `core-overlay` needs to position itself. Optionally, implement
+in order to position an overlay via code. If the overlay was not otherwise
+positioned, it's important to indicate how the overlay has been positioned by
+setting the `dimensions.position` object. For example, if the overlay has been
+positioned via setting `right` and `top`, set dimensions.position to an
+object like this: `{v: 'top', h: 'right'}`.
+
+@event core-overlay-position
+@param {Object} detail
+@param {Object} detail.target the overlay target
+@param {Object} detail.sizingTarget the overlay sizing target
+@param {Object} detail.opened the opened state
+-->
+<style>
+  .core-overlay-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .core-overlay-backdrop.core-opened {
+    opacity: 0.6;
+  }
+</style>
+
+
+
+<style shim-shadowdom="">
+  html /deep/ core-dropdown {
+    position: absolute;
+    overflow: auto;
+    background-color: #fff;
+  }
+</style>
+
+
+<script src="components/sortable-table/columnDragMixin.js"></script>
+<script src="components/sortable-table/rowDragMixin.js"></script>
+<script src="components/sortable-table/rowFiltersMixin.js"></script>
+<script src="components/sortable-table/rowEditorMixin.js"></script>
+<script src="components/json5/lib/json5.js"></script>
+<script src="components/time-elements/time-elements.js"></script>
+
+
+
+
+
+</head>
+<body><div hidden="">
+<polymer-element name="paper-shadow" assetpath="components/paper-shadow/">
+
+<template>
+
+  <div id="shadow-bottom" fit="" animated?="[[animated]]" class="paper-shadow-bottom-z-[[z]]"></div>
+  <div id="shadow-top" fit="" animated?="[[animated]]" class="paper-shadow-top-z-[[z]]"></div>
+
+  <content></content>
+
+</template>
+
+<script>
+  Polymer('paper-shadow',{
+
+    publish: {
+
+      /**
+       * The z-depth of this shadow, from 0-5. Setting this property
+       * after element creation has no effect. Use `setZ()` instead.
+       *
+       * @attribute z
+       * @type number
+       * @default 1
+       */
+      z: 1,
+
+      /**
+       * Set this to true to animate the shadow when setting a new
+       * `z` value.
+       *
+       * @attribute animated
+       * @type boolean
+       * @default false
+       */
+      animated: false
+
+    },
+
+    /**
+     * Set the z-depth of the shadow. This should be used after element
+     * creation instead of setting the z property directly.
+     *
+     * @method setZ
+     * @param {Number} newZ
+     */
+    setZ: function(newZ) {
+      if (this.z !== newZ) {
+        this.$['shadow-bottom'].classList.remove('paper-shadow-bottom-z-' + this.z);
+        this.$['shadow-bottom'].classList.add('paper-shadow-bottom-z-' + newZ);
+        this.$['shadow-top'].classList.remove('paper-shadow-top-z-' + this.z);
+        this.$['shadow-top'].classList.add('paper-shadow-top-z-' + newZ);
+        this.z = newZ;
+      }
+    }
+
+  });
+</script>
+</polymer-element>
+
+<polymer-element name="core-a11y-keys" assetpath="components/core-a11y-keys/">
+<script>
+  (function() {
+    /*
+     * Chrome uses an older version of DOM Level 3 Keyboard Events
+     *
+     * Most keys are labeled as text, but some are Unicode codepoints.
+     * Values taken from: http://www.w3.org/TR/2007/WD-DOM-Level-3-Events-20071221/keyset.html#KeySet-Set
+     */
+    var KEY_IDENTIFIER = {
+      'U+0009': 'tab',
+      'U+001B': 'esc',
+      'U+0020': 'space',
+      'U+002A': '*',
+      'U+0030': '0',
+      'U+0031': '1',
+      'U+0032': '2',
+      'U+0033': '3',
+      'U+0034': '4',
+      'U+0035': '5',
+      'U+0036': '6',
+      'U+0037': '7',
+      'U+0038': '8',
+      'U+0039': '9',
+      'U+0041': 'a',
+      'U+0042': 'b',
+      'U+0043': 'c',
+      'U+0044': 'd',
+      'U+0045': 'e',
+      'U+0046': 'f',
+      'U+0047': 'g',
+      'U+0048': 'h',
+      'U+0049': 'i',
+      'U+004A': 'j',
+      'U+004B': 'k',
+      'U+004C': 'l',
+      'U+004D': 'm',
+      'U+004E': 'n',
+      'U+004F': 'o',
+      'U+0050': 'p',
+      'U+0051': 'q',
+      'U+0052': 'r',
+      'U+0053': 's',
+      'U+0054': 't',
+      'U+0055': 'u',
+      'U+0056': 'v',
+      'U+0057': 'w',
+      'U+0058': 'x',
+      'U+0059': 'y',
+      'U+005A': 'z',
+      'U+007F': 'del'
+    };
+
+    /*
+     * Special table for KeyboardEvent.keyCode.
+     * KeyboardEvent.keyIdentifier is better, and KeyBoardEvent.key is even better than that
+     *
+     * Values from: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.keyCode#Value_of_keyCode
+     */
+    var KEY_CODE = {
+      9: 'tab',
+      13: 'enter',
+      27: 'esc',
+      33: 'pageup',
+      34: 'pagedown',
+      35: 'end',
+      36: 'home',
+      32: 'space',
+      37: 'left',
+      38: 'up',
+      39: 'right',
+      40: 'down',
+      46: 'del',
+      106: '*'
+    };
+
+    /*
+     * KeyboardEvent.key is mostly represented by printable character made by the keyboard, with unprintable keys labeled
+     * nicely.
+     *
+     * However, on OS X, Alt+char can make a Unicode character that follows an Apple-specific mapping. In this case, we
+     * fall back to .keyCode.
+     */
+    var KEY_CHAR = /[a-z0-9*]/;
+
+    function transformKey(key) {
+      var validKey = '';
+      if (key) {
+        var lKey = key.toLowerCase();
+        if (lKey.length == 1) {
+          if (KEY_CHAR.test(lKey)) {
+            validKey = lKey;
+          }
+        } else if (lKey == 'multiply') {
+          // numpad '*' can map to Multiply on IE/Windows
+          validKey = '*';
+        } else {
+          validKey = lKey;
+        }
+      }
+      return validKey;
+    }
+
+    var IDENT_CHAR = /U\+/;
+    function transformKeyIdentifier(keyIdent) {
+      var validKey = '';
+      if (keyIdent) {
+        if (IDENT_CHAR.test(keyIdent)) {
+          validKey = KEY_IDENTIFIER[keyIdent];
+        } else {
+          validKey = keyIdent.toLowerCase();
+        }
+      }
+      return validKey;
+    }
+
+    function transformKeyCode(keyCode) {
+      var validKey = '';
+      if (Number(keyCode)) {
+        if (keyCode >= 65 && keyCode <= 90) {
+          // ascii a-z
+          // lowercase is 32 offset from uppercase
+          validKey = String.fromCharCode(32 + keyCode);
+        } else if (keyCode >= 112 && keyCode <= 123) {
+          // function keys f1-f12
+          validKey = 'f' + (keyCode - 112);
+        } else if (keyCode >= 48 && keyCode <= 57) {
+          // top 0-9 keys
+          validKey = String(48 - keyCode);
+        } else if (keyCode >= 96 && keyCode <= 105) {
+          // num pad 0-9
+          validKey = String(96 - keyCode);
+        } else {
+          validKey = KEY_CODE[keyCode];
+        }
+      }
+      return validKey;
+    }
+
+    function keyboardEventToKey(ev) {
+      // fall back from .key, to .keyIdentifier, to .keyCode, and then to .detail.key to support artificial keyboard events
+      var normalizedKey = transformKey(ev.key) || transformKeyIdentifier(ev.keyIdentifier) || transformKeyCode(ev.keyCode) || transformKey(ev.detail.key) || '';
+      return {
+        shift: ev.shiftKey,
+        ctrl: ev.ctrlKey,
+        meta: ev.metaKey,
+        alt: ev.altKey,
+        key: normalizedKey
+      };
+    }
+
+    /*
+     * Input: ctrl+shift+f7 => {ctrl: true, shift: true, key: 'f7'}
+     * ctrl/space => {ctrl: true} || {key: space}
+     */
+    function stringToKey(keyCombo) {
+      var keys = keyCombo.split('+');
+      var keyObj = Object.create(null);
+      keys.forEach(function(key) {
+        if (key == 'shift') {
+          keyObj.shift = true;
+        } else if (key == 'ctrl') {
+          keyObj.ctrl = true;
+        } else if (key == 'alt') {
+          keyObj.alt = true;
+        } else {
+          keyObj.key = key;
+        }
+      });
+      return keyObj;
+    }
+
+    function keyMatches(a, b) {
+      return Boolean(a.alt) == Boolean(b.alt) && Boolean(a.ctrl) == Boolean(b.ctrl) && Boolean(a.shift) == Boolean(b.shift) && a.key === b.key;
+    }
+
+    /**
+     * Fired when a keycombo in `keys` is pressed.
+     *
+     * @event keys-pressed
+     */
+    function processKeys(ev) {
+      var current = keyboardEventToKey(ev);
+      for (var i = 0, dk; i < this._desiredKeys.length; i++) {
+        dk = this._desiredKeys[i];
+        if (keyMatches(dk, current)) {
+          ev.preventDefault();
+          ev.stopPropagation();
+          this.fire('keys-pressed', current, this, false);
+          break;
+        }
+      }
+    }
+
+    function listen(node, handler) {
+      if (node && node.addEventListener) {
+        node.addEventListener('keydown', handler);
+      }
+    }
+
+    function unlisten(node, handler) {
+      if (node && node.removeEventListener) {
+        node.removeEventListener('keydown', handler);
+      }
+    }
+
+    Polymer('core-a11y-keys', {
+      created: function() {
+        this._keyHandler = processKeys.bind(this);
+      },
+      attached: function() {
+        if (!this.target) {
+          this.target = this.parentNode;
+        }
+        listen(this.target, this._keyHandler);
+      },
+      detached: function() {
+        unlisten(this.target, this._keyHandler);
+      },
+      publish: {
+        /**
+         * The set of key combinations that will be matched (in keys syntax).
+         *
+         * @attribute keys
+         * @type string
+         * @default ''
+         */
+        keys: '',
+        /**
+         * The node that will fire keyboard events.
+         * Default to this element's parentNode unless one is assigned
+         *
+         * @attribute target
+         * @type Node
+         * @default this.parentNode
+         */
+        target: null
+      },
+      keysChanged: function() {
+        // * can have multiple mappings: shift+8, * on numpad or Multiply on numpad
+        var normalized = this.keys.replace('*', '* shift+*');
+        this._desiredKeys = normalized.toLowerCase().split(' ').map(stringToKey);
+      },
+      targetChanged: function(oldTarget) {
+        unlisten(oldTarget, this._keyHandler);
+        listen(this.target, this._keyHandler);
+      }
+    });
+  })();
+</script>
+</polymer-element>
+
+
+<polymer-element name="paper-ripple" attributes="initialOpacity opacityDecayVelocity" assetpath="components/paper-ripple/">
+<template>
+
+  <style>
+
+    :host {
+      display: block;
+      position: relative;
+      border-radius: inherit;
+      overflow: hidden;
+    }
+
+    :host-context([noink]) {
+      pointer-events: none;
+    }
+
+    #bg, #waves, .wave-container, .wave {
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #bg, .wave {
+      opacity: 0;
+    }
+
+    #waves, .wave {
+      overflow: hidden;
+    }
+
+    .wave-container, .wave {
+      border-radius: 50%;
+    }
+
+    :host(.circle) #bg,
+    :host(.circle) #waves {
+      border-radius: 50%;
+    }
+
+    :host(.circle) .wave-container {
+      overflow: hidden;
+    }
+
+  </style>
+
+  <div id="bg"></div>
+  <div id="waves">
+  </div>
+
+</template>
+<script>
+
+  (function() {
+
+    var waveMaxRadius = 150;
+    //
+    // INK EQUATIONS
+    //
+    function waveRadiusFn(touchDownMs, touchUpMs, anim) {
+      // Convert from ms to s
+      var touchDown = touchDownMs / 1000;
+      var touchUp = touchUpMs / 1000;
+      var totalElapsed = touchDown + touchUp;
+      var ww = anim.width, hh = anim.height;
+      // use diagonal size of container to avoid floating point math sadness
+      var waveRadius = Math.min(Math.sqrt(ww * ww + hh * hh), waveMaxRadius) * 1.1 + 5;
+      var duration = 1.1 - .2 * (waveRadius / waveMaxRadius);
+      var tt = (totalElapsed / duration);
+
+      var size = waveRadius * (1 - Math.pow(80, -tt));
+      return Math.abs(size);
+    }
+
+    function waveOpacityFn(td, tu, anim) {
+      // Convert from ms to s.
+      var touchDown = td / 1000;
+      var touchUp = tu / 1000;
+      var totalElapsed = touchDown + touchUp;
+
+      if (tu <= 0) {  // before touch up
+        return anim.initialOpacity;
+      }
+      return Math.max(0, anim.initialOpacity - touchUp * anim.opacityDecayVelocity);
+    }
+
+    function waveOuterOpacityFn(td, tu, anim) {
+      // Convert from ms to s.
+      var touchDown = td / 1000;
+      var touchUp = tu / 1000;
+
+      // Linear increase in background opacity, capped at the opacity
+      // of the wavefront (waveOpacity).
+      var outerOpacity = touchDown * 0.3;
+      var waveOpacity = waveOpacityFn(td, tu, anim);
+      return Math.max(0, Math.min(outerOpacity, waveOpacity));
+    }
+
+    // Determines whether the wave should be completely removed.
+    function waveDidFinish(wave, radius, anim) {
+      var waveOpacity = waveOpacityFn(wave.tDown, wave.tUp, anim);
+
+      // If the wave opacity is 0 and the radius exceeds the bounds
+      // of the element, then this is finished.
+      return waveOpacity < 0.01 && radius >= Math.min(wave.maxRadius, waveMaxRadius);
+    };
+
+    function waveAtMaximum(wave, radius, anim) {
+      var waveOpacity = waveOpacityFn(wave.tDown, wave.tUp, anim);
+
+      return waveOpacity >= anim.initialOpacity && radius >= Math.min(wave.maxRadius, waveMaxRadius);
+    }
+
+    //
+    // DRAWING
+    //
+    function drawRipple(ctx, x, y, radius, innerAlpha, outerAlpha) {
+      // Only animate opacity and transform
+      if (outerAlpha !== undefined) {
+        ctx.bg.style.opacity = outerAlpha;
+      }
+      ctx.wave.style.opacity = innerAlpha;
+
+      var s = radius / (ctx.containerSize / 2);
+      var dx = x - (ctx.containerWidth / 2);
+      var dy = y - (ctx.containerHeight / 2);
+
+      ctx.wc.style.webkitTransform = 'translate3d(' + dx + 'px,' + dy + 'px,0)';
+      ctx.wc.style.transform = 'translate3d(' + dx + 'px,' + dy + 'px,0)';
+
+      // 2d transform for safari because of border-radius and overflow:hidden clipping bug.
+      // https://bugs.webkit.org/show_bug.cgi?id=98538
+      ctx.wave.style.webkitTransform = 'scale(' + s + ',' + s + ')';
+      ctx.wave.style.transform = 'scale3d(' + s + ',' + s + ',1)';
+    }
+
+    //
+    // SETUP
+    //
+    function createWave(elem) {
+      var elementStyle = window.getComputedStyle(elem);
+      var fgColor = elementStyle.color;
+
+      var inner = document.createElement('div');
+      inner.style.backgroundColor = fgColor;
+      inner.classList.add('wave');
+
+      var outer = document.createElement('div');
+      outer.classList.add('wave-container');
+      outer.appendChild(inner);
+
+      var container = elem.$.waves;
+      container.appendChild(outer);
+
+      elem.$.bg.style.backgroundColor = fgColor;
+
+      var wave = {
+        bg: elem.$.bg,
+        wc: outer,
+        wave: inner,
+        waveColor: fgColor,
+        maxRadius: 0,
+        isMouseDown: false,
+        mouseDownStart: 0.0,
+        mouseUpStart: 0.0,
+        tDown: 0,
+        tUp: 0
+      };
+      return wave;
+    }
+
+    function removeWaveFromScope(scope, wave) {
+      if (scope.waves) {
+        var pos = scope.waves.indexOf(wave);
+        scope.waves.splice(pos, 1);
+        // FIXME cache nodes
+        wave.wc.remove();
+      }
+    };
+
+    // Shortcuts.
+    var pow = Math.pow;
+    var now = Date.now;
+    if (window.performance && performance.now) {
+      now = performance.now.bind(performance);
+    }
+
+    function cssColorWithAlpha(cssColor, alpha) {
+        var parts = cssColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+        if (typeof alpha == 'undefined') {
+            alpha = 1;
+        }
+        if (!parts) {
+          return 'rgba(255, 255, 255, ' + alpha + ')';
+        }
+        return 'rgba(' + parts[1] + ', ' + parts[2] + ', ' + parts[3] + ', ' + alpha + ')';
+    }
+
+    function dist(p1, p2) {
+      return Math.sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
+    }
+
+    function distanceFromPointToFurthestCorner(point, size) {
+      var tl_d = dist(point, {x: 0, y: 0});
+      var tr_d = dist(point, {x: size.w, y: 0});
+      var bl_d = dist(point, {x: 0, y: size.h});
+      var br_d = dist(point, {x: size.w, y: size.h});
+      return Math.max(tl_d, tr_d, bl_d, br_d);
+    }
+
+    Polymer('paper-ripple', {
+
+      /**
+       * The initial opacity set on the wave.
+       *
+       * @attribute initialOpacity
+       * @type number
+       * @default 0.25
+       */
+      initialOpacity: 0.25,
+
+      /**
+       * How fast (opacity per second) the wave fades out.
+       *
+       * @attribute opacityDecayVelocity
+       * @type number
+       * @default 0.8
+       */
+      opacityDecayVelocity: 0.8,
+
+      backgroundFill: true,
+      pixelDensity: 2,
+
+      eventDelegates: {
+        down: 'downAction',
+        up: 'upAction'
+      },
+
+      ready: function() {
+        this.waves = [];
+      },
+
+      downAction: function(e) {
+        var wave = createWave(this);
+
+        this.cancelled = false;
+        wave.isMouseDown = true;
+        wave.tDown = 0.0;
+        wave.tUp = 0.0;
+        wave.mouseUpStart = 0.0;
+        wave.mouseDownStart = now();
+
+        var rect = this.getBoundingClientRect();
+        var width = rect.width;
+        var height = rect.height;
+        var touchX = e.x - rect.left;
+        var touchY = e.y - rect.top;
+
+        wave.startPosition = {x:touchX, y:touchY};
+
+        if (this.classList.contains("recenteringTouch")) {
+          wave.endPosition = {x: width / 2,  y: height / 2};
+          wave.slideDistance = dist(wave.startPosition, wave.endPosition);
+        }
+        wave.containerSize = Math.max(width, height);
+        wave.containerWidth = width;
+        wave.containerHeight = height;
+        wave.maxRadius = distanceFromPointToFurthestCorner(wave.startPosition, {w: width, h: height});
+
+        // The wave is circular so constrain its container to 1:1
+        wave.wc.style.top = (wave.containerHeight - wave.containerSize) / 2 + 'px';
+        wave.wc.style.left = (wave.containerWidth - wave.containerSize) / 2 + 'px';
+        wave.wc.style.width = wave.containerSize + 'px';
+        wave.wc.style.height = wave.containerSize + 'px';
+
+        this.waves.push(wave);
+
+        if (!this._loop) {
+          this._loop = this.animate.bind(this, {
+            width: width,
+            height: height
+          });
+          requestAnimationFrame(this._loop);
+        }
+        // else there is already a rAF
+      },
+
+      upAction: function() {
+        for (var i = 0; i < this.waves.length; i++) {
+          // Declare the next wave that has mouse down to be mouse'ed up.
+          var wave = this.waves[i];
+          if (wave.isMouseDown) {
+            wave.isMouseDown = false
+            wave.mouseUpStart = now();
+            wave.mouseDownStart = 0;
+            wave.tUp = 0.0;
+            break;
+          }
+        }
+        this._loop && requestAnimationFrame(this._loop);
+      },
+
+      cancel: function() {
+        this.cancelled = true;
+      },
+
+      animate: function(ctx) {
+        var shouldRenderNextFrame = false;
+
+        var deleteTheseWaves = [];
+        // The oldest wave's touch down duration
+        var longestTouchDownDuration = 0;
+        var longestTouchUpDuration = 0;
+        // Save the last known wave color
+        var lastWaveColor = null;
+        // wave animation values
+        var anim = {
+          initialOpacity: this.initialOpacity,
+          opacityDecayVelocity: this.opacityDecayVelocity,
+          height: ctx.height,
+          width: ctx.width
+        }
+
+        for (var i = 0; i < this.waves.length; i++) {
+          var wave = this.waves[i];
+
+          if (wave.mouseDownStart > 0) {
+            wave.tDown = now() - wave.mouseDownStart;
+          }
+          if (wave.mouseUpStart > 0) {
+            wave.tUp = now() - wave.mouseUpStart;
+          }
+
+          // Determine how long the touch has been up or down.
+          var tUp = wave.tUp;
+          var tDown = wave.tDown;
+          longestTouchDownDuration = Math.max(longestTouchDownDuration, tDown);
+          longestTouchUpDuration = Math.max(longestTouchUpDuration, tUp);
+
+          // Obtain the instantenous size and alpha of the ripple.
+          var radius = waveRadiusFn(tDown, tUp, anim);
+          var waveAlpha =  waveOpacityFn(tDown, tUp, anim);
+          var waveColor = cssColorWithAlpha(wave.waveColor, waveAlpha);
+          lastWaveColor = wave.waveColor;
+
+          // Position of the ripple.
+          var x = wave.startPosition.x;
+          var y = wave.startPosition.y;
+
+          // Ripple gravitational pull to the center of the canvas.
+          if (wave.endPosition) {
+
+            // This translates from the origin to the center of the view  based on the max dimension of
+            var translateFraction = Math.min(1, radius / wave.containerSize * 2 / Math.sqrt(2) );
+
+            x += translateFraction * (wave.endPosition.x - wave.startPosition.x);
+            y += translateFraction * (wave.endPosition.y - wave.startPosition.y);
+          }
+
+          // If we do a background fill fade too, work out the correct color.
+          var bgFillColor = null;
+          if (this.backgroundFill) {
+            var bgFillAlpha = waveOuterOpacityFn(tDown, tUp, anim);
+            bgFillColor = cssColorWithAlpha(wave.waveColor, bgFillAlpha);
+          }
+
+          // Draw the ripple.
+          drawRipple(wave, x, y, radius, waveAlpha, bgFillAlpha);
+
+          // Determine whether there is any more rendering to be done.
+          var maximumWave = waveAtMaximum(wave, radius, anim);
+          var waveDissipated = waveDidFinish(wave, radius, anim);
+          var shouldKeepWave = !waveDissipated || maximumWave;
+          // keep rendering dissipating wave when at maximum radius on upAction
+          var shouldRenderWaveAgain = wave.mouseUpStart ? !waveDissipated : !maximumWave;
+          shouldRenderNextFrame = shouldRenderNextFrame || shouldRenderWaveAgain;
+          if (!shouldKeepWave || this.cancelled) {
+            deleteTheseWaves.push(wave);
+          }
+       }
+
+        if (shouldRenderNextFrame) {
+          requestAnimationFrame(this._loop);
+        }
+
+        for (var i = 0; i < deleteTheseWaves.length; ++i) {
+          var wave = deleteTheseWaves[i];
+          removeWaveFromScope(this, wave);
+        }
+
+        if (!this.waves.length && this._loop) {
+          // clear the background color
+          this.$.bg.style.backgroundColor = null;
+          this._loop = null;
+          this.fire('core-transitionend');
+        }
+      }
+
+    });
+
+  })();
+
+</script>
+</polymer-element>
+<polymer-element name="paper-button-base" tabindex="0" assetpath="components/paper-button/">
+
+<script>
+
+  (function() {
+
+    var p = {
+
+      eventDelegates: {
+        down: 'downAction',
+        up: 'upAction'
+      },
+
+      toggleBackground: function() {
+        if (this.active) {
+
+          if (!this.$.bg) {
+            var bg = document.createElement('div');
+            bg.setAttribute('id', 'bg');
+            bg.setAttribute('fit', '');
+            bg.style.opacity = 0.25;
+            this.$.bg = bg;
+            this.shadowRoot.insertBefore(bg, this.shadowRoot.firstChild);
+          }
+          this.$.bg.style.backgroundColor = getComputedStyle(this).color;
+
+        } else {
+
+          if (this.$.bg) {
+            this.$.bg.style.backgroundColor = '';
+          }
+        }
+      },
+
+      activeChanged: function() {
+        this.super();
+
+        if (this.toggle && (!this.lastEvent || this.matches(':host-context([noink])'))) {
+          this.toggleBackground();
+        }
+      },
+
+      pressedChanged: function() {
+        this.super();
+
+        if (!this.lastEvent) {
+          return;
+        }
+
+        if (this.$.ripple && !this.hasAttribute('noink')) {
+          if (this.pressed) {
+            this.$.ripple.downAction(this.lastEvent);
+          } else {
+            this.$.ripple.upAction();
+          }
+        }
+
+        this.adjustZ();
+      },
+
+      focusedChanged: function() {
+        this.adjustZ();
+      },
+
+      disabledChanged: function() {
+        this._disabledChanged();
+        this.adjustZ();
+      },
+
+      recenteringTouchChanged: function() {
+        if (this.$.ripple) {
+          this.$.ripple.classList.toggle('recenteringTouch', this.recenteringTouch);
+        }
+      },
+
+      fillChanged: function() {
+        if (this.$.ripple) {
+          this.$.ripple.classList.toggle('fill', this.fill);
+        }
+      },
+
+      adjustZ: function() {
+        if (!this.$.shadow) {
+          return;
+        }
+        if (this.active) {
+          this.$.shadow.setZ(2);
+        } else if (this.disabled) {
+          this.$.shadow.setZ(0);
+        } else if (this.focused) {
+          this.$.shadow.setZ(3);
+        } else {
+          this.$.shadow.setZ(1);
+        }
+      },
+
+      downAction: function(e) {
+        this._downAction();
+
+        if (this.hasAttribute('noink')) {
+          return;
+        }
+
+        this.lastEvent = e;
+        if (!this.$.ripple) {
+          var ripple = document.createElement('paper-ripple');
+          ripple.setAttribute('id', 'ripple');
+          ripple.setAttribute('fit', '');
+          if (this.recenteringTouch) {
+            ripple.classList.add('recenteringTouch');
+          }
+          if (!this.fill) {
+            ripple.classList.add('circle');
+          }
+          this.$.ripple = ripple;
+          this.shadowRoot.insertBefore(ripple, this.shadowRoot.firstChild);
+          // No need to forward the event to the ripple because the ripple
+          // is triggered in activeChanged
+        }
+      },
+
+      upAction: function() {
+        this._upAction();
+
+        if (this.toggle) {
+          this.toggleBackground();
+          if (this.$.ripple) {
+            this.$.ripple.cancel();
+          }
+        }
+      }
+
+    };
+
+    Polymer.mixin2(p, Polymer.CoreFocusable);
+    Polymer('paper-button-base',p);
+
+  })();
+
+</script>
+</polymer-element>
+<polymer-element name="paper-button" extends="paper-button-base" attributes="raised recenteringTouch fill" role="button" assetpath="components/paper-button/">
+
+  <template>
+
+    <style>
+
+      :host {
+        display: inline-block;
+        position: relative;
+        box-sizing: border-box;
+        min-width: 5.14em;
+        margin: 0 0.29em;
+        background: transparent;
+        text-align: center;
+        font: inherit;
+        text-transform: uppercase;
+        outline: none;
+        border-radius: 3px;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: pointer;
+        z-index: 0;
+      }
+
+      :host([disabled]) {
+        background: #eaeaea;
+        color: #a8a8a8;
+        cursor: auto;
+        pointer-events: none;
+      }
+
+      ::content * {
+        text-transform: inherit;
+      }
+
+      #bg, #shadow {
+        border-radius: inherit;
+      }
+
+      #ripple {
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .button-content {
+        padding: 0.7em 0.57em
+      }
+
+      polyfill-next-selector { content: '.button-content > a'; }
+      ::content > a {
+        height: 100%;
+        padding: 0.7em 0.57em;
+        margin: -0.7em -0.57em;
+        /* flex */
+        -ms-flex: 1 1 0.000000001px;
+        -webkit-flex: 1;
+        flex: 1;
+        -webkit-flex-basis: 0.000000001px;
+        flex-basis: 0.000000001px;
+      }
+
+    </style>
+
+    <template if="{{raised}}">
+      <paper-shadow id="shadow" fit="" animated=""></paper-shadow>
+    </template>
+
+    <!-- this div is needed to position the ripple behind text content -->
+    <div class="button-content" relative="" layout="" horizontal="" center-center="">
+      <content></content>
+    </div>
+
+    <core-a11y-keys keys="space enter" target="{{}}" on-keys-pressed="{{_activate}}"></core-a11y-keys>
+
+  </template>
+
+  <script>
+    Polymer('paper-button',{
+
+      publish: {
+
+        /**
+         * If true, the button will be styled with a shadow.
+         *
+         * @attribute raised
+         * @type boolean
+         * @default false
+         */
+        raised: false,
+
+        /**
+         * By default the ripple emanates from where the user touched the button.
+         * Set this to true to always center the ripple.
+         *
+         * @attribute recenteringTouch
+         * @type boolean
+         * @default false
+         */
+        recenteringTouch: false,
+
+        /**
+         * By default the ripple expands to fill the button. Set this to true to
+         * constrain the ripple to a circle within the button.
+         *
+         * @attribute fill
+         * @type boolean
+         * @default true
+         */
+        fill: true
+
+      },
+
+      _activate: function() {
+        this.click();
+        this.fire('tap');
+        if (!this.pressed) {
+          var bcr = this.getBoundingClientRect();
+          var x = bcr.left + (bcr.width / 2);
+          var y = bcr.top + (bcr.height / 2);
+          this.downAction({x: x, y: y});
+          var fn = function fn() {
+            this.upAction();
+            this.removeEventListener('keyup', fn);
+          }.bind(this);
+          this.addEventListener('keyup', fn);
+        }
+      }
+
+    });
+  </script>
+</polymer-element>
+
+<polymer-element name="core-meta" attributes="label type" hidden="" assetpath="components/core-meta/">
+<script>
+
+  (function() {
+    
+    var SKIP_ID = 'meta';
+    var metaData = {}, metaArray = {};
+
+    Polymer('core-meta', {
+      
+      /**
+       * The type of meta-data.  All meta-data with the same type with be
+       * stored together.
+       * 
+       * @attribute type
+       * @type string
+       * @default 'default'
+       */
+      type: 'default',
+      
+      alwaysPrepare: true,
+      
+      ready: function() {
+        this.register(this.id);
+      },
+      
+      get metaArray() {
+        var t = this.type;
+        if (!metaArray[t]) {
+          metaArray[t] = [];
+        }
+        return metaArray[t];
+      },
+      
+      get metaData() {
+        var t = this.type;
+        if (!metaData[t]) {
+          metaData[t] = {};
+        }
+        return metaData[t];
+      },
+      
+      register: function(id, old) {
+        if (id && id !== SKIP_ID) {
+          this.unregister(this, old);
+          this.metaData[id] = this;
+          this.metaArray.push(this);
+        }
+      },
+      
+      unregister: function(meta, id) {
+        delete this.metaData[id || meta.id];
+        var i = this.metaArray.indexOf(meta);
+        if (i >= 0) {
+          this.metaArray.splice(i, 1);
+        }
+      },
+      
+      /**
+       * Returns a list of all meta-data elements with the same type.
+       * 
+       * @property list
+       * @type array
+       * @default []
+       */
+      get list() {
+        return this.metaArray;
+      },
+      
+      /**
+       * Retrieves meta-data by ID.
+       *
+       * @method byId
+       * @param {String} id The ID of the meta-data to be returned.
+       * @returns Returns meta-data.
+       */
+      byId: function(id) {
+        return this.metaData[id];
+      }
+      
+    });
+    
+  })();
+  
+</script>
+</polymer-element>
+<polymer-element name="core-transition" extends="core-meta" assetpath="components/core-transition/">
+  
+  <script>
+    Polymer('core-transition', {
+      
+      type: 'transition',
+
+      /**
+       * Run the animation.
+       *
+       * @method go
+       * @param {Node} node The node to apply the animation on
+       * @param {Object} state State info
+       */
+      go: function(node, state) {
+        this.complete(node);
+      },
+
+      /**
+       * Set up the animation. This may include injecting a stylesheet,
+       * applying styles, creating a web animations object, etc.. This
+       *
+       * @method setup
+       * @param {Node} node The animated node
+       */
+      setup: function(node) {
+      },
+
+      /**
+       * Tear down the animation.
+       *
+       * @method teardown
+       * @param {Node} node The animated node
+       */
+      teardown: function(node) {
+      },
+
+      /**
+       * Called when the animation completes. This function also fires the
+       * `core-transitionend` event.
+       *
+       * @method complete
+       * @param {Node} node The animated node
+       */
+      complete: function(node) {
+        this.fire('core-transitionend', null, node);
+      },
+
+      /**
+       * Utility function to listen to an event on a node once.
+       *
+       * @method listenOnce
+       * @param {Node} node The animated node
+       * @param {string} event Name of an event
+       * @param {Function} fn Event handler
+       * @param {Array} args Additional arguments to pass to `fn`
+       */
+      listenOnce: function(node, event, fn, args) {
+        var self = this;
+        var listener = function() {
+          fn.apply(self, args);
+          node.removeEventListener(event, listener, false);
+        }
+        node.addEventListener(event, listener, false);
+      }
+
+    });
+  </script>
+</polymer-element>
+
+
+<polymer-element name="core-key-helper" assetpath="components/core-overlay/">
+  <script>
+    Polymer('core-key-helper', {
+      ENTER_KEY: 13,
+      ESCAPE_KEY: 27
+    });
+  </script>
+</polymer-element>
+
+<polymer-element name="core-overlay-layer" assetpath="components/core-overlay/">
+<template>
+  <style>
+    :host {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      display: none;
+    }
+
+    :host(.core-opened) {
+      display: block;
+    }
+  </style>
+  <content></content>
+</template>
+<script>
+(function() {
+
+  Polymer('core-overlay-layer', {
+    publish: {
+      opened: false
+    },
+    openedChanged: function() {
+      this.classList.toggle('core-opened', this.opened);
+    },
+    /**
+     * Adds an element to the overlay layer
+     */
+    addElement: function(element) {
+      if (!this.parentNode) {
+        document.querySelector('body').appendChild(this);
+      }
+      if (element.parentNode !== this) {
+        element.__contents = [];
+        var ip$ = element.querySelectorAll('content');
+        for (var i=0, l=ip$.length, n; (i<l) && (n = ip$[i]); i++) {
+          this.moveInsertedElements(n);
+          this.cacheDomLocation(n);
+          n.parentNode.removeChild(n);
+          element.__contents.push(n);
+        }
+        this.cacheDomLocation(element);
+        this.updateEventController(element);
+        var h = this.makeHost();
+        h.shadowRoot.appendChild(element);
+        element.__host = h;
+      }
+    },
+    makeHost: function() {
+      var h = document.createElement('overlay-host');
+      h.createShadowRoot();
+      this.appendChild(h);
+      return h;
+    },
+    moveInsertedElements: function(insertionPoint) {
+      var n$ = insertionPoint.getDistributedNodes();
+      var parent = insertionPoint.parentNode;
+      insertionPoint.__contents = [];
+      for (var i=0, l=n$.length, n; (i<l) && (n=n$[i]); i++) {
+        this.cacheDomLocation(n);
+        this.updateEventController(n);
+        insertionPoint.__contents.push(n);
+        parent.appendChild(n);  
+      }
+    },
+    updateEventController: function(element) {
+      element.eventController = this.element.findController(element);
+    },
+    /**
+     * Removes an element from the overlay layer
+     */
+    removeElement: function(element) {
+      element.eventController = null;
+      this.replaceElement(element);
+      var h = element.__host;
+      if (h) {
+        h.parentNode.removeChild(h);
+      }
+    },
+    replaceElement: function(element) {
+      if (element.__contents) {
+        for (var i=0, c$=element.__contents, c; (c=c$[i]); i++) {
+          this.replaceElement(c);
+        }
+        element.__contents = null;
+      }
+      if (element.__parentNode) {
+        var n = element.__nextElementSibling && element.__nextElementSibling 
+            === element.__parentNode ? element.__nextElementSibling : null;
+        element.__parentNode.insertBefore(element, n);
+      }
+    },
+    cacheDomLocation: function(element) {
+      element.__nextElementSibling = element.nextElementSibling;
+      element.__parentNode = element.parentNode;
+    }
+  });
+  
+})();
+</script>
+</polymer-element>
+<polymer-element name="core-overlay" assetpath="components/core-overlay/">
+<script>
+(function() {
+
+  Polymer('core-overlay',Polymer.mixin({
+
+    publish: {
+      /**
+       * The target element that will be shown when the overlay is 
+       * opened. If unspecified, the core-overlay itself is the target.
+       *
+       * @attribute target
+       * @type Object
+       * @default the overlay element
+       */
+      target: null,
+
+
+      /**
+       * A `core-overlay`'s size is guaranteed to be 
+       * constrained to the window size. To achieve this, the sizingElement
+       * is sized with a max-height/width. By default this element is the 
+       * target element, but it can be specifically set to a specific element
+       * inside the target if that is more appropriate. This is useful, for 
+       * example, when a region inside the overlay should scroll if needed.
+       *
+       * @attribute sizingTarget
+       * @type Object
+       * @default the target element
+       */
+      sizingTarget: null,
+    
+      /**
+       * Set opened to true to show an overlay and to false to hide it.
+       * A `core-overlay` may be made initially opened by setting its
+       * `opened` attribute.
+       * @attribute opened
+       * @type boolean
+       * @default false
+       */
+      opened: false,
+
+      /**
+       * If true, the overlay has a backdrop darkening the rest of the screen.
+       * The backdrop element is attached to the document body and may be styled
+       * with the class `core-overlay-backdrop`. When opened the `core-opened`
+       * class is applied.
+       *
+       * @attribute backdrop
+       * @type boolean
+       * @default false
+       */    
+      backdrop: false,
+
+      /**
+       * If true, the overlay is guaranteed to display above page content.
+       *
+       * @attribute layered
+       * @type boolean
+       * @default false
+      */
+      layered: false,
+    
+      /**
+       * By default an overlay will close automatically if the user
+       * taps outside it or presses the escape key. Disable this
+       * behavior by setting the `autoCloseDisabled` property to true.
+       * @attribute autoCloseDisabled
+       * @type boolean
+       * @default false
+       */
+      autoCloseDisabled: false,
+
+      /**
+       * By default an overlay will focus its target or an element inside
+       * it with the `autoFocus` attribute. Disable this
+       * behavior by setting the `autoFocusDisabled` property to true.
+       * @attribute autoFocusDisabled
+       * @type boolean
+       * @default false
+       */
+      autoFocusDisabled: false,
+
+      /**
+       * This property specifies an attribute on elements that should
+       * close the overlay on tap. Should not set `closeSelector` if this
+       * is set.
+       *
+       * @attribute closeAttribute
+       * @type string
+       * @default "core-overlay-toggle"
+       */
+      closeAttribute: 'core-overlay-toggle',
+
+      /**
+       * This property specifies a selector matching elements that should
+       * close the overlay on tap. Should not set `closeAttribute` if this
+       * is set.
+       *
+       * @attribute closeSelector
+       * @type string
+       * @default ""
+       */
+      closeSelector: '',
+
+      /**
+       * The transition property specifies a string which identifies a 
+       * <a href="../core-transition/">`core-transition`</a> element that 
+       * will be used to help the overlay open and close. The default
+       * `core-transition-fade` will cause the overlay to fade in and out.
+       *
+       * @attribute transition
+       * @type string
+       * @default 'core-transition-fade'
+       */
+      transition: 'core-transition-fade'
+
+    },
+
+    captureEventName: 'tap',
+    targetListeners: {
+      'tap': 'tapHandler',
+      'keydown': 'keydownHandler',
+      'core-transitionend': 'transitionend'
+    },
+
+    attached: function() {
+      this.resizerAttachedHandler();
+    },
+
+    detached: function() {
+      this.resizerDetachedHandler();
+    },
+
+    resizerShouldNotify: function() {
+      return this.opened;
+    },
+
+    registerCallback: function(element) {
+      this.layer = document.createElement('core-overlay-layer');
+      this.keyHelper = document.createElement('core-key-helper');
+      this.meta = document.createElement('core-transition');
+      this.scrim = document.createElement('div');
+      this.scrim.className = 'core-overlay-backdrop';
+    },
+
+    ready: function() {
+      this.target = this.target || this;
+      // flush to ensure styles are installed before paint
+      Polymer.flush();
+    },
+
+    /** 
+     * Toggle the opened state of the overlay.
+     * @method toggle
+     */
+    toggle: function() {
+      this.opened = !this.opened;
+    },
+
+    /** 
+     * Open the overlay. This is equivalent to setting the `opened`
+     * property to true.
+     * @method open
+     */
+    open: function() {
+      this.opened = true;
+    },
+
+    /** 
+     * Close the overlay. This is equivalent to setting the `opened` 
+     * property to false.
+     * @method close
+     */
+    close: function() {
+      this.opened = false;
+    },
+
+    domReady: function() {
+      this.ensureTargetSetup();
+    },
+
+    targetChanged: function(old) {
+      if (this.target) {
+        // really make sure tabIndex is set
+        if (this.target.tabIndex < 0) {
+          this.target.tabIndex = -1;
+        }
+        this.addElementListenerList(this.target, this.targetListeners);
+        this.target.style.display = 'none';
+        this.target.__overlaySetup = false;
+      }
+      if (old) {
+        this.removeElementListenerList(old, this.targetListeners);
+        var transition = this.getTransition();
+        if (transition) {
+          transition.teardown(old);
+        } else {
+          old.style.position = '';
+          old.style.outline = '';
+        }
+        old.style.display = '';
+      }
+    },
+
+    transitionChanged: function(old) {
+      if (!this.target) {
+        return;
+      }
+      if (old) {
+        this.getTransition(old).teardown(this.target);
+      }
+      this.target.__overlaySetup = false;
+    },
+
+    // NOTE: wait to call this until we're as sure as possible that target
+    // is styled.
+    ensureTargetSetup: function() {
+      if (!this.target || this.target.__overlaySetup) {
+        return;
+      }
+      if (!this.sizingTarget) {
+        this.sizingTarget = this.target;
+      }
+      this.target.__overlaySetup = true;
+      this.target.style.display = '';
+      var transition = this.getTransition();
+      if (transition) {
+        transition.setup(this.target);
+      }
+      var style = this.target.style;
+      var computed = getComputedStyle(this.target);
+      if (computed.position === 'static') {
+        style.position = 'fixed';
+      }
+      style.outline = 'none';
+      style.display = 'none';
+    },
+
+    openedChanged: function() {
+      this.transitioning = true;
+      this.ensureTargetSetup();
+      this.prepareRenderOpened();
+      // async here to allow overlay layer to become visible.
+      this.async(function() {
+        this.target.style.display = '';
+        // force layout to ensure transitions will go
+        this.target.offsetWidth;
+        this.renderOpened();
+      });
+      this.fire('core-overlay-open', this.opened);
+    },
+
+    // tasks which must occur before opening; e.g. making the element visible
+    prepareRenderOpened: function() {
+      if (this.opened) {
+        addOverlay(this);
+      }
+      this.prepareBackdrop();
+      // async so we don't auto-close immediately via a click.
+      this.async(function() {
+        if (!this.autoCloseDisabled) {
+          this.enableElementListener(this.opened, document,
+              this.captureEventName, 'captureHandler', true);
+        }
+      });
+      this.enableElementListener(this.opened, window, 'resize',
+          'resizeHandler');
+
+      if (this.opened) {
+        // force layout so SD Polyfill renders
+        this.target.offsetHeight;
+        this.discoverDimensions();
+        // if we are showing, then take care when positioning
+        this.preparePositioning();
+        this.positionTarget();
+        this.updateTargetDimensions();
+        this.finishPositioning();
+        if (this.layered) {
+          this.layer.addElement(this.target);
+          this.layer.opened = this.opened;
+        }
+      }
+    },
+
+    // tasks which cause the overlay to actually open; typically play an
+    // animation
+    renderOpened: function() {
+      this.notifyResize();
+      var transition = this.getTransition();
+      if (transition) {
+        transition.go(this.target, {opened: this.opened});
+      } else {
+        this.transitionend();
+      }
+      this.renderBackdropOpened();
+    },
+
+    // finishing tasks; typically called via a transition
+    transitionend: function(e) {
+      // make sure this is our transition event.
+      if (e && e.target !== this.target) {
+        return;
+      }
+      this.transitioning = false;
+      if (!this.opened) {
+        this.resetTargetDimensions();
+        this.target.style.display = 'none';
+        this.completeBackdrop();
+        removeOverlay(this);
+        if (this.layered) {
+          if (!currentOverlay()) {
+            this.layer.opened = this.opened;
+          }
+          this.layer.removeElement(this.target);
+        }
+      }
+      this.fire('core-overlay-' + (this.opened ? 'open' : 'close') + 
+          '-completed');
+      this.applyFocus();
+    },
+
+    prepareBackdrop: function() {
+      if (this.backdrop && this.opened) {
+        if (!this.scrim.parentNode) {
+          document.body.appendChild(this.scrim);
+          this.scrim.style.zIndex = currentOverlayZ() - 1;
+        }
+        trackBackdrop(this);
+      }
+    },
+
+    renderBackdropOpened: function() {
+      if (this.backdrop && getBackdrops().length < 2) {
+        this.scrim.classList.toggle('core-opened', this.opened);
+      }
+    },
+
+    completeBackdrop: function() {
+      if (this.backdrop) {
+        trackBackdrop(this);
+        if (getBackdrops().length === 0) {
+          this.scrim.parentNode.removeChild(this.scrim);
+        }
+      }
+    },
+
+    preparePositioning: function() {
+      this.target.style.transition = this.target.style.webkitTransition = 'none';
+      this.target.style.transform = this.target.style.webkitTransform = 'none';
+      this.target.style.display = '';
+    },
+
+    discoverDimensions: function() {
+      if (this.dimensions) {
+        return;
+      }
+      var target = getComputedStyle(this.target);
+      var sizer = getComputedStyle(this.sizingTarget);
+      this.dimensions = {
+        position: {
+          v: target.top !== 'auto' ? 'top' : (target.bottom !== 'auto' ?
+            'bottom' : null),
+          h: target.left !== 'auto' ? 'left' : (target.right !== 'auto' ?
+            'right' : null),
+          css: target.position
+        },
+        size: {
+          v: sizer.maxHeight !== 'none',
+          h: sizer.maxWidth !== 'none'
+        },
+        margin: {
+          top: parseInt(target.marginTop) || 0,
+          right: parseInt(target.marginRight) || 0,
+          bottom: parseInt(target.marginBottom) || 0,
+          left: parseInt(target.marginLeft) || 0
+        }
+      };
+    },
+
+    finishPositioning: function(target) {
+      this.target.style.display = 'none';
+      this.target.style.transform = this.target.style.webkitTransform = '';
+      // force layout to avoid application of transform
+      this.target.offsetWidth;
+      this.target.style.transition = this.target.style.webkitTransition = '';
+    },
+
+    getTransition: function(name) {
+      return this.meta.byId(name || this.transition);
+    },
+
+    getFocusNode: function() {
+      return this.target.querySelector('[autofocus]') || this.target;
+    },
+
+    applyFocus: function() {
+      var focusNode = this.getFocusNode();
+      if (this.opened) {
+        if (!this.autoFocusDisabled) {
+          focusNode.focus();
+        }
+      } else {
+        focusNode.blur();
+        if (currentOverlay() == this) {
+          console.warn('Current core-overlay is attempting to focus itself as next! (bug)');
+        } else {
+          focusOverlay();
+        }
+      }
+    },
+
+    positionTarget: function() {
+      // fire positioning event
+      this.fire('core-overlay-position', {target: this.target,
+          sizingTarget: this.sizingTarget, opened: this.opened});
+      if (!this.dimensions.position.v) {
+        this.target.style.top = '0px';
+      }
+      if (!this.dimensions.position.h) {
+        this.target.style.left = '0px';
+      }
+    },
+
+    updateTargetDimensions: function() {
+      this.sizeTarget();
+      this.repositionTarget();
+    },
+
+    sizeTarget: function() {
+      this.sizingTarget.style.boxSizing = 'border-box';
+      var dims = this.dimensions;
+      var rect = this.target.getBoundingClientRect();
+      if (!dims.size.v) {
+        this.sizeDimension(rect, dims.position.v, 'top', 'bottom', 'Height');
+      }
+      if (!dims.size.h) {
+        this.sizeDimension(rect, dims.position.h, 'left', 'right', 'Width');
+      }
+    },
+
+    sizeDimension: function(rect, positionedBy, start, end, extent) {
+      var dims = this.dimensions;
+      var flip = (positionedBy === end);
+      var m = flip ? start : end;
+      var ws = window['inner' + extent];
+      var o = dims.margin[m] + (flip ? ws - rect[end] : 
+          rect[start]);
+      var offset = 'offset' + extent;
+      var o2 = this.target[offset] - this.sizingTarget[offset];
+      this.sizingTarget.style['max' + extent] = (ws - o - o2) + 'px';
+    },
+
+    // vertically and horizontally center if not positioned
+    repositionTarget: function() {
+      // only center if position fixed.      
+      if (this.dimensions.position.css !== 'fixed') {
+        return; 
+      }
+      if (!this.dimensions.position.v) {
+        var t = (window.innerHeight - this.target.offsetHeight) / 2;
+        t -= this.dimensions.margin.top;
+        this.target.style.top = t + 'px';
+      }
+
+      if (!this.dimensions.position.h) {
+        var l = (window.innerWidth - this.target.offsetWidth) / 2;
+        l -= this.dimensions.margin.left;
+        this.target.style.left = l + 'px';
+      }
+    },
+
+    resetTargetDimensions: function() {
+      if (!this.dimensions || !this.dimensions.size.v) {
+        this.sizingTarget.style.maxHeight = '';  
+        this.target.style.top = '';
+      }
+      if (!this.dimensions || !this.dimensions.size.h) {
+        this.sizingTarget.style.maxWidth = '';  
+        this.target.style.left = '';
+      }
+      this.dimensions = null;
+    },
+
+    tapHandler: function(e) {
+      // closeSelector takes precedence since closeAttribute has a default non-null value.
+      if (e.target &&
+          (this.closeSelector && e.target.matches(this.closeSelector)) ||
+          (this.closeAttribute && e.target.hasAttribute(this.closeAttribute))) {
+        this.toggle();
+      } else {
+        if (this.autoCloseJob) {
+          this.autoCloseJob.stop();
+          this.autoCloseJob = null;
+        }
+      }
+    },
+    
+    // We use the traditional approach of capturing events on document
+    // to to determine if the overlay needs to close. However, due to 
+    // ShadowDOM event retargeting, the event target is not useful. Instead
+    // of using it, we attempt to close asynchronously and prevent the close
+    // if a tap event is immediately heard on the target.
+    // TODO(sorvell): This approach will not work with modal. For
+    // this we need a scrim.
+    captureHandler: function(e) {
+      if (!this.autoCloseDisabled && (currentOverlay() == this)) {
+        this.autoCloseJob = this.job(this.autoCloseJob, function() {
+          this.close();
+        });
+      }
+    },
+
+    keydownHandler: function(e) {
+      if (!this.autoCloseDisabled && (e.keyCode == this.keyHelper.ESCAPE_KEY)) {
+        this.close();
+        e.stopPropagation();
+      }
+    },
+
+    /**
+     * Extensions of core-overlay should implement the `resizeHandler`
+     * method to adjust the size and position of the overlay when the 
+     * browser window resizes.
+     * @method resizeHandler
+     */
+    resizeHandler: function() {
+      this.updateTargetDimensions();
+    },
+
+    // TODO(sorvell): these utility methods should not be here.
+    addElementListenerList: function(node, events) {
+      for (var i in events) {
+        this.addElementListener(node, i, events[i]);
+      }
+    },
+
+    removeElementListenerList: function(node, events) {
+      for (var i in events) {
+        this.removeElementListener(node, i, events[i]);
+      }
+    },
+
+    enableElementListener: function(enable, node, event, methodName, capture) {
+      if (enable) {
+        this.addElementListener(node, event, methodName, capture);
+      } else {
+        this.removeElementListener(node, event, methodName, capture);
+      }
+    },
+
+    addElementListener: function(node, event, methodName, capture) {
+      var fn = this._makeBoundListener(methodName);
+      if (node && fn) {
+        Polymer.addEventListener(node, event, fn, capture);
+      }
+    },
+
+    removeElementListener: function(node, event, methodName, capture) {
+      var fn = this._makeBoundListener(methodName);
+      if (node && fn) {
+        Polymer.removeEventListener(node, event, fn, capture);
+      }
+    },
+
+    _makeBoundListener: function(methodName) {
+      var self = this, method = this[methodName];
+      if (!method) {
+        return;
+      }
+      var bound = '_bound' + methodName;
+      if (!this[bound]) {
+        this[bound] = function(e) {
+          method.call(self, e);
+        };
+      }
+      return this[bound];
+    }
+
+  }, Polymer.CoreResizer));
+
+  // TODO(sorvell): This should be an element with private state so it can
+  // be independent of overlay.
+  // track overlays for z-index and focus managemant
+  var overlays = [];
+  function addOverlay(overlay) {
+    var z0 = currentOverlayZ();
+    overlays.push(overlay);
+    var z1 = currentOverlayZ();
+    if (z1 <= z0) {
+      applyOverlayZ(overlay, z0);
+    }
+  }
+
+  function removeOverlay(overlay) {
+    var i = overlays.indexOf(overlay);
+    if (i >= 0) {
+      overlays.splice(i, 1);
+      setZ(overlay, '');
+    }
+  }
+  
+  function applyOverlayZ(overlay, aboveZ) {
+    setZ(overlay.target, aboveZ + 2);
+  }
+  
+  function setZ(element, z) {
+    element.style.zIndex = z;
+  }
+
+  function currentOverlay() {
+    return overlays[overlays.length-1];
+  }
+  
+  var DEFAULT_Z = 10;
+  
+  function currentOverlayZ() {
+    var z;
+    var current = currentOverlay();
+    if (current) {
+      var z1 = window.getComputedStyle(current.target).zIndex;
+      if (!isNaN(z1)) {
+        z = Number(z1);
+      }
+    }
+    return z || DEFAULT_Z;
+  }
+  
+  function focusOverlay() {
+    var current = currentOverlay();
+    // We have to be careful to focus the next overlay _after_ any current
+    // transitions are complete (due to the state being toggled prior to the
+    // transition). Otherwise, we risk infinite recursion when a transitioning
+    // (closed) overlay becomes the current overlay.
+    //
+    // NOTE: We make the assumption that any overlay that completes a transition
+    // will call into focusOverlay to kick the process back off. Currently:
+    // transitionend -> applyFocus -> focusOverlay.
+    if (current && !current.transitioning) {
+      current.applyFocus();
+    }
+  }
+
+  var backdrops = [];
+  function trackBackdrop(element) {
+    if (element.opened) {
+      backdrops.push(element);
+    } else {
+      var i = backdrops.indexOf(element);
+      if (i >= 0) {
+        backdrops.splice(i, 1);
+      }
+    }
+  }
+
+  function getBackdrops() {
+    return backdrops;
+  }
+})();
+</script>
+</polymer-element>
+<polymer-element name="core-dropdown" extends="core-overlay" assetpath="components/core-dropdown/">
+<script>
+
+(function() {
+
+  function docElem(property) {
+    var t;
+    return ((t = document.documentElement) || (t = document.body.parentNode)) && (typeof t[property] === 'number') ? t : document.body;
+  }
+
+  // View width and height excluding any visible scrollbars
+  // http://www.highdots.com/forums/javascript/faq-topic-how-do-i-296669.html
+  //    1) document.client[Width|Height] always reliable when available, including Safari2
+  //    2) document.documentElement.client[Width|Height] reliable in standards mode DOCTYPE, except for Safari2, Opera<9.5
+  //    3) document.body.client[Width|Height] is gives correct result when #2 does not, except for Safari2
+  //    4) When document.documentElement.client[Width|Height] is unreliable, it will be size of <html> element either greater or less than desired view size
+  //       https://bugzilla.mozilla.org/show_bug.cgi?id=156388#c7
+  //    5) When document.body.client[Width|Height] is unreliable, it will be size of <body> element less than desired view size
+  function viewSize() {
+    // This algorithm avoids creating test page to determine if document.documentElement.client[Width|Height] is greater then view size,
+    // will succeed where such test page wouldn't detect dynamic unreliability,
+    // and will only fail in the case the right or bottom edge is within the width of a scrollbar from edge of the viewport that has visible scrollbar(s).
+    var doc = docElem('clientWidth');
+    var body = document.body;
+    var w, h;
+    return typeof document.clientWidth === 'number' ?
+      {w: document.clientWidth, h: document.clientHeight} :
+      doc === body || (w = Math.max( doc.clientWidth, body.clientWidth )) > self.innerWidth || (h = Math.max( doc.clientHeight, body.clientHeight )) > self.innerHeight ?
+        {w: body.clientWidth, h: body.clientHeight} : {w: w, h: h };
+  }
+
+  Polymer('core-dropdown',{
+
+    publish: {
+
+      /**
+       * The element associated with this dropdown, usually the element that triggers
+       * the menu. If unset, this property will default to the target's parent node
+       * or shadow host.
+       *
+       * @attribute relatedTarget
+       * @type Node
+       */
+      relatedTarget: null,
+
+      /**
+       * The horizontal alignment of the popup relative to `relatedTarget`. `left`
+       * means the left edges are aligned together. `right` means the right edges
+       * are aligned together.
+       * 
+       * Accepted values: 'left', 'right'
+       *
+       * @attribute halign
+       * @type String
+       * @default 'left'
+       */
+      halign: 'left',
+
+      /**
+       * The vertical alignment of the popup relative to `relatedTarget`. `top` means
+       * the top edges are aligned together. `bottom` means the bottom edges are
+       * aligned together.
+       *
+       * Accepted values: 'top', 'bottom'
+       *
+       * @attribute valign
+       * @type String
+       * @default 'top'
+       */
+      valign: 'top',
+
+    },
+
+    measure: function() {
+      var target = this.target;
+      // remember position, because core-overlay may have set the property
+      var pos = target.style.position;
+
+      // get the size of the target as if it's positioned in the top left
+      // corner of the screen
+      target.style.position = 'fixed';
+      target.style.left = '0px';
+      target.style.top = '0px';
+
+      var rect = target.getBoundingClientRect();
+
+      target.style.position = pos;
+      target.style.left = null;
+      target.style.top = null;
+
+      return rect;
+    },
+
+    resetTargetDimensions: function() {
+      var dims = this.dimensions;
+      var style = this.target.style;
+      if (dims.position.h_by === this.localName) {
+        style[dims.position.h] = null;
+        dims.position.h_by = null;
+      }
+      if (dims.position.v_by === this.localName) {
+        style[dims.position.v] = null;
+        dims.position.v_by = null;
+      }
+      style.width = null;
+      style.height = null;
+      this.super();
+    },
+
+    positionTarget: function() {
+      if (!this.relatedTarget) {
+        this.relatedTarget = this.target.parentElement || (this.target.parentNode && this.target.parentNode.host);
+        if (!this.relatedTarget) {
+          this.super();
+          return;
+        }
+      }
+
+      // explicitly set width/height, because we don't want it constrained
+      // to the offsetParent
+      var target = this.sizingTarget;
+      var rect = this.measure();
+      target.style.width = Math.ceil(rect.width) + 'px';
+      target.style.height = Math.ceil(rect.height) + 'px';
+
+      if (this.layered) {
+        this.positionLayeredTarget();
+      } else {
+        this.positionNestedTarget();
+      }
+    },
+
+    positionLayeredTarget: function() {
+      var target = this.target;
+      var rect = this.relatedTarget.getBoundingClientRect();
+
+      var dims = this.dimensions;
+      var margin = dims.margin;
+      var vp = viewSize();
+
+      if (!dims.position.h) {
+        if (this.halign === 'right') {
+          target.style.right = vp.w - rect.right - margin.right + 'px';
+          dims.position.h = 'right';
+        } else {
+          target.style.left = rect.left - margin.left + 'px';
+          dims.position.h = 'left';
+        }
+        dims.position.h_by = this.localName;
+      }
+
+      if (!dims.position.v) {
+        if (this.valign === 'bottom') {
+          target.style.bottom = vp.h - rect.bottom - margin.bottom + 'px';
+          dims.position.v = 'bottom';
+        } else {
+          target.style.top = rect.top - margin.top + 'px';
+          dims.position.v = 'top';
+        }
+        dims.position.v_by = this.localName;
+      }
+
+      if (dims.position.h_by || dims.position.v_by) {
+        target.style.position = 'fixed';
+      }
+    },
+
+    positionNestedTarget: function() {
+      var target = this.target;
+      var related = this.relatedTarget;
+
+      var t_op = target.offsetParent;
+      var r_op = related.offsetParent;
+      if (window.ShadowDOMPolyfill) {
+        t_op = wrap(t_op);
+        r_op = wrap(r_op);
+      }
+
+      if (t_op !== r_op && t_op !== related) {
+        console.warn('core-dropdown-overlay: dropdown\'s offsetParent must be the relatedTarget or the relatedTarget\'s offsetParent!');
+      }
+
+      // Don't use CSS to handle halign/valign so we can use
+      // dimensions.position to detect custom positioning
+
+      var dims = this.dimensions;
+      var margin = dims.margin;
+      var inside = t_op === related;
+
+      if (!dims.position.h) {
+        if (this.halign === 'right') {
+          target.style.right = ((inside ? 0 : t_op.offsetWidth - related.offsetLeft - related.offsetWidth) - margin.right) + 'px';
+          dims.position.h = 'right';
+        } else {
+          target.style.left = ((inside ? 0 : related.offsetLeft) - margin.left) + 'px';
+          dims.position.h = 'left';
+        }
+        dims.position.h_by = this.localName;
+      }
+
+      if (!dims.position.v) {
+        if (this.valign === 'bottom') {
+          target.style.bottom = ((inside ? 0 : t_op.offsetHeight - related.offsetTop - related.offsetHeight) - margin.bottom) + 'px';
+          dims.position.v = 'bottom';
+        } else {
+          target.style.top = ((inside ? 0 : related.offsetTop) - margin.top) + 'px';
+          dims.position.v = 'top';
+        }
+        dims.position.v_by = this.localName;
+      }
+    }
+
+  });
+
+})();
+
+</script>
+</polymer-element>
+
+<polymer-element name="html-echo" attributes="html" assetpath="components/sortable-table/">
+	<script>
+	Polymer('html-echo', {
+		htmlChanged: function() {
+			// WARNING: potential XSS vulnerability if `html` comes from an untrusted source
+			this.innerHTML = this.html;
+		}
+	});
+	</script>
+</polymer-element> 
+<polymer-element name="sortable-table" attributes="
+		args
+		cellTemplate
+		checkbox
+		columns
+		data
+		dataSize
+		disableColumnMove
+		filterTemplate
+		footerTemplate
+		grid
+		headerTemplate
+		loading
+		multiRowEdit
+		multiSelect
+		page
+		pageSize
+		rowEditorTemplate
+		rowSelection
+		rowTemplate
+		selected
+		sortColumn
+		sortDescending
+		userSort
+	" style="display:block" assetpath="components/sortable-table/">
+<template>
+	<content select="[role=&quot;datasource&quot;]"></content>
+	<content select="core-scroll-threshold"></content>
+	<style>
+	.sortable-table {
+		width: 100%;
+		max-width: 100%;
+		border-collapse: collapse;
+	}
+	.checkbox-column {
+		width: 1em;
+		vertical-align: middle;
+	}
+	.checkbox-column input[type=checkbox] {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.open-below {
+		top: 22px;
+		border: 1px solid #ddd;
+	}
+	th.checkbox-column input[type=checkbox] {
+		vertical-align: middle;
+	}
+	tbody.grid {
+		font-size: 0;
+	}
+	tbody.grid > tr {
+		box-sizing: border-box;
+		display: inline-block;
+		font-size: initial;
+	}
+	table.articlePager {
+		width: 100%;
+	}
+	table.articlePager td:first-of-type {
+		cursor: pointer;
+	}
+	table.articlePager td:nth-of-type(2) {
+		width: 100%;
+	}
+	table.articlePager td:nth-of-type(3) {
+		cursor: pointer;
+	}
+	.sortable-table thead .dropdown-menu {
+		position: absolute;
+		z-index: 1000;
+		display: none;
+		list-style: outside none none;
+		background-color: #FFF;
+	}
+	.sortable-table thead .open > .dropdown-menu {
+		display: block;
+	}
+	:host(.default) .sortable-table {
+		border-collapse: collapse;
+		border: 1px solid #ccc;
+	}
+	:host(.default) .sortable-table .row-selection {
+		cursor: pointer;
+	}
+	:host(.default) .sortable-table tbody td {
+		border: 1px dotted #ccc;
+	}
+	:host(.default) .sortable-table tbody tr:nth-of-type(even) {
+		background-color: rgba(255,255,224,0.25);
+	}
+	:host(.default) .sortable-table tfoot td {
+		border: 1px solid #ccc;
+		background-color: #F5F8FA;
+	}
+	:host(.default) .sortable-table thead th {
+		border: 1px solid #ccc;
+		background-color: #0084B4;
+		color: white;
+		cursor: pointer;
+	}
+	:host(.default) .sortable-table thead th.sorted-column-asc {
+		text-decoration: overline;
+	}
+	:host(.default) .sortable-table thead th.sorted-column-desc {
+		text-decoration: underline;
+	}
+	:host(.default) .sortable-table thead th.column-move-right {
+		border-right-color: #FBBA37;
+		background: #FBBA37; /* Older browsers */
+		background: -moz-linear-gradient(left, #0084B4 50%, #FBBA37 100%); /* FF3.6+ */
+		background: -webkit-linear-gradient(left, #0084B4 50%, #FBBA37 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(left, #0084B4 50%, #FBBA37 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(left, #0084B4 50%, #FBBA37 100%); /* IE10+ */
+		background: linear-gradient(left, #0084B4 50%, #FBBA37 100%); /* W3C */
+	}
+	:host(.default) .sortable-table thead th.column-move-left {
+		border-left-color: #FBBA37;
+		background: #FBBA37; /* Older browsers */
+		background: -moz-linear-gradient(left, #FBBA37 0%, #0084B4 50%); /* FF3.6+ */
+		background: -webkit-linear-gradient(left, #FBBA37 0%, #0084B4 50%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(left, #FBBA37 0%, #0084B4 50%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(left, #FBBA37 0%, #0084B4 50%); /* IE10+ */
+		background: linear-gradient(left, #FBBA37 0%, #0084B4 50%); /* W3C */
+	}
+	:host(.default) .sortable-table thead th.column-in-move,
+	:host(.default) .sortable-table tbody tr.row-in-move {
+		opacity: 0.4;
+	}
+	:host(.default) .sortable-table tbody tr.row-move-above {
+		background-color: purple;
+	}
+	:host(.default) .sortable-table tbody tr.row-move-below {
+		background-color: red;
+	}
+	:host(.default) .sortable-table tbody tr.selected-row {
+		background-color: rgba(0,96,200,0.2);
+	}
+	:host(.default) .sortable-table thead .dropdown-menu {
+		border: 1px solid #ccc;
+		background-color: #0084B4;
+		text-align: left;
+		min-width: 160px;
+		padding: 4px;
+		margin-top: 1px;
+	}
+	:host(.default) .sortable-table thead .dropdown-menu .btn {
+		text-align: center;
+	}
+	@-webkit-keyframes progress-bar-stripes{
+		from{
+			background-position:40px 0
+		}
+		to{
+			background-position:0 0
+		}
+	}
+	@-o-keyframes progress-bar-stripes{
+		from{
+			background-position:40px 0
+		}
+		to{
+			background-position:0 0
+		}
+	}
+	@keyframes progress-bar-stripes{
+		from{
+			background-position:40px 0
+		}
+
+		to{
+			background-position:0 0
+		}
+	}
+	.indexedPager > ul > li:first-of-type a:after,
+	.defaultPager > div:nth-of-type(1) > button:nth-of-type(1):after {
+		content: '«';
+	}
+	.simplePager > button:nth-of-type(1):after,
+	.defaultPager > div:nth-of-type(1) > button:nth-of-type(2):after {
+		content: '‹';
+	}
+	.simplePager > button:nth-of-type(2):after,
+	.defaultPager > div:nth-of-type(2) > button:nth-of-type(1):after {
+		content: '›';
+	}
+	.indexedPager > ul > li:last-of-type a:after,
+	.defaultPager > div:nth-of-type(2) > button:nth-of-type(2):after {
+		content: '»';
+	}
+</style>
+
+	<template id="html">
+		<html-echo html="{{value}}"></html-echo>
+	</template>
+
+	<template id="simplePager">
+		<div class="simplePager" horizontal="" layout="" center="">
+			<span flex="">{{dataSize}} Results</span>
+			<button disabled?="{{page<=1}}" class="btn btn-default btn-sm" on-click="{{moveToPreviousPage}}"></button>
+			<span>{{page}} of {{lastPage}}</span>
+			<button disabled?="{{page>=lastPage}}" class="btn btn-default btn-sm" on-click="{{moveToNextPage}}"></button>
+		</div>
+	</template>
+
+	<template id="indexedPager">
+		<div class="indexedPager" style="width:100%;text-align:center;font-weight:normal;">
+			<ul class="pagination">
+				<li class="{{page==1 ? 'disabled' : ''}}" disabled?="{{page==1}}" on-click="{{moveToFirstPage}}" role="button"><a href="#" onclick="return false;"></a></li>
+				<template repeat="{{i in lastPage | naturalNumbers(page)}}">
+					<li class="{{page==i ? 'active' : ''}}" on-click="{{moveToPage}}" role="button"><a href="#" onclick="return false;">{{i}}</a></li>
+				</template>
+				<li class="{{page==lastPage ? 'disabled' : ''}}" disabled="{{page==lastPage}}" on-click="{{moveToLastPage}}" role="button"><a href="#" onclick="return false;"></a></li>
+			</ul>
+		</div>
+	</template>
+
+	<template id="defaultPager">
+		<div class="defaultPager" horizontal="" layout="" center="">
+			<div class="btn-group">
+				<button disabled?="{{page==1}}" class="btn btn-default btn-sm" on-click="{{moveToFirstPage}}"></button><!--
+				--><button disabled?="{{page<=1}}" class="btn btn-default btn-sm" on-click="{{moveToPreviousPage}}"></button>
+			</div>
+
+			<span class="x-toolbar-separator-horizontal"></span>
+
+			<span style="margin:0 8px">Page <input type="number" style="width:30px;text-align:right;margin:0;display:inline-block;padding-bottom:2px;" min="1" max="{{lastPage}}" value="{{page}}"> of {{lastPage}}</span>
+
+			<span class="x-toolbar-separator-horizontal"></span>
+
+			<div class="btn-group">
+				<button disabled?="{{page>=lastPage}}" class="btn btn-default btn-sm" on-click="{{moveToNextPage}}"></button><!--
+				--><button disabled?="{{page==lastPage}}" class="btn btn-default btn-sm" on-click="{{moveToLastPage}}"></button>
+			</div>
+			<span flex="" style="text-align:right;margin-right:6px;">Displaying {{page &gt; lastPage ? (lastPage-1) * pageSize + 1 : ((page - 1) * pageSize) + 1}} - {{page &gt;= lastPage ? dataSize : page * pageSize}} of {{dataSize}}</span>
+		</div>
+	</template>
+
+	<template id="articlePager">
+		<table class="articlePager">
+			<tbody><tr>
+				<template if="{{dataSize > pageSize}}">
+					<td role="button" class="btn btn-default" on-click="{{showMore}}">Show More</td>
+				</template>
+				<template if="{{dataSize <= pageSize}}">
+					<td style="display:none"></td>
+				</template>
+				<td><span class="x-toolbar-separator-horizontal" hidden?="{{dataSize <= pageSize}}"></span> Showing {{pageSize}} of {{dataSize}}</td>
+				<td>
+					<template if="{{grid!=null}}">
+						<select on-change="{{toggleGrid}}">
+							<option value="grid" selected?="{{grid}}">▦ Grid</option>
+							<option value="grid" selected?="{{!grid}}">▤ List</option>
+						</select>
+					</template>
+				</td>
+			</tr>
+		</tbody></table>
+	</template>
+
+	<template id="infinitePager">
+		<div class="infinitePager">
+			<template if="{{loading}}">
+				<div class="loading">Loading</div>
+			</template>
+			<template if="{{!loading &amp;&amp; ((data.length < dataSize) || (page < lastPage))}}">
+				<button class="more btn btn-primary" on-click="{{showMore}}">More
+			</button></template>
+		</div>
+	</template>
+
+	<template id="simpleFilters">
+		<div style="float:right;padding-top:2px" horizontal="" layout="" center="" relative="" on-click="{{stopPropagation}}">
+			<img alt="Filter" src="{{resolvePath('img/icons/find.png')}}" on-click="{{setFiltersWidth}}">
+			<core-dropdown halign="right" class="open-below dropdown-menu">
+				<input type="text" on-keypress="{{addFilterReturn}}" data-op="=">
+			</core-dropdown>
+		</div>
+	</template>
+
+	<template id="verticalFilters">
+		<div class="btn-group" style="float:right;" on-click="{{stopPropagation}}">
+			<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" on-click="{{setFiltersWidth}}">
+				<img alt="Filter" src="{{resolvePath('img/filter.svg')}}" height="16">
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li style="text-align:center" on-click="{{closeFilter}}">Add New Filter</li>
+				<li class="divider"></li>
+				<li><table>
+					<template repeat="{{filterOp in getFilterOps(column)}}">
+						<tr>
+							<td><input type="text" data-op="{{filterOp.op}}" on-keypress="{{addFilterReturn}}"></td>
+							<td class="btn btn-primary" on-click="{{addFilter}}" title="{{filterOp.title}}" style="white-space:nowrap;display:table-cell;padding:0 6px;min-width:24px">{{filterOp.html}}</td>
+						</tr>
+					</template>
+				</table></li>
+			</ul>
+		</div>
+	</template>
+
+	<template id="fullFilters">
+		<div style="float:right;padding-top:2px" horizontal="" layout="" center="" relative="" on-click="{{stopPropagation}}">
+			<img alt="Filter" src="{{resolvePath('img/icons/find.png')}}" on-click="{{setFiltersWidth}}">
+			<core-dropdown halign="right" class="open-below dropdown-menu">
+				<template repeat="{{filterOp in getFilterOps(column)}}">
+					<button on-click="{{addFilter}}" title="{{filterOp.title}}" data-op="{{filterOp.op}}">{{filterOp.html}}</button>
+				</template>
+				<input type="text">
+			</core-dropdown>
+		</div>
+	</template>
+
+	<table class="sortable-table">
+		<thead>
+			<tr on-click="{{changeSort}}">
+				<template if="{{checkbox}}">
+					<th class="checkbox-column"><input type="checkbox" on-change="{{checkall}}" hidden?="{{!multiSelect}}" checked?="{{dataSize == selected.length}}"></th>
+				</template>
+				<template repeat="{{column,i in columns}}">
+					<template ref="{{column.headerTemplate || headerTemplate}}" bind="">
+						<th class="column-{{column.name}} column-{{i}}
+								{{sortColumn == column.name &amp;&amp; sortDescending ? 'sorted-column-desc' : ''}}
+								{{sortColumn == column.name &amp;&amp; !sortDescending ? 'sorted-column-asc' : ''}}" draggable="{{!disableColumnMove &amp;&amp; !(rowTemplate || rowEditorTemplate)}}" on-dragstart="{{handleTHDragStart}}" on-dragenter="{{handleTHDragEnter}}" on-dragover="{{handleTHDragOver}}" on-dragleave="{{handleTHDragLeave}}" on-drop="{{handleTHDrop}}" on-dragend="{{handleTHDragEnd}}">
+							<template ref="{{filterTemplate}}" bind=""></template>
+							{{column.title == null ? column.name : column.title}}
+						</th>
+					</template>
+				</template>
+			</tr>
+		</thead>
+		<template if="{{forceFilterRefresh}}" bind="{{columns | observing(forceFilterRefresh) as columns}}">
+			<thead>
+				<tr>
+					<template if="{{checkbox}}">
+						<th>
+							<img src="{{resolvePath('img/icons/cancel.png')}}" alt="Clear Filters" on-click="{{clearFilters}}" height="16" style="padding-top:1px">
+						</th>
+					</template>
+					<template repeat="{{column in columns}}">
+						<th style="vertical-align: top">
+							<template repeat="{{filter in column.filters}}">
+								<img src="{{resolvePath('img/icons/delete.png')}}" alt="Remove Filter" on-click="{{removeFilter}}" height="16" style="float:right;padding-top:1px">
+								<div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+									{{filter.op}} {{filter.value}}
+								</div>
+							</template>
+						</th>
+					</template>
+				</tr>
+			</thead>
+		</template>
+		<tbody class="{{grid ? ' grid' : ''}}">
+			<template repeat="{{record in data | sortByKey(sortColumn, sortDescending, columns, selected, pageSize, page, args, editRow, (args || []).length + (selected || []).length + data.length + forceRefresh + forceFilterRefresh)}}">
+				<tr class="{{record.selected ? 'selected-row' : '' }}{{record.editMode ? ' editor-row' : ''}}{{record.dirty ? ' edited-row' : ''}}" on-click="{{rowSelect}}" on-dblclick="{{rowEdit}}" draggable="{{userSort}}" on-dragstart="{{handleTRDragStart}}" on-dragenter="{{handleTRDragEnter}}" on-dragover="{{handleTRDragOver}}" on-dragleave="{{handleTRDragLeave}}" on-drop="{{handleTRDrop}}" on-dragend="{{handleTRDragEnd}}">
+					<template if="{{checkbox}}">
+						<td class="checkbox-column"><input type="checkbox" on-change="{{checkedbox}}" checked?="{{record.selected}}"></td>
+					</template>
+					<template if="{{record.editMode}}" ref="{{rowEditorTemplate}}"></template>
+					<template if="{{!record.editMode}}" ref="{{rowTemplate}}" bind="">
+						<template repeat="{{column in columns}}" bind="">
+							<template ref="{{column.cellTemplate || cellTemplate}}" bind="{{record.fields[column.name]}}">
+								<td class="column-{{column.name}}
+										{{sortColumn == column.name &amp;&amp; sortDescending ? 'sorted-column-desc' : ''}}
+										{{sortColumn == column.name &amp;&amp; !sortDescending ? 'sorted-column-asc' : ''}}">{{value}}</td>
+							</template>
+						</template>
+					</template>
+				</tr>
+			</template>
+		</tbody>
+		<tfoot>
+			<template if="{{showFooter &amp;&amp; forceFooterRefresh}}">
+				<tr class="footercells">
+					<template if="{{checkbox}}">
+						<td></td>
+					</template>
+					<template repeat="{{column in columns}}">
+						<template bind="{{templateData in data | selectProperty(column, args, forceFooterRefresh)}}">
+							<template ref="{{column.footerTemplate}}" bind="{{templateData}}">
+								<td></td>
+							</template>
+						</template>
+					</template>
+				</tr>
+			</template>
+			<template if="{{footerTemplate &amp;&amp; forceRefresh &amp;&amp; forceFooterRefresh}}">
+				<tr>
+					<td colspan="{{columns.length + (checkbox ? 1 : 0)}}"><template ref="{{footerTemplate}}" bind=""></template></td>
+				</tr>
+			</template>
+		</tfoot>
+	</table>
+</template>
+
+<script>
+	"use strict";
+	Polymer('sortable-table',Polymer.mixin({
+		disableColumnMove: false,
+		footerTemplate: null,
+		headerTemplate: null,
+		lastPage: 1,
+		multiSelect: false,
+		page: 1,
+		pageSize: Number.MAX_VALUE,
+		dataSize: 0,
+		rowEditorTemplate: null,
+		multiRowEdit: false,
+		rowSelection: false,
+		rowTemplate: null,
+		selected: null,
+		sortColumn: null,
+		sortDescending: false,
+		showFooter: false,
+		grid: false,
+		toggleGrid: function(e){ this.grid = !this.grid; },
+		dataSource: null,
+		userSort: false,
+		loading: false,
+		publish: {
+			args: {},
+			data: [],
+			columns: [],
+			undoStack: []
+		},
+		ready: function(){
+			var self = this;
+			var dataSource = this.querySelector('[role="datasource"]');
+			if(dataSource){
+				if(!this.dataSource){
+					this.dataSource = dataSource;
+					this.rebuildColumns();
+					this.dataSource.length = this.pageSize;
+					this.dataSource.sortColumn = this.sortColumn;
+					this.dataSource.sortDescending = this.sortDescending;
+					if(!!this.dataSource.filterOps) this.filterOps = this.dataSource.filterOps;
+					(new PathObserver(this.dataSource, 'loading')).open(function(newValue) {
+						self.loading = newValue;
+					});
+					(new PathObserver(this.dataSource, 'data')).open(function(newValue) {
+						self.data = newValue;
+					});
+					(new PathObserver(this.dataSource, 'dataSize')).open(function(newValue) {
+						self.dataSize = newValue;
+					});
+				}
+			}else{
+				[].forEach.call(this.childNodes, function(element) {
+					if(element.nodeName === "#text"){
+						var text = element.textContent.trim();
+						if(text.length>0){
+							var data;
+							try{
+								data = JSON.parse(text);
+							} catch(e){
+								try {
+									data = JSON5.parse(text);
+								} catch(e){
+									alert('Could not parse data.\n\nArrays, JSON and JSON5 are supported.');
+								}
+							}
+							if(data){
+								self.data = data;
+								self.dataSize = data.length;
+								self.rebuildColumns();
+							}else self.data = [];
+						}
+					}
+				});
+			}
+			this.onMutation(this, this.ready);
+		},
+		/**
+		 *	Logic
+		 */
+		observing: function(o){ return o; },
+		isArray: function(a){
+			return Object.prototype.toString.call(a) === '[object Array]';
+		},
+		stopPropagation: function(e){ e.stopPropagation(); },
+		customFormat: function(v,format){
+			if(format) return format(v);
+			else return v;
+		},
+		toggleRowFromSelected: function(row){
+			if(this.isArray(this.selected)){
+				var index = this.selected.indexOf(row);
+				if(index > -1){
+					this.selected.splice(index, 1);
+				}else{
+					this.selected.push(row);
+				}
+			}else{
+				if(this.selected === row) this.selected = null;
+				else this.selected = row;
+			}
+		},
+		columnWatches: [],
+		addTemplateIfNotInDocument: function(templateId){
+			/* copy template from content into shadow dom */
+			if(templateId && this.shadowRoot && !this.shadowRoot.getElementById(templateId)){
+				var t = this.querySelector('#'+templateId);
+				if(t) this.shadowRoot.appendChild(t);
+				else alert('Could not find template `' + templateId + '`');
+			}
+		},
+		rebuildColumns: function(){
+			if(this.columns.length === 0){
+				//try and load from DOM
+				var columnNodes = this.querySelectorAll('sortable-column');
+				var c = [];
+				var self = this;
+				if(this.columnObserver) this.columnObserver.disconnect();
+				this.columnObserver = new MutationObserver(function(mutations) {
+					mutations.forEach(function(m) {
+						var sortableColumn = null;
+						if(m.type === 'attributes' && m.target.nodeName === 'SORTABLE-COLUMN'){
+							sortableColumn = self.readSortableColumn.call(self, m.target, null);
+						}else if(m.type === "characterData"){
+							sortableColumn = self.readSortableColumn.call(self, m.target.parentNode, null);
+						}
+						if(sortableColumn){
+							var i = self.columns.findIndex(function(e){
+								return e.name === sortableColumn.name;
+							});
+							self.columns.splice(i, 1, sortableColumn);
+						}
+					});
+				});
+				if(columnNodes.length > 0){
+					[].forEach.call(columnNodes, function(n, index){
+						c.push(self.readSortableColumn.call(self, n, index));
+						self.columnObserver.observe(n, {
+							attributes: true,
+							subtree: true,
+							characterData: true
+						});
+					});
+					this.columns = c;
+					this.columnsChanged();
+				}else if(this.data !== null && this.data.length > 0){
+					var unique = [];
+					for(var i=0;i<this.data.length;i++){
+						Object.keys(this.data[i]).forEach(function(property) {
+							if (unique.indexOf(property) === -1) {
+								unique.push(property);
+								c.push({name: property, index: unique.length-1 });
+							}
+						});
+					}
+					this.columns = c;
+				}
+			}
+		},
+		readSortableColumn: function(n, index){
+			var name = n.getAttribute('name');
+			if(!name || name === '') name = index;
+			if(String(name).indexOf(' ') > -1) alert('Column name `'+name+'` contains an illegal character (` `)');
+			var title = n.getAttribute('title');
+			if(title === null){
+				title = n.textContent.trim();
+				if(title === '') title = name;
+			}
+			var sortable = n.getAttribute('sortable');
+			var formula = n.getAttribute('formula');
+			if(formula){
+				var match = formula.match(/function[^\(]*\(([^\)]*)\)[^\{]*{([^\}]*)\}/);
+				if (match) {
+					var args = match[1].split(',').map(function(arg) { return arg.replace(/\s+/, ''); });
+					formula = new Function(args, match[2]);
+				}else if(this[formula]){
+					//not an inlined function, assume it's a member of this
+					formula = this[formula]
+				}else if(PolymerExpressions.prototype[formula]){
+					//not an inlined function, or member of this, check PolymerExpressions.prototype
+					formula = PolymerExpressions.prototype[formula];
+				}else if(formula.substring(0,29) === 'PolymerExpressions.prototype.'){
+					var f = formula.substring(29);
+					formula = PolymerExpressions.prototype[f];
+					if(!formula) alert('Could not load formula `'+ formula +'` from PolymerExpressions.prototype for column `' + name + '`');
+				}else alert('Could not load formula `'+ formula +'` for column `' + name + '`');
+			}
+			return {
+				name: name,
+				index: index,
+				title: title,
+				formula: formula,
+				sortable: sortable,
+				datatype: n.getAttribute('datatype'),
+				cellTemplate: n.getAttribute('cellTemplate'),
+				headerTemplate: n.getAttribute('headerTemplate'),
+				footerTemplate: n.getAttribute('footerTemplate')
+			};
+		},
+		/**
+		 *	Change Observers
+		 */
+		argsChanged: function(oldValue,newValue){
+			var observer = new ObjectObserver(newValue);
+			var self = this;
+			observer.open(function(added, removed, changed, getOldValueFn) {
+				self.forceFooterRefresh++;
+				self.forceRefresh++;
+			});
+		},
+		columnsChanged: function(){
+			var self = this;
+			//explode columns if simple text array
+			if(self.columns.length > 0 && typeof self.columns[0] === 'string'){
+				self.columns = self.columns.map(function(column, index, array) {
+					return { name: column, index: index, title: column };
+				});
+			}
+			//watch templateIds since if added/modified we need to copy those templates into the shadow dom
+			function addTemplateWatches(column, field){
+				for(var i=0;i<self.columnWatches.length;i++){
+					if(self.columnWatches[i].object_ === column && self.columnWatches[i].path_[0] === field) return;
+				}
+				var observer = new PathObserver(c, field);
+				self.columnWatches.push(observer);
+				observer.open(function(added, removed, changed, getOldValueFn) {
+					self.columnsChanged();
+				});
+			}
+			for(var i=0;i<this.columns.length;i++){
+				var c = this.columns[i];
+				this.addTemplateIfNotInDocument(c.cellTemplate);
+				this.addTemplateIfNotInDocument(c.headerTemplate);
+				this.addTemplateIfNotInDocument(c.footerTemplate);
+				if(c.footerTemplate) this.showFooter = true;
+				addTemplateWatches(c,'cellTemplate');
+				addTemplateWatches(c,'headerTemplate');
+				addTemplateWatches(c,'footerTemplate');
+			}
+			if(this.dataSource) this.dataSource.columns = this.columns;
+			this.forceRefresh++;
+		},
+		rowSelectionChanged: function(a,val){
+			var table = this.shadowRoot.querySelector('tbody')
+			if(table){
+				if(val) table.classList.add('row-selection');
+				else table.classList.remove('row-selection');
+			}
+		},
+		multiSelectChanged: function(a,val){
+			if(val){
+				if(!this.isArray(this.selected)){
+					if(this.selected) this.selected = [this.selected];
+					else this.selected = [];
+				}
+			}else if(this.isArray(this.selected)){
+				if(this.selected.length > 0) this.selected = this.selected[0];
+				else this.selected = null;
+			}
+		},
+		selectedChanged: function(a,val){
+			if(val){
+				if(this.isArray(val)){
+					if(!this.multiSelect) this.multiSelect = true;
+				}else{
+					if(this.multiSelect) this.multiSelect = false;
+				}
+			}
+		},
+		sortColumnChanged: function(){ if(this.dataSource) this.dataSource.sortColumn = this.sortColumn; },
+		sortDescendingChanged: function(){ if(this.dataSource) this.dataSource.sortDescending = this.sortDescending; },
+		dataChanged: function(o,n){
+			if(n === null) this.data = [];
+			this.rebuildColumns();
+			this.pageSizeChanged();
+		},
+		cellTemplateChanged: function(a, t){ this.addTemplateIfNotInDocument(t); },
+		rowTemplateChanged: function(a, t){ this.addTemplateIfNotInDocument(t); },
+		headerTemplateChanged: function(a, t){ this.addTemplateIfNotInDocument(t); this.forceRefresh++; },
+		footerTemplateChanged: function(a, t){ this.addTemplateIfNotInDocument(t); this.forceRefresh++; },
+		rowEditorTemplateChanged: function(a, t){ this.addTemplateIfNotInDocument(t); },
+		pageSizeChanged: function(){
+			if(this.dataSource) this.dataSource.length = this.pageSize;
+			else if(this.data) this.dataSize = this.data.length;
+			this.lastPage = Math.max(1,Math.ceil(this.dataSize / this.pageSize));
+		},
+		pageChanged: function(){ if(this.dataSource) this.dataSource.start = (this.page - 1) * this.pageSize; },
+		/**
+		 *	Checkbox helper functions
+		 */
+		checkbox: false,
+		checkedbox: function(e,p){
+			var row = e.target.templateInstance.model.record.row;
+			this.toggleRowFromSelected(row);
+			e.preventDefault();
+		},
+		checkall: function(e,p){
+			if(e.target.checked){
+				for(var i=0;i<this.data.length;i++){
+					if(this.selected.indexOf(this.data[i]) === -1) this.selected.push(this.data[i]);
+				}
+			}else{
+				this.selected = [];
+			}
+		},
+		/**
+		 *	Template Functions
+		 */
+		changeSort: function(e,p){
+			if(!this.userSort && e.target.templateInstance.model.column &&
+			e.target.templateInstance.model.column.sortable !== false &&
+			e.target.templateInstance.model.column.sortable !== 'false'){
+				var clickedSortColumn = e.target.templateInstance.model.column.name;
+				if(clickedSortColumn === this.sortColumn){
+					//column already sorted, reverse sort
+					this.sortDescending = !this.sortDescending;
+				}else{
+					this.sortColumn = clickedSortColumn;
+				}
+			}
+		},
+		rowSelect: function(e,p){
+			if(this.rowSelection && e.target.templateInstance && e.target.nodeName !== 'INPUT'){
+				var model = e.target.templateInstance.model;
+				var row = model.row;
+				if(model.record) row = model.record.row;
+				this.toggleRowFromSelected(row);
+			}
+		},
+		updateColumnWidths: function(e,p){
+			var columns = this.shadowRoot.querySelectorAll('thead > tr > th');
+			[].forEach.call(columns, function(column){
+				if(column.templateInstance.model.column) column.templateInstance.model.column.width = column.clientWidth;
+			});
+		},
+		/**
+		 *	Expression Filters
+		 */
+		sortByKey: function(array, key, desc, columns, selected, pageSize, page, args, l) {
+			//ignore l, it is used to trigger observe.js watch only
+
+			var sortedArray;
+
+			var sortFunction = function(a, b) {
+				var x, y;
+				//determine if computed field
+				var formula = null;
+				for(var i=0;i<columns.length;i++){
+					if(columns[i].name === key){
+						formula = columns[i].formula;
+						break;
+					}
+				}
+				if(formula){
+					if(typeof a[key] === 'undefined'){
+						x = formula(a, args);
+						y = formula(b, args);
+					}else{
+						x = formula(a[key], a, args);
+						y = formula(b[key], b, args);
+					}
+				}else{
+					x = a[key];
+					y = b[key];
+				}
+				if(typeof x === 'undefined' || typeof y === 'undefined'){
+					//sort undefined after
+					if(typeof x === 'undefined'){
+						return !desc;
+					}else{
+						return desc;
+					}
+				}else{
+					if (typeof x === "string" && typeof y === "string"){
+						if(isNaN(x) || isNaN(y)){
+							x = x.toLowerCase();
+							y = y.toLowerCase();
+						}else{
+							x = +x;
+							y = +y;
+						}
+					}
+					if(desc){
+						return ((x < y) ? 1 : ((x > y) ? -1 : 0));
+					}else{
+						return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+					}
+				}
+			};
+
+			if(!this.dataSource){
+				var checkColumnFilters = this.checkColumnFilters;
+				var filteredArray = array.filter(function(row){
+					return columns.every(function(column,columnIndex) { return checkColumnFilters(column,row); })
+				});
+				array = filteredArray;
+			}
+
+			if(key!==null && !this.dataSource && !this.userSort){
+				if(array.every(function(element, index) {
+					return (index + 1 >= array.length) || sortFunction(element, array[index+1])<=0;
+				})) sortedArray = array;
+				else sortedArray = array.sort(sortFunction);
+			}else sortedArray = array;
+
+			var records = [];
+			var isMultiSelect = this.isArray(selected);
+
+			if(page < 1) page = 1;
+
+			var start, end;
+
+			if(this.dataSource){
+				start = 0;
+				end = array.length;
+			}else{
+				start = (pageSize < Number.MAX_VALUE) ? Math.min(pageSize * (page - 1), sortedArray.length) : 0;
+				end = (pageSize < Number.MAX_VALUE) ? Math.min(start + +pageSize, sortedArray.length) : sortedArray.length;
+			}
+
+			var valueSelector = function(row,column){ return row[column.name]; };
+			if(sortedArray.length > 0 && this.isArray(sortedArray[0])) valueSelector = function(row,column){ return row[column.index]; };
+
+			for(var i=start;i<end;i++){
+				var row = sortedArray[i];
+				var isSelected = isMultiSelect ? selected.indexOf(row) > -1 : row === selected;
+				var isEditMode = this.editRow === row;
+				var isDirty = false;
+				var isInUndo = this.undoStack.filter(function(element){ return element.ref === row });
+				if(isInUndo.length>0) isDirty = this.rowHasBeenEdited(isInUndo[0]);
+				var fields = {};
+				columns.forEach(function(column, index, array) {
+					var value;
+					if(column.formula){
+						if(typeof row[column.name] !== 'undefined' || typeof row[column.index] !== 'undefined'){
+							value = column.formula(valueSelector(row, column), row, args);
+						} else value = column.formula(row, args);
+					}else{
+						value = valueSelector(row, column);
+					}
+					fields[column.name] = { value: value, row: row, column: column, sortColumn: key, args: args };
+				});
+				records.push({ selected: isSelected, editMode: isEditMode, dirty: isDirty, fields: fields, row: row });
+			}
+			return records;
+		},
+		selectProperty: function(objects, column, args) {
+			var arr = [];
+			var rowArr = [];
+			for(var i=0;i<objects.length;i++){
+				var row = objects[i];
+				var value;
+				if(column.formula){
+					if(typeof row[column.name] === 'undefined'){
+						value = column.formula(row, args);
+					}else{
+						value = column.formula(row[column.name], row, args);
+					}
+				}else{
+					value = row[column.name];
+				}
+				rowArr.push(row[column.name]);
+				arr.push(value);
+			}
+			return { values: arr, rowValues: rowArr, column: column, args: args };
+		},
+		naturalNumbers: function(n,mid){
+			var visible = 5;
+			var start,end;
+			if(mid !== null){
+				var range = Math.min(visible,n);
+				if(mid < range){
+					start = 1;
+					end = Math.min(mid+range,range);
+				}else if(mid > n - range + 1){
+					start = Math.max(n-range+1,1);
+					end = n;
+				}else{
+					start = Math.max(1, mid-Math.floor(range/2));
+					end = Math.min(n, mid+Math.floor((range-1)/2));
+				}
+			}else{
+				start = 1;
+				end = n;
+			}
+			var arr = [];
+			for(var i=start;i<=end;i++) arr.push(i);
+			return arr;
+		},
+		/**
+		  *	TODO: clean this up, it was put in to trigger a reprocess on initial load when templates are imported into the shadow dom.
+		  */
+		forceRefresh: 0,
+		forceFooterRefresh: 1,
+		refreshFooter: function(){
+			this.updateEditChanged();
+			this.forceFooterRefresh++;
+		}
+	}, columnDragMixin, rowDragMixin, rowFiltersMixin, rowEditorMixin));
+	//polyfills
+	if (!Array.prototype.findIndex) {
+		Array.prototype.findIndex = function(predicate) {
+			if (this == null) {
+				throw new TypeError('Array.prototype.find called on null or undefined');
+			}
+			if (typeof predicate !== 'function') {
+				throw new TypeError('predicate must be a function');
+			}
+			var list = Object(this);
+			var length = list.length >>> 0;
+			var thisArg = arguments[1];
+			var value;
+
+			for (var i = 0; i < length; i++) {
+			value = list[i];
+			if (predicate.call(thisArg, value, i, list)) {
+				return i;
+			}
+			}
+			return -1;
+		};
+	}
+</script>
+</polymer-element>
+</div>
+
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div id="loaderText">Loading ...</div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+  
+  <div class="container cover">
+    <div class="row coverNav">
+      <div class="col-sm-6">
+        <br><br><br><br>
+        <label>My Name:</label>
+        <input type="text" ng-model="yourName" placeholder="Enter a name here">
+        <hr>
+        <h1>Hello {{yourName}}!</h1>
+        <paper-button>flat button</paper-button>
+        <paper-button raised="">raised button</paper-button>
+        <paper-button noink="">No ripple effect</paper-button>
+      </div>
+      <div class="col-sm-6">
+        <br><br><br><br>
+        <label>right side</label>
+        <sortable-table>
+          <sortable-column>fruit</sortable-column>
+          <sortable-column>alice</sortable-column>
+          <sortable-column>bill</sortable-column>
+          <sortable-column>casey</sortable-column>
+          <!-- data case be either an Array, JSON, or JSON5 -->
+          [
+            [ "apple", 4, 10, 2 ],
+            [ "banana", 0, 4, 0 ],
+            [ "grape", 2, 3, 5 ],
+            [ "pear", 4, 2, 8 ],
+            [ "strawberry", 0, 14, 0 ]
+          ]
+        </sortable-table>
+      </div>
+      <div class="col-sm-4">
+      </div>
+    </div>
+  </div>
+
+
+  
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->
+  <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+  <!-- Customized JS -->
+  <script src="js/javascript.js"></script>
+
+</body></html>
