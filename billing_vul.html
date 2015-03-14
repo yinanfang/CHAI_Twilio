@@ -17,7 +17,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
   <!-- Customized CSS -->
-  <link rel="stylesheet" href="css/control.css">
+  <link rel="stylesheet" href="css/billing.css">
   <link rel="stylesheet" href="css/loading.css">
 
   <!-- AngularJS -->
@@ -3864,10 +3864,7 @@ object like this: `{v: 'top', h: 'right'}`.
   
   <div class="container cover">
     <div class="row coverNav">
-      <div class="col-sm-1">
-      </div>
-
-      <div class="col-sm-10">
+      <div class="col-sm-6">
         <br><br><br><br>
         <label>My Name:</label>
         <input type="text" ng-model="yourName" placeholder="Enter a name here">
@@ -3877,8 +3874,23 @@ object like this: `{v: 'top', h: 'right'}`.
         <paper-button raised="">raised button</paper-button>
         <paper-button noink="">No ripple effect</paper-button>
       </div>
-
-      <div class="col-sm-1">
+      <div class="col-sm-6">
+        <br><br><br><br>
+        <label>right side</label>
+        <sortable-table>
+          <sortable-column>fruit</sortable-column>
+          <sortable-column>alice</sortable-column>
+          <sortable-column>bill</sortable-column>
+          <sortable-column>casey</sortable-column>
+          <!-- data case be either an Array, JSON, or JSON5 -->
+          [
+            [ "apple", 4, 10, 2 ],
+            [ "banana", 0, 4, 0 ],
+            [ "grape", 2, 3, 5 ],
+            [ "pear", 4, 2, 8 ],
+            [ "strawberry", 0, 14, 0 ]
+          ]
+        </sortable-table>
       </div>
     </div>
   </div>

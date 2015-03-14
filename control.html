@@ -29,7 +29,6 @@
   <!-- 1. Load platform support before any code that touches the DOM. -->
   <script src="./components/webcomponentsjs/webcomponents.js"></script>
   <!-- 2. Load the component using an HTML Import -->
-  <!-- <link rel="import" href="./components/paper-fab/paper-fab.html"> -->
   <link rel="import" href="./components/paper-button/paper-button.html">
   <link rel="import" href="./components/sortable-table/sortable-table.html">
 </head>
@@ -44,7 +43,10 @@
   
   <div class="container cover">
     <div class="row coverNav">
-      <div class="col-sm-6">
+      <div class="col-sm-1">
+      </div>
+
+      <div class="col-sm-10">
         <br></br><br></br>
         <label>My Name:</label>
         <input type="text" ng-model="yourName" placeholder="Enter a name here">
@@ -54,25 +56,8 @@
         <paper-button raised>raised button</paper-button>
         <paper-button noink>No ripple effect</paper-button>
       </div>
-      <div class="col-sm-6">
-        <br><br><br></br>
-        <label>right side</label>
-        <sortable-table>
-          <sortable-column>fruit</sortable-column>
-          <sortable-column>alice</sortable-column>
-          <sortable-column>bill</sortable-column>
-          <sortable-column>casey</sortable-column>
-          <!-- data case be either an Array, JSON, or JSON5 -->
-          [
-            [ "apple", 4, 10, 2 ],
-            [ "banana", 0, 4, 0 ],
-            [ "grape", 2, 3, 5 ],
-            [ "pear", 4, 2, 8 ],
-            [ "strawberry", 0, 14, 0 ]
-          ]
-        </sortable-table>
-      </div>
-      <div class="col-sm-4">
+
+      <div class="col-sm-1">
       </div>
     </div>
   </div>

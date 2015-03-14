@@ -1,0 +1,46 @@
+html, body {
+  font-family: sans-serif;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+/************************************************************************************
+Cover
+************************************************************************************/
+.background {
+  min-height: 87.5%;
+  background: url('../image/bg01.jpg') no-repeat center; 
+  /*background-attachment: fixed;*/
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.cover {
+  min-height: 90%; 
+  background: #F0F0F0;
+  /*background: white;*/
+}
+
+.footer {
+  min-height: 10%;
+  background: #34495e;
+}
+.coverFooter .container{
+  height: 100%;
+  color: white;
+}
+.coverFooter div p{
+  font-size: 12px;
+  font-weight: 100;
+  margin: 0;
+}
+
+/************************************************************************************
+Media Query
+************************************************************************************/
+
+
+
