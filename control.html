@@ -30,7 +30,13 @@
   <script src="./components/webcomponentsjs/webcomponents.js"></script>
   <!-- 2. Load the component using an HTML Import -->
   <link rel="import" href="./components/paper-button/paper-button.html">
-  <link rel="import" href="./components/sortable-table/sortable-table.html">
+  <link rel="import" href="./components/paper-dropdown-menu/paper-dropdown-menu.html">
+  <link rel="import" href="./components/paper-dropdown/paper-dropdown.html">
+  <link rel="import" href="./components/paper-item/paper-item.html">
+  <link rel="import" href="./components/paper-input/paper-input.html">
+  <link rel="import" href="./components/core-menu/core-menu.html">
+  <link rel="import" href="./components/core-collapse/core-collapse.html">
+  <link rel="import" href="./components/core-label/core-label.html">
 </head>
 <body>
 
@@ -42,11 +48,54 @@
   </div>
   
   <div class="container cover">
+
+    <div class="row">
+      <div class="col-sm-3 text-center">
+        <p>Text From:</p>        
+      </div>
+      <div class="col-sm-9">
+        <core-collapse id="collapse" opened="true">
+          <paper-dropdown-menu label="Your favorite pastry">
+            <paper-dropdown layered class="dropdown">
+              <core-menu class="menu">
+                <paper-item>CARE</paper-item>
+                <paper-item>Protect Them</paper-item>
+              </core-menu>
+            </paper-dropdown>
+          </paper-dropdown-menu>
+        </core-collapse>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3 text-center">
+        <p>Text To:</p>        
+      </div>
+      <div class="col-sm-9">
+        <paper-input label="123-456-7890" floatingLabel></paper-input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3 text-center">
+        <p>Text To:</p>        
+      </div>
+      <div class="col-sm-9">
+        <paper-input-decorator label="Message Body" floatingLabel>
+          <paper-autogrow-textarea>
+            <textarea></textarea>
+          </paper-autogrow-textarea>
+        </paper-input-decorator>
+      </div>
+    </div>
+
     <div class="row coverNav">
       <div class="col-sm-1">
       </div>
 
       <div class="col-sm-10">
+
+
         <br></br><br></br>
         <label>My Name:</label>
         <input type="text" ng-model="yourName" placeholder="Enter a name here">
