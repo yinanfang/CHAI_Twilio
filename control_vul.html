@@ -6374,7 +6374,7 @@ polyfill-next-selector { content: ':host > core-item'; }
       </div>
       <div class="col-sm-9">
         <core-collapse id="collapse" opened="true">
-          <paper-dropdown-menu label="Your favorite pastry">
+          <paper-dropdown-menu label="Organization" id="organization">
             <paper-dropdown layered="" class="dropdown">
               <core-menu class="menu">
                 <paper-item>CARE</paper-item>
@@ -6388,10 +6388,13 @@ polyfill-next-selector { content: ':host > core-item'; }
 
     <div class="row">
       <div class="col-sm-3 text-center">
-        <p>Text To: {{numTo}}</p>        
+        <p>Text To: {{inputData.numTo}}</p>        
       </div>
       <div class="col-sm-9">
-        <paper-input label="123-456-7890" floatinglabel="" ng-model="numTo"></paper-input>
+        <paper-input label="123-456-7890" floatinglabel="" id="numberTo"></paper-input>
+        <div class="form-group"><!-- 
+          <input class="form-control" type="text" placeholder="123-456-7890" value="" ng-model="inputData.numTo"></input> -->
+        </div>
       </div>
     </div>
 
@@ -6402,7 +6405,7 @@ polyfill-next-selector { content: ':host > core-item'; }
       <div class="col-sm-9">
         <paper-input-decorator label="Message Body" floatinglabel="">
           <paper-autogrow-textarea>
-            <textarea></textarea>
+            <textarea id="message"></textarea>
           </paper-autogrow-textarea>
         </paper-input-decorator>
       </div>
@@ -6413,7 +6416,7 @@ polyfill-next-selector { content: ':host > core-item'; }
         <p>Auth Key:</p>        
       </div>
       <div class="col-sm-9">
-        <paper-input label="Assigned key" floatinglabel=""></paper-input>
+        <paper-input label="Assigned key" floatinglabel="" id="authKey"></paper-input>
       </div>
     </div>
 
