@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en" ng-app=""><head>
+<!DOCTYPE html><html lang="en" ng-app="controlApp"><head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,14 +8,18 @@
   <!-- Normalize.css -->
   <link rel="stylesheet" href="css/normalize.css">
 
-  <!-- Bootstrap -->
-  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!-- Loading Bootstrap -->
+  <link href="FlatUI/css/vendor/bootstrap.min.css" rel="stylesheet">
+  <!-- Loading Flat UI -->
+  <link href="FlatUI/css/flat-ui.min.css" rel="stylesheet">
+  <link rel="shortcut icon" href="img/favicon.ico">
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
   <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <script src="js/vendor/html5shiv.js"></script>
+    <script src="js/vendor/respond.min.js"></script>
   <![endif]-->
+
+
   <!-- Customized CSS -->
   <link rel="stylesheet" href="css/control.css">
   <link rel="stylesheet" href="css/loading.css">
@@ -6362,7 +6366,7 @@ polyfill-next-selector { content: ':host > core-item'; }
     <div class="loader-section section-right"></div>
   </div>
   
-  <div class="container cover">
+  <div class="container cover" ng-controller="controller">
 
     <div class="row">
       <div class="col-sm-3 text-center">
@@ -6384,31 +6388,41 @@ polyfill-next-selector { content: ':host > core-item'; }
 
     <div class="row">
       <div class="col-sm-3 text-center">
+        <p>Text To: {{numTo}}</p>        
+      </div>
+      <div class="col-sm-9">
+        <paper-input label="123-456-7890" floatinglabel="" ng-model="numTo"></paper-input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3 text-center">
         <p>Text To:</p>        
       </div>
       <div class="col-sm-9">
-        <paper-input label="123-456-7890" floatinglabel=""></paper-input>
+        <paper-input-decorator label="Message Body" floatinglabel="">
+          <paper-autogrow-textarea>
+            <textarea></textarea>
+          </paper-autogrow-textarea>
+        </paper-input-decorator>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3 text-center">
+        <p>Auth Key:</p>        
+      </div>
+      <div class="col-sm-9">
+        <paper-input label="Assigned key" floatinglabel=""></paper-input>
       </div>
     </div>
 
     <div class="row coverNav">
-      <div class="col-sm-1">
+      <div class="col-sm-3 text-center">
+        <paper-button raised="" ng-click="inputData.doClick(item, $event)">Send</paper-button>     
       </div>
-
-      <div class="col-sm-10">
-
-
-        <br><br><br><br>
-        <label>My Name:</label>
-        <input type="text" ng-model="yourName" placeholder="Enter a name here">
-        <hr>
-        <h1>Hello {{yourName}}!</h1>
-        <paper-button>flat button</paper-button>
-        <paper-button raised="">raised button</paper-button>
-        <paper-button noink="">No ripple effect</paper-button>
-      </div>
-
-      <div class="col-sm-1">
+      <div class="col-sm-9">
+        <p>No message status available</p> 
       </div>
     </div>
   </div>
@@ -6416,11 +6430,11 @@ polyfill-next-selector { content: ':host > core-item'; }
 
   
 
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->
-  <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
+  <script src="FlatUI/js/vendor/jquery.min.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="FlatUI/js/vendor/video.js"></script>
+  <script src="FlatUI/js/flat-ui.min.js"></script>
 
   <!-- Customized JS -->
   <script src="js/javascript.js"></script>
