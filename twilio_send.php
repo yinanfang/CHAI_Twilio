@@ -1,6 +1,10 @@
 <?php
 
-if (isset($_POST)) {
+ini_set("log_errors", 1);
+ini_set("error_log", "./error.log");
+error_log("Received sent request...");
+
+if (isset($_POST["name"])) {
 	// Variables
 	$clientName = $_POST["name"];
 	$numberTo = $_POST["name"];
@@ -42,6 +46,7 @@ $client->account->messages->create(array(
 	'Body' => "test",
 	'MediaUrl' => "http://upload.wikimedia.org/wikipedia/commons/e/e5/Vienna_Skyline.jpg",
 	'StatusCallback' => "http://chai.yinanfang.webfactional.com/Twilio/twilio_callback.php",
+	// 'StatusCallback' => "http://protectthem.152.23.4.176.xip.io/twilio_callback.php",
 ));
 
 ?>
