@@ -14,9 +14,9 @@ try {
 		$response[$items[0]] = $items[1];
 	}
 	// Logging response data
-	foreach ($response as $key => &$value) {
-		error_log("json: " . $key . " -> " . $value);
-	}
+	// foreach ($response as $key => &$value) {
+	// 	error_log("json: " . $key . " -> " . $value);
+	// }
 
 	// connecting to database
 	$servername = "web404.webfaction.com:3306";
@@ -33,14 +33,11 @@ try {
 	$AccountSid = $response["AccountSid"];
 	$ErrorCode = $response["ErrorCode"];
 	$MessageStatus = $response["MessageStatus"];
-	$NumFrom = intval(substr($response["From"], 3));
-	// error_log("NumFrom: " . $response["From"]);
-	// error_log("NumFrom: " . substr($response["From"], 3));
-	// error_log("NumFrom: " . $NumFrom);
-
-	$NumTo = intval(substr($response["To"], 2));
+	$NumFrom = intval(substr($response["From"], 3)); // Only sending to US local number. No extension
+	$NumTo = intval(substr($response["To"], 3));
 	$Body = $response["Body"];
 	$NumMedia = $response["NumMedia"];
+	$ApiVersion = $response["ApiVersion"];
 	$SmsSid = $response["SmsSid"];
 	$SmsStatus = $response["SmsStatus"];
 
