@@ -1,76 +1,114 @@
 <?php
-require_once "PDO/Db.class.php";
-
-// ini_set("log_errors", 1);
-// ini_set("error_log", "./error.log");
-// error_log("Received sent request...");
-$log = new Log();
-$log->write("Received sent requessst...");
+require_once __DIR__ . "/log/Log.class.php";
+require_once __DIR__ . "/PDO/Db.class.php";
 
 $AUTH_KEY = "3pKtr0P1p9";
 
-if (isset($_POST)) {
-	error_log("Received POST request...");
+$errorMessage = "";
+$log = new Log();
+$log->write("Received sent request in " . basename(__FILE__));
 
-	try {
-		$db = new Db();
-		$firstname = $db->single("SELECT firstname FROM lkjxcv WHERE Id = :id ", array('id' => '3'));
-		error_log("SQL error...");
-
-	} catch (Exception $e) {
-		error_log("PDO class problem...");
-	}
-
+if (!isset($_POST["From"]) || !isset($_POST["To"]) || !isset($_POST["Body"]) || !isset($_POST["AuthKey"])) {
+	$errorMessage = "Incomplete POST request";
+	$log->write($errorMessage);
+	header("Status: 500 FAIL");
+	echo $errorMessage;
+} else {
 	// Variables
-	$clientName = $_POST["name"];
-	$numberTo = $_POST["name"];
-	$message = $_POST["message"];
-	$authKey = $_POST["authKey"];
+	$clientName = $_POST["From"];
+	$numberTo = $_POST["To"];
+	$authKey = $_POST["AuthKey"];
 
-	header("Status: 200 OK");
+	if (strcmp($authKey, $AUTH_KEY) !== 0) {
+		$errorMessage = "Incorrect AuthKey";
+		$log->write($errorMessage);
+		header("Status: 500 FAIL");
+		echo $errorMessage;
+	} else {
+		// Twilio Service
+		try {
+			require_once __DIR__ . '/twilio-php/Services/Twilio.php'; // Loads the library
+			$settings = parse_ini_file("twilio_settings.ini.php");
+			// Your Account Sid and Auth Token from twilio.com/user/account
+			$sid = $settings["sid"];
+			$token = $settings["token"];
+			$client = new Services_Twilio($sid, $token);
+			$numTo = $numberTo;
+			// $numTo = "+19192654757";
+			// $numFrom = "+19195900174";
 
-	$servername = "web404.webfaction.com:3306";
-	$username = "yinanfang";
-	$password = "123456Chai";
-	$dbname = "chai_protect";
+			// Creates the instance
+			$db = new Db();
+			$numFromArray = $db->query(
+				"SELECT Number FROM Client WHERE ClientID = :clientID",
+				array(
+					"clientID" => $clientName,
+				));
+			$numFrom = reset($numFromArray[0]);
 
-	try {
-		$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-		// set the PDO error mode to exception
-		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		echo "Connected successfully";
-	} catch (PDOException $e) {
-		echo "Connection failed: " . $e->getMessage();
-	}
+			$client->account->messages->create(array(
+				'From' => $numFrom,
+				'To' => $numTo,
+				'Body' => $_POST["Body"],
+				'MediaUrl' => $_POST["MediaUrl"],
+				'StatusCallback' => "http://chai.yinanfang.webfactional.com/Twilio/twilio/twilio_callback.php",
+				// 'StatusCallback' => "http://protectthem.152.23.4.176.xip.io/twilio_callback.php",
+			));
 
-	// Get the PHP helper library from twilio.com/docs/php/install
-	require_once __DIR__ . '/twilio-php/Services/Twilio.php'; // Loads the library
-	// Your Account Sid and Auth Token from twilio.com/user/account
-	$sid = "AC424a6be19a10b589c1908ae43e48a736";
-	$token = "abcf6bd45a21149a9f21825875bf6937";
-	$client = new Services_Twilio($sid, $token);
-	$numFrom = "+19195900174";
-	$numTo = "+11194484206";
-	// $numTo = "+19192654757";
+			// Get response
+			$response = $client->last_response;
+			$insert = $db->query("
+				INSERT INTO Message(
+					MessageSid,
+					MessageStatus,
+					ErrorCode,
+					ErrorMessage,
+					ClientName,
+					NumFrom,
+					NumTo,
+					Body,
+					NumMedia,
+					AccountSid,
+					ApiVersion
+					)
+				VALUES(
+					:sid,
+					:status,
+					:error_code,
+					:error_message,
+					:clientName,
+					:from,
+					:to,
+					:body,
+					:num_media,
+					:account_sid,
+					:api_version
+					)",
+				array(
+					"sid" => $response->sid,
+					"status" => $response->status,
+					"error_code" => $response->error_code,
+					"error_message" => $response->error_message,
+					"clientName" => $clientName,
+					"from" => $response->from,
+					"to" => $response->to,
+					"body" => $response->body,
+					"num_media" => $response->num_media,
+					"account_sid" => $response->account_sid,
+					"api_version" => $response->api_version,
+				)
+			);
+			header("Status: 200 OK");
+			$log->write("Queued and recorded message #" . $response->sid);
 
-	// $client->account->messages->sendMessage($numFrom, $numTo, "The call girl", "http://upload.wikimedia.org/wikipedia/commons/e/e5/Vienna_Skyline.jpg");
-
-	try {
-		$client->account->messages->create(array(
-			'From' => $numFrom,
-			'To' => $numTo,
-			'Body' => "test",
-			'MediaUrl' => "http://upload.wikimedia.org/wikipedia/commons/e/e5/Vienna_Skyline.jpg",
-			'StatusCallback' => "http://chai.yinanfang.webfactional.com/Twilio/twilio_callback.php",
-			// 'StatusCallback' => "http://protectthem.152.23.4.176.xip.io/twilio_callback.php",
-		));
-	} catch (Exception $e) {
-		echo "Send error: " . $e->getMessage();
+		} catch (Exception $e) {
+			$errorMessage = $e->getMessage();
+			$log->write($errorMessage);
+			header("Status: 500 FAIL");
+			echo $errorMessage;
+		}
 	}
 }
 
 ?>
-
-<!--
-200 OK
-500 FAIL -->
+;

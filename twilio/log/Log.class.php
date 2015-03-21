@@ -9,7 +9,7 @@ class Log {
 
 	# @string, Log directory name
 	private $path = '/logs/';
-	private $timeZone = 'EST';
+	private $timeZone = 'GMT';
 
 	# @void, Default Constructor, Sets the timezone and path of the log files.
 	public function __construct() {

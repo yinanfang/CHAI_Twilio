@@ -1,8 +1,10 @@
 <?php
+require_once __DIR__ . "/log/Log.class.php";
+require_once __DIR__ . "/PDO/Db.class.php";
 
-ini_set("log_errors", 1);
-ini_set("error_log", "./error.log");
-error_log("Received call back...");
+$errorMessage = "";
+$log = new Log();
+$log->write("Received Callback in " . basename(__FILE__));
 
 try {
 	$response = array();
@@ -18,46 +20,50 @@ try {
 	// 	error_log("json: " . $key . " -> " . $value);
 	// }
 
-	// connecting to database
-	$servername = "web404.webfaction.com:3306";
-	$username = "yinanfang";
-	$password = "123456Chai";
-	$dbname = "chai_protect";
-	$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-	// set the PDO error mode to exception
-	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	error_log("Connectted succeessfully!");
+	// Creates the instance
+	$db = new Db();
 
-	// Update status
-	$MessageSid = $response["MessageSid"];
-	$AccountSid = $response["AccountSid"];
-	$ErrorCode = $response["ErrorCode"];
-	$MessageStatus = $response["MessageStatus"];
-	$NumFrom = intval(substr($response["From"], 3)); // Only sending to US local number. No extension
-	$NumTo = intval(substr($response["To"], 3));
-	$Body = $response["Body"];
-	$NumMedia = $response["NumMedia"];
-	$ApiVersion = $response["ApiVersion"];
-	$SmsSid = $response["SmsSid"];
-	$SmsStatus = $response["SmsStatus"];
+	// // connecting to database
+	// $servername = "web404.webfaction.com:3306";
+	// $username = "yinanfang";
+	// $password = "123456Chai";
+	// $dbname = "chai_protect";
+	// $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+	// // set the PDO error mode to exception
+	// $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	// error_log("Connectted succeessfully!");
 
-	$sql = "INSERT INTO Message (MessageSid, AccountSid, ErrorCode, MessageStatus, NumFrom, NumTo, Body, NumMedia, SmsSid, SmsStatus) VALUES (:MessageSid, :AccountSid, :ErrorCode, :MessageStatus, :NumFrom, :NumTo, :Body, :NumMedia, :SmsSid, :SmsStatus)";
-	$q = $conn->prepare($sql);
-	$q->execute(array(
-		':MessageSid' => $MessageSid,
-		':AccountSid' => $AccountSid,
-		':ErrorCode' => $ErrorCode,
-		':MessageStatus' => $MessageStatus,
-		':NumFrom' => $NumFrom,
-		':NumTo' => $NumTo,
-		':Body' => $Body,
-		':NumMedia' => $NumMedia,
-		':SmsSid' => $SmsSid,
-		':SmsStatus' => $SmsStatus,
-	));
+	// // Update status
+	// $MessageSid = $response["MessageSid"];
+	// $AccountSid = $response["AccountSid"];
+	// $ErrorCode = $response["ErrorCode"];
+	// $MessageStatus = $response["MessageStatus"];
+	// $NumFrom = intval(substr($response["From"], 3)); // Only sending to US local number. No extension
+	// $NumTo = intval(substr($response["To"], 3));
+	// $Body = $response["Body"];
+	// $NumMedia = $response["NumMedia"];
+	// $ApiVersion = $response["ApiVersion"];
+	// $SmsSid = $response["SmsSid"];
+	// $SmsStatus = $response["SmsStatus"];
+
+	// $sql = "INSERT INTO Message (MessageSid, AccountSid, ErrorCode, MessageStatus, NumFrom, NumTo, Body, NumMedia, SmsSid, SmsStatus) VALUES (:MessageSid, :AccountSid, :ErrorCode, :MessageStatus, :NumFrom, :NumTo, :Body, :NumMedia, :SmsSid, :SmsStatus)";
+	// $q = $conn->prepare($sql);
+	// $q->execute(array(
+	// 	':MessageSid' => $MessageSid,
+	// 	':AccountSid' => $AccountSid,
+	// 	':ErrorCode' => $ErrorCode,
+	// 	':MessageStatus' => $MessageStatus,
+	// 	':NumFrom' => $NumFrom,
+	// 	':NumTo' => $NumTo,
+	// 	':Body' => $Body,
+	// 	':NumMedia' => $NumMedia,
+	// 	':SmsSid' => $SmsSid,
+	// 	':SmsStatus' => $SmsStatus,
+	// ));
 
 } catch (Exception $e) {
-	error_log("Connection failed: " . $e->getMessage());
+	$errorMessage = $e->getMessage();
+	$log->write($errorMessage);
 }
 
 ?>
