@@ -55,24 +55,29 @@ $(document).ready(function () {
   // billing.html
   angular.module("billingApp", [])
     .controller("controller", function($scope, $http) {
+      // Only hide the loading screen for current app
+      if (document.getElementsByTagName("html")[0].getAttribute("ng-app") == "billingApp") {
+        $('body').addClass('loaded');
+      }
+
       var data = {
             Type: "billing",
             AuthKey: "3pKtr0P1p9",
           };
-      $http.get(TwilioQuery, $.param(data))
-        .success(function(data, status, headers, config) {
-          alert("Succeeded! "+data+status);
+      $http.post(TwilioQuery, $.param(data), {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded'},
+      }).success(function(data, status, headers, config) {
+          alert("Succeeded! "+JSON.stringify(data)+status);
           // $scope.request.status = "The message is queued on the server.";
+          // document.getElementsById("billingTable").setAttribute("data", data.data);
+          // document.getElementsById("billingTable").setAttribute("columns", '["fruit","alice","bill","casey"]');
+          // document.getElementsById("billingTable").setAttribute("data", '[[ "apple", 4, 10, 2 ],[ "banana", 0, 4, 0 ],[ "grape", 2, 3, 5 ],[ "pear", 4, 2, 8 ],[ "strawberry", 0, 14, 0 ] ]');
 
 
-          // Only hide the loading screen for current app
-          if (document.getElementsByTagName("html")[0].getAttribute("ng-app") == "billingApp") {
-            $('body').addClass('loaded');
-          }
         })
         .error(function(data, status, headers, config, statusText) {
-          $scope.request.status = "Something went wrong :(";
-          // alert("somthing wrong..."+data+status);
+          // $scope.request.status = "Something went wrong :(";
+          alert("somthing wrong..."+data+status);
         });
 
 

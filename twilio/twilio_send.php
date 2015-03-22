@@ -5,15 +5,15 @@ require_once __DIR__ . "/PDO/Db.class.php";
 $settings = parse_ini_file(__DIR__ . "/twilio_settings.ini.php");
 $AUTH_KEY = $settings["AUTH_KEY"];
 
-$errorMessage = "";
+$logMessage = "";
 $log = new Log();
 $log->write("Received sent request in " . basename(__FILE__));
 
 if (!isset($_POST["From"]) || !isset($_POST["To"]) || !isset($_POST["Body"]) || !isset($_POST["AuthKey"])) {
-	$errorMessage = "Incomplete POST request; From:" . $_POST["From"] . "To: " . $_POST["To"];
-	$log->write($errorMessage);
+	$logMessage = "Incomplete POST request; From:" . $_POST["From"] . "To: " . $_POST["To"];
+	$log->write($logMessage);
 	header("Status: 500 FAIL");
-	echo $errorMessage;
+	echo $logMessage;
 } else {
 	// Variables
 	$clientName = $_POST["From"];
@@ -21,10 +21,10 @@ if (!isset($_POST["From"]) || !isset($_POST["To"]) || !isset($_POST["Body"]) || 
 	$authKey = $_POST["AuthKey"];
 
 	if (strcmp($authKey, $AUTH_KEY) !== 0) {
-		$errorMessage = "Incorrect AuthKey";
-		$log->write($errorMessage);
+		$logMessage = "Incorrect AuthKey";
+		$log->write($logMessage);
 		header("Status: 500 FAIL");
-		echo $errorMessage;
+		echo $logMessage;
 	} else {
 		// Twilio Service
 		try {
@@ -106,10 +106,10 @@ if (!isset($_POST["From"]) || !isset($_POST["To"]) || !isset($_POST["Body"]) || 
 			$log->write("Queued and recorded message #" . $response->sid);
 
 		} catch (Exception $e) {
-			$errorMessage = $e->getMessage();
-			$log->write($errorMessage);
+			$logMessage = $e->getMessage();
+			$log->write($logMessage);
 			header("Status: 500 FAIL");
-			echo $errorMessage;
+			echo $logMessage;
 		}
 	}
 }

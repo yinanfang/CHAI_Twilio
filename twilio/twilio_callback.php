@@ -2,7 +2,7 @@
 require_once __DIR__ . "/log/Log.class.php";
 require_once __DIR__ . "/PDO/Db.class.php";
 
-$errorMessage = "";
+$logMessage = "";
 $log = new Log();
 $log->write("Received Callback in " . basename(__FILE__));
 
@@ -40,8 +40,8 @@ try {
 	);
 
 } catch (Exception $e) {
-	$errorMessage = $e->getMessage();
-	$log->write($errorMessage);
+	$logMessage = $e->getMessage();
+	$log->write($logMessage);
 }
 
 ?>
