@@ -9,7 +9,7 @@ $log = new Log();
 $log->write("Received sent request in " . basename(__FILE__));
 
 if (!isset($_POST["From"]) || !isset($_POST["To"]) || !isset($_POST["Body"]) || !isset($_POST["AuthKey"])) {
-	$errorMessage = "Incomplete POST request";
+	$errorMessage = "Incomplete POST request; " . $_POST["From"];
 	$log->write($errorMessage);
 	header("Status: 500 FAIL");
 	echo $errorMessage;

@@ -1,7 +1,7 @@
 // executes when HTML-Document is loaded and DOM is ready
 $(document).ready(function () {
 
-  var URLSend = "./twilio_send.php";
+  var URLSend = "./twilio/twilio_send.php";
 
   $('body').addClass('loaded');
 
@@ -17,28 +17,30 @@ $(document).ready(function () {
   // control.html
   angular.module("controlApp", [])
     .controller("controller", function($scope, $http) {
-      $scope.inputData = {};
-      $scope.inputData.doClick = function(item, event) {
+      $scope.request = {};
+      $scope.request.doClick = function(item, event) {
         var data = {};
         // data.clientName = document.querySelector('#organization').selectedItemLabel;
         // data.numberTo = document.querySelector('#numberTo').value;
         // data.message = document.querySelector('#message').value;
         // data.authKey = document.querySelector('#authKey').value;
-        data.clientName = "CARE";
-        data.numberTo = "9194484206";
-        data.message = "Dance in the rain";
-        data.authKey = "z8ZeEtN6Hs";
+        data.From = "CARE";
+        data.To = "+19194484206";
+        data.Body = "Dance in the rain";
+        data.AuthKey = "3pKtr0P1p9";
+        data.MediaUrl = "http://upload.wikimedia.org/wikipedia/commons/e/e5/Vienna_Skyline.jpg";
 
         alert(JSON.stringify(data));
 
-        $http.post(URLSend, data).
-          success(function(data, status, headers, config) {
+        
+
+        $http.post(URLSend, $.param(data))
+          .success(function(data, status, headers, config) {
             // this callback will be called asynchronously
             // when the response is available
-          }).
-          error(function(data, status, headers, config) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
+          })
+          .error(function(data, status, headers, config, statusText) {
+            alert("somthing wrong..."+data+status);
           });
 
 

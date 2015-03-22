@@ -6388,19 +6388,19 @@ polyfill-next-selector { content: ':host > core-item'; }
 
     <div class="row">
       <div class="col-sm-3 text-center">
-        <p>Text To: {{inputData.numTo}}</p>        
+        <p>Text To:</p>        
       </div>
       <div class="col-sm-9">
         <paper-input label="123-456-7890" floatinglabel="" id="numberTo"></paper-input>
         <div class="form-group"><!-- 
-          <input class="form-control" type="text" placeholder="123-456-7890" value="" ng-model="inputData.numTo"></input> -->
+          <input class="form-control" type="text" placeholder="123-456-7890" value="" ng-model="request.numTo"></input> -->
         </div>
       </div>
     </div>
 
     <div class="row">
       <div class="col-sm-3 text-center">
-        <p>Text To:</p>        
+        <p>Message:</p>        
       </div>
       <div class="col-sm-9">
         <paper-input-decorator label="Message Body" floatinglabel="">
@@ -6422,7 +6422,7 @@ polyfill-next-selector { content: ':host > core-item'; }
 
     <div class="row coverNav">
       <div class="col-sm-3 text-center">
-        <paper-button raised="" ng-click="inputData.doClick(item, $event)">Send</paper-button>     
+        <paper-button raised="" ng-click="request.doClick(item, $event)">Send</paper-button>     
       </div>
       <div class="col-sm-9">
         <p>No message status available</p> 

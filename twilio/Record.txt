@@ -1,3 +1,21 @@
+
+
+
+
+
+<!-- Example response
+SmsSid=MM2e20406a36cd4d179ac7958ae3a4d5e2&SmsStatus=sent&MessageStatus=sent&To=%2B19194484206&MessageSid=MM2e20406a36cd4d179ac7958ae3a4d5e2&AccountSid=AC424a6be19a10b589c1908ae43e48a736&From=%2B19195900174&ApiVersion=2010-04-01
+Formatted:
+SmsSid -> MM2e20406a36cd4d179ac7958ae3a4d5e2
+SmsStatus -> sent
+MessageStatus -> sent
+To -> %2B19194484206
+MessageSid -> MM2e20406a36cd4d179ac7958ae3a4d5e2
+AccountSid -> AC424a6be19a10b589c1908ae43e48a736
+From -> %2B19195900174
+ApiVersion -> 2010-04-01 -->
+
+
   // ini_set("log_errors", 1);
 // ini_set("error_log", "./error.log");
 // error_log("Received sent request...");
