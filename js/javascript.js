@@ -24,18 +24,28 @@ $(document).ready(function () {
         // data.numberTo = document.querySelector('#numberTo').value;
         // data.message = document.querySelector('#message').value;
         // data.authKey = document.querySelector('#authKey').value;
-        data.From = "CARE";
-        data.To = "+19194484206";
-        data.Body = "Dance in the rain";
-        data.AuthKey = "3pKtr0P1p9";
-        data.MediaUrl = "http://upload.wikimedia.org/wikipedia/commons/e/e5/Vienna_Skyline.jpg";
+        // data.From = "CARE";
+        // data.To = "+19194484206";
+        // data.Body = "Dance in the rain";
+        // data.AuthKey = "3pKtr0P1p9";
+        // data.MediaUrl = "http://upload.wikimedia.org/wikipedia/commons/e/e5/Vienna_Skyline.jpg";
+        data = {
+          From: "CARE",
+          To: "+19194484206",
+          Body: "Dance in the rain",
+          MediaUrl: "http://upload.wikimedia.org/wikipedia/commons/e/e5/Vienna_Skyline.jpg",
+          AuthKey: "3pKtr0P1p9",
+        };
+
 
         alert(JSON.stringify(data));
 
-        
 
-        $http.post(URLSend, $.param(data))
-          .success(function(data, status, headers, config) {
+
+        // $http.post(URLSend, $.param(data))
+        $http.post(URLSend, $.param(data), {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded'},
+        }).success(function(data, status, headers, config) {
             // this callback will be called asynchronously
             // when the response is available
           })
