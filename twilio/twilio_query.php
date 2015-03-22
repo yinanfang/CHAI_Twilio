@@ -7,7 +7,7 @@ $AUTH_KEY = $settings["AUTH_KEY"];
 
 $errorMessage = "";
 $log = new Log();
-$log->write("Received sent request in " . basename(__FILE__));
+$log->write("Received query request in " . basename(__FILE__));
 
 if (!isset($_POST["From"]) || !isset($_POST["To"]) || !isset($_POST["Body"]) || !isset($_POST["AuthKey"])) {
 	$errorMessage = "Incomplete POST request; From:" . $_POST["From"] . "To: " . $_POST["To"];
@@ -29,6 +29,7 @@ if (!isset($_POST["From"]) || !isset($_POST["To"]) || !isset($_POST["Body"]) || 
 		// Twilio Service
 		try {
 			require_once __DIR__ . '/twilio-php/Services/Twilio.php'; // Loads the library
+			$settings = parse_ini_file("twilio_settings.ini.php");
 			// Your Account Sid and Auth Token from twilio.com/user/account
 			$sid = $settings["sid"];
 			$token = $settings["token"];
