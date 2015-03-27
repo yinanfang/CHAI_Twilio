@@ -33,7 +33,7 @@ $(document).ready(function () {
           From: "CARE",
           To: "+19194484206",
           Body: "Dance in the rain",
-          // MediaUrl: "http://upload.wikimedia.org/wikipedia/commons/e/e5/Vienna_Skyline.jpg",
+          MediaUrl: "http://upload.wikimedia.org/wikipedia/commons/e/e5/Vienna_Skyline.jpg",
           AuthKey: "3pKtr0P1p9",
         };
         // alert(JSON.stringify(data));
