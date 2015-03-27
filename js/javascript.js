@@ -75,11 +75,12 @@ $(document).ready(function () {
           var myEl = angular.element( document.querySelector( '#divID' ) );
           // myEl.attr('columns', '["fruit","alice","bill","casey"]');
           alert(myEl.attr('columns'));
-          myEl.attr('columns','["test","sadf","bi;lkjll","lkj"]');
+          myEl.attr('data', '[[ "banana", 110, 4, 0 ],[ "grape", 2, 3, 5 ],[ "pear", 4, 2, 8 ],[ "strawberry", 0, 14, 0 ] ]');
+          // myEl.attr('columns','["test","sadf","bi;lkjll","lkj"]');
 
-
+          // alert("changing columns back");
           // $scope.columns = '["fruit","alice","bill","casey"]';
-          $scope.something = "sadfasdljk";
+          // $scope.something = "sadfasdljk";
 
         })
         .error(function(data, status, headers, config, statusText) {
