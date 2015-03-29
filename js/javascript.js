@@ -68,13 +68,10 @@ $(document).ready(function () {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded'},
       }).success(function(data, status, headers, config) {
           alert("Succeeded! "+JSON.stringify(data)+status);
-          // $scope.request.status = "The message is queued on the server.";
-          // document.getElementsById("billingTable").setAttribute("data", data.data);
-          // document.getElementsById("billingTable").setAttribute("columns", '["fruit","alice","bill","casey"]');
-          // document.getElementsById("billingTable").setAttribute("data", '[[ "apple", 4, 10, 2 ],[ "banana", 0, 4, 0 ],[ "grape", 2, 3, 5 ],[ "pear", 4, 2, 8 ],[ "strawberry", 0, 14, 0 ] ]');
-          var myEl = angular.element( document.querySelector( '#divID' ) );
+          var myEl = angular.element( document.querySelector( '#billingTable' ) );
           // myEl.attr('columns', '["fruit","alice","bill","casey"]');
           alert(myEl.attr('columns'));
+          myEl.attr('columns', '["Client","day","month","year"]');
           myEl.attr('data', '[[ "banana", 110, 4, 0 ],[ "grape", 2, 3, 5 ],[ "pear", 4, 2, 8 ],[ "strawberry", 0, 14, 0 ] ]');
           // myEl.attr('columns','["test","sadf","bi;lkjll","lkj"]');
 

@@ -28,23 +28,28 @@ if (!isset($_POST["From"]) || !isset($_POST["To"]) || !isset($_POST["Body"]) || 
 	} else {
 		// Twilio Service
 		try {
+			// Creates the instance
+			$db = new Db();
+			$response = $db->query(
+				"SELECT Number, SID, Token FROM Client WHERE ClientName = :clientName",
+				array(
+					"clientName" => $clientName,
+				));
+			// echo (var_dump($response));
+			$numFrom = $response[0]["Number"];
+			$sid = $response[0]["SID"];
+			$token = $response[0]["Token"];
+			// echo "I got: ";
+			// echo ($numFrom . " - ");
+			// echo ($sid . " - ");
+			// echo ($token . " - ");
+
 			require_once __DIR__ . '/twilio-php/Services/Twilio.php'; // Loads the library
 			// Your Account Sid and Auth Token from twilio.com/user/account
-			$sid = $settings["sid"];
-			$token = $settings["token"];
 			$client = new Services_Twilio($sid, $token);
 			$numTo = $numberTo;
 			// $numTo = "+19192654757";
 			// $numFrom = "+19195900174";
-
-			// Creates the instance
-			$db = new Db();
-			$numFromArray = $db->query(
-				"SELECT Number FROM Client WHERE ClientID = :clientID",
-				array(
-					"clientID" => $clientName,
-				));
-			$numFrom = reset($numFromArray[0]);
 
 			$data = array(
 				'From' => $numFrom,
