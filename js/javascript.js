@@ -63,7 +63,7 @@ $(document).ready(function () {
       $scope.table = {};
       $scope.table.columns = "[]";
       $scope.table.data = "[]";
-      $scope.something = "Monthly usage!";
+      $scope.something = "Loading data...";
 
       var data = {
             Type: "billing",
@@ -79,16 +79,50 @@ $(document).ready(function () {
           // myEl.attr('data', '[[ "banana", 110, 4, 0 ],[ "grape", 2, 3, 5 ],[ "pear", 4, 2, 8 ],[ "strawberry", 0, 14, 0 ] ]');
           $scope.table.columns = data["columns"];
           $scope.table.data = data["data"];
+          $scope.something = "Monthly usage!";
+
         })
         .error(function(data, status, headers, config, statusText) {
           // $scope.request.status = "Something went wrong :(";
           alert("somthing wrong..."+data+status);
         });
+    }
+  );
 
+  // logging.html
+  angular.module("loggingApp", [])
+    .controller("controller", function($scope, $http) {
+      // Only hide the loading screen for current app
+      if (document.getElementsByTagName("html")[0].getAttribute("ng-app") == "loggingApp") {
+        $('body').addClass('loaded');
+      }
+      // Init for the sortable table
+      $scope.table = {};
+      $scope.table.columns = "[]";
+      $scope.table.data = "[]";
+      $scope.something = "Loading data...";
 
+      var data = {
+            Type: "logging",
+            AuthKey: "3pKtr0P1p9",
+          };
+      $http.post(TwilioQuery, $.param(data), {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded'},
+      }).success(function(data, status, headers, config) {
+          // alert("Succeeded! "+JSON.stringify(data)+status);
+          // var myEl = angular.element( document.querySelector( '#billingTable' ) );
+          // alert(myEl.attr('columns'));
+          // myEl.attr('columns', '["Client","day","month","year"]');
+          // myEl.attr('data', '[[ "banana", 110, 4, 0 ],[ "grape", 2, 3, 5 ],[ "pear", 4, 2, 8 ],[ "strawberry", 0, 14, 0 ] ]');
+          $scope.table.columns = data["columns"];
+          $scope.table.data = data["data"];
+          $scope.something = "Log for the messages!";
 
-
-      
+        })
+        .error(function(data, status, headers, config, statusText) {
+          // $scope.request.status = "Something went wrong :(";
+          alert("somthing wrong..."+data+status);
+        });
     }
   );
 });
