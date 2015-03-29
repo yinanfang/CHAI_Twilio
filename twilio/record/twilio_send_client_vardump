@@ -1,0 +1,560 @@
+object(Services_Twilio)#3 (8) {
+  ["versions":protected]=>
+  array(2) {
+    [0]=>
+    string(10) "2008-08-01"
+    [1]=>
+    string(10) "2010-04-01"
+  }
+  ["http":protected]=>
+  object(Services_Twilio_TinyHttp)#4 (7) {
+    ["user"]=>
+    string(34) "AC424a6be19a10b589c1908ae43e48a736"
+    ["pass"]=>
+    string(32) "abcf6bd45a21149a9f21825875bf6937"
+    ["scheme"]=>
+    string(5) "https"
+    ["host"]=>
+    string(14) "api.twilio.com"
+    ["port"]=>
+    NULL
+    ["debug"]=>
+    NULL
+    ["curlopts"]=>
+    array(2) {
+      [10018]=>
+      string(29) "twilio-php/3.13.0 (php 5.5.7)"
+      [10023]=>
+      array(1) {
+        [0]=>
+        string(21) "Accept-Charset: utf-8"
+      }
+    }
+  }
+  ["last_response":protected]=>
+  object(stdClass)#45 (19) {
+    ["sid"]=>
+    string(34) "MM0a3c3ef3b4454d1fba5b20542891a48c"
+    ["date_created"]=>
+    string(31) "Sat, 21 Mar 2015 15:04:54 +0000"
+    ["date_updated"]=>
+    string(31) "Sat, 21 Mar 2015 15:04:54 +0000"
+    ["date_sent"]=>
+    NULL
+    ["account_sid"]=>
+    string(34) "AC424a6be19a10b589c1908ae43e48a736"
+    ["to"]=>
+    string(12) "+19194484206"
+    ["from"]=>
+    string(12) "+19195900174"
+    ["body"]=>
+    string(4) "test"
+    ["status"]=>
+    string(6) "queued"
+    ["num_segments"]=>
+    string(1) "1"
+    ["num_media"]=>
+    string(1) "1"
+    ["direction"]=>
+    string(12) "outbound-api"
+    ["api_version"]=>
+    string(10) "2010-04-01"
+    ["price"]=>
+    NULL
+    ["price_unit"]=>
+    string(3) "USD"
+    ["error_code"]=>
+    NULL
+    ["error_message"]=>
+    NULL
+    ["uri"]=>
+    string(104) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Messages/MM0a3c3ef3b4454d1fba5b20542891a48c.json"
+    ["subresource_uris"]=>
+    object(stdClass)#46 (1) {
+      ["media"]=>
+      string(110) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Messages/MM0a3c3ef3b4454d1fba5b20542891a48c/Media.json"
+    }
+  }
+  ["retryAttempts":protected]=>
+  int(1)
+  ["version":protected]=>
+  string(10) "2010-04-01"
+  ["subresources":protected]=>
+  NULL
+  ["accounts"]=>
+  object(Services_Twilio_Rest_Accounts)#5 (4) {
+    ["subresources":protected]=>
+    array(0) {
+    }
+    ["instance_name"]=>
+    string(28) "Services_Twilio_Rest_Account"
+    ["client"]=>
+    *RECURSION*
+    ["uri"]=>
+    string(20) "/2010-04-01/Accounts"
+  }
+  ["account"]=>
+  object(Services_Twilio_Rest_Account)#6 (5) {
+    ["subresources":protected]=>
+    array(22) {
+      ["applications"]=>
+      object(Services_Twilio_Rest_Applications)#7 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(32) "Services_Twilio_Rest_Application"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(68) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Applications"
+      }
+      ["available_phone_numbers"]=>
+      object(Services_Twilio_Rest_AvailablePhoneNumbers)#8 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(41) "Services_Twilio_Rest_AvailablePhoneNumber"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(77) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/AvailablePhoneNumbers"
+      }
+      ["outgoing_caller_ids"]=>
+      object(Services_Twilio_Rest_OutgoingCallerIds)#9 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(37) "Services_Twilio_Rest_OutgoingCallerId"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(73) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/OutgoingCallerIds"
+      }
+      ["calls"]=>
+      object(Services_Twilio_Rest_Calls)#10 (4) {
+        ["subresources":protected]=>
+        array(1) {
+          ["feedback_summary"]=>
+          object(Services_Twilio_Rest_FeedbackSummary)#11 (4) {
+            ["subresources":protected]=>
+            array(0) {
+            }
+            ["instance_name"]=>
+            string(36) "Services_Twilio_Rest_FeedbackSummary"
+            ["client"]=>
+            *RECURSION*
+            ["uri"]=>
+            string(77) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Calls/FeedbackSummary"
+          }
+        }
+        ["instance_name"]=>
+        string(25) "Services_Twilio_Rest_Call"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(61) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Calls"
+      }
+      ["conferences"]=>
+      object(Services_Twilio_Rest_Conferences)#12 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(31) "Services_Twilio_Rest_Conference"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(67) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Conferences"
+      }
+      ["incoming_phone_numbers"]=>
+      object(Services_Twilio_Rest_IncomingPhoneNumbers)#13 (4) {
+        ["subresources":protected]=>
+        array(3) {
+          ["local"]=>
+          object(Services_Twilio_Rest_Local)#14 (4) {
+            ["subresources":protected]=>
+            array(0) {
+            }
+            ["instance_name"]=>
+            string(40) "Services_Twilio_Rest_IncomingPhoneNumber"
+            ["client"]=>
+            *RECURSION*
+            ["uri"]=>
+            string(82) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/IncomingPhoneNumbers/Local"
+          }
+          ["toll_free"]=>
+          object(Services_Twilio_Rest_TollFree)#15 (4) {
+            ["subresources":protected]=>
+            array(0) {
+            }
+            ["instance_name"]=>
+            string(40) "Services_Twilio_Rest_IncomingPhoneNumber"
+            ["client"]=>
+            *RECURSION*
+            ["uri"]=>
+            string(85) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/IncomingPhoneNumbers/TollFree"
+          }
+          ["mobile"]=>
+          object(Services_Twilio_Rest_Mobile)#16 (4) {
+            ["subresources":protected]=>
+            array(0) {
+            }
+            ["instance_name"]=>
+            string(40) "Services_Twilio_Rest_IncomingPhoneNumber"
+            ["client"]=>
+            *RECURSION*
+            ["uri"]=>
+            string(83) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/IncomingPhoneNumbers/Mobile"
+          }
+        }
+        ["instance_name"]=>
+        string(40) "Services_Twilio_Rest_IncomingPhoneNumber"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(76) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/IncomingPhoneNumbers"
+      }
+      ["media"]=>
+      object(Services_Twilio_Rest_Media)#17 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(34) "Services_Twilio_Rest_MediaInstance"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(61) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Media"
+      }
+      ["messages"]=>
+      object(Services_Twilio_Rest_Messages)#18 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(28) "Services_Twilio_Rest_Message"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(64) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Messages"
+      }
+      ["notifications"]=>
+      object(Services_Twilio_Rest_Notifications)#19 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(33) "Services_Twilio_Rest_Notification"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(69) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Notifications"
+      }
+      ["outgoing_callerids"]=>
+      object(Services_Twilio_Rest_OutgoingCallerIds)#20 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(37) "Services_Twilio_Rest_OutgoingCallerId"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(73) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/OutgoingCallerids"
+      }
+      ["recordings"]=>
+      object(Services_Twilio_Rest_Recordings)#21 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(30) "Services_Twilio_Rest_Recording"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(66) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Recordings"
+      }
+      ["sms_messages"]=>
+      object(Services_Twilio_Rest_SmsMessages)#22 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(31) "Services_Twilio_Rest_SmsMessage"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(68) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/SMS/Messages"
+      }
+      ["short_codes"]=>
+      object(Services_Twilio_Rest_ShortCodes)#23 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(30) "Services_Twilio_Rest_ShortCode"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(70) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/SMS/ShortCodes"
+      }
+      ["tokens"]=>
+      object(Services_Twilio_Rest_Tokens)#24 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(26) "Services_Twilio_Rest_Token"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(62) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Tokens"
+      }
+      ["transcriptions"]=>
+      object(Services_Twilio_Rest_Transcriptions)#25 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(34) "Services_Twilio_Rest_Transcription"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(70) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Transcriptions"
+      }
+      ["connect_apps"]=>
+      object(Services_Twilio_Rest_ConnectApps)#26 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(31) "Services_Twilio_Rest_ConnectApp"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(67) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/ConnectApps"
+      }
+      ["authorized_connect_apps"]=>
+      object(Services_Twilio_Rest_AuthorizedConnectApps)#27 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(41) "Services_Twilio_Rest_AuthorizedConnectApp"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(77) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/AuthorizedConnectApps"
+      }
+      ["usage_records"]=>
+      object(Services_Twilio_Rest_UsageRecords)#28 (4) {
+        ["subresources":protected]=>
+        array(8) {
+          ["today"]=>
+          object(Services_Twilio_Rest_Today)#29 (4) {
+            ["subresources":protected]=>
+            array(0) {
+            }
+            ["instance_name"]=>
+            string(32) "Services_Twilio_Rest_UsageRecord"
+            ["client"]=>
+            *RECURSION*
+            ["uri"]=>
+            string(75) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Usage/Records/Today"
+          }
+          ["yesterday"]=>
+          object(Services_Twilio_Rest_Yesterday)#30 (4) {
+            ["subresources":protected]=>
+            array(0) {
+            }
+            ["instance_name"]=>
+            string(32) "Services_Twilio_Rest_UsageRecord"
+            ["client"]=>
+            *RECURSION*
+            ["uri"]=>
+            string(79) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Usage/Records/Yesterday"
+          }
+          ["all_time"]=>
+          object(Services_Twilio_Rest_AllTime)#31 (4) {
+            ["subresources":protected]=>
+            array(0) {
+            }
+            ["instance_name"]=>
+            string(32) "Services_Twilio_Rest_UsageRecord"
+            ["client"]=>
+            *RECURSION*
+            ["uri"]=>
+            string(77) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Usage/Records/AllTime"
+          }
+          ["this_month"]=>
+          object(Services_Twilio_Rest_ThisMonth)#32 (4) {
+            ["subresources":protected]=>
+            array(0) {
+            }
+            ["instance_name"]=>
+            string(32) "Services_Twilio_Rest_UsageRecord"
+            ["client"]=>
+            *RECURSION*
+            ["uri"]=>
+            string(79) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Usage/Records/ThisMonth"
+          }
+          ["last_month"]=>
+          object(Services_Twilio_Rest_LastMonth)#33 (4) {
+            ["subresources":protected]=>
+            array(0) {
+            }
+            ["instance_name"]=>
+            string(32) "Services_Twilio_Rest_UsageRecord"
+            ["client"]=>
+            *RECURSION*
+            ["uri"]=>
+            string(79) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Usage/Records/LastMonth"
+          }
+          ["daily"]=>
+          object(Services_Twilio_Rest_Daily)#34 (4) {
+            ["subresources":protected]=>
+            array(0) {
+            }
+            ["instance_name"]=>
+            string(32) "Services_Twilio_Rest_UsageRecord"
+            ["client"]=>
+            *RECURSION*
+            ["uri"]=>
+            string(75) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Usage/Records/Daily"
+          }
+          ["monthly"]=>
+          object(Services_Twilio_Rest_Monthly)#35 (4) {
+            ["subresources":protected]=>
+            array(0) {
+            }
+            ["instance_name"]=>
+            string(32) "Services_Twilio_Rest_UsageRecord"
+            ["client"]=>
+            *RECURSION*
+            ["uri"]=>
+            string(77) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Usage/Records/Monthly"
+          }
+          ["yearly"]=>
+          object(Services_Twilio_Rest_Yearly)#36 (4) {
+            ["subresources":protected]=>
+            array(0) {
+            }
+            ["instance_name"]=>
+            string(32) "Services_Twilio_Rest_UsageRecord"
+            ["client"]=>
+            *RECURSION*
+            ["uri"]=>
+            string(76) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Usage/Records/Yearly"
+          }
+        }
+        ["instance_name"]=>
+        string(32) "Services_Twilio_Rest_UsageRecord"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(69) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Usage/Records"
+      }
+      ["usage_triggers"]=>
+      object(Services_Twilio_Rest_UsageTriggers)#37 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(33) "Services_Twilio_Rest_UsageTrigger"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(70) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Usage/Triggers"
+      }
+      ["queues"]=>
+      object(Services_Twilio_Rest_Queues)#38 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(26) "Services_Twilio_Rest_Queue"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(62) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Queues"
+      }
+      ["sip"]=>
+      object(Services_Twilio_Rest_Sip)#39 (3) {
+        ["subresources":protected]=>
+        array(3) {
+          ["domains"]=>
+          object(Services_Twilio_Rest_Domains)#40 (4) {
+            ["subresources":protected]=>
+            array(0) {
+            }
+            ["instance_name"]=>
+            string(27) "Services_Twilio_Rest_Domain"
+            ["client"]=>
+            *RECURSION*
+            ["uri"]=>
+            string(67) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/SIP/Domains"
+          }
+          ["ip_access_control_lists"]=>
+          object(Services_Twilio_Rest_IpAccessControlLists)#41 (4) {
+            ["subresources":protected]=>
+            array(0) {
+            }
+            ["instance_name"]=>
+            string(40) "Services_Twilio_Rest_IpAccessControlList"
+            ["client"]=>
+            *RECURSION*
+            ["uri"]=>
+            string(80) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/SIP/IpAccessControlLists"
+          }
+          ["credential_lists"]=>
+          object(Services_Twilio_Rest_CredentialLists)#42 (4) {
+            ["subresources":protected]=>
+            array(0) {
+            }
+            ["instance_name"]=>
+            string(35) "Services_Twilio_Rest_CredentialList"
+            ["client"]=>
+            *RECURSION*
+            ["uri"]=>
+            string(75) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/SIP/CredentialLists"
+          }
+        }
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(59) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Sip"
+      }
+      ["addresses"]=>
+      object(Services_Twilio_Rest_Addresses)#43 (4) {
+        ["subresources":protected]=>
+        array(0) {
+        }
+        ["instance_name"]=>
+        string(29) "Services_Twilio_Rest_Addresse"
+        ["client"]=>
+        *RECURSION*
+        ["uri"]=>
+        string(65) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Addresses"
+      }
+    }
+    ["client"]=>
+    *RECURSION*
+    ["uri"]=>
+    string(55) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736"
+    ["sandbox"]=>
+    object(Services_Twilio_Rest_Sandbox)#44 (3) {
+      ["subresources":protected]=>
+      array(0) {
+      }
+      ["client"]=>
+      *RECURSION*
+      ["uri"]=>
+      string(63) "/2010-04-01/Accounts/AC424a6be19a10b589c1908ae43e48a736/Sandbox"
+    }
+    ["sid"]=>
+    string(34) "AC424a6be19a10b589c1908ae43e48a736"
+  }
+}
