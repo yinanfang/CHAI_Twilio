@@ -20,42 +20,31 @@ if (isset($_POST["AuthKey"]) && strcmp($authKey, $AUTH_KEY) !== 0) {
 				// General query. Send everyting back
 				// Creates the instance
 				$db = new Db();
-				$response = $db->query(
+				$accountInfo = $db->query(
 					"SELECT ClientName, Number, SID, Token FROM Client GROUP BY ClientName"
 				);
-				echo (var_dump($response));
-				echo "start looping \n";
-				for ($i = 0; $i < sizeof($response); $i++) {
-					$sid = $response[$i]["SID"];
-					$token = $response[$i]["Token"];
-					$client = new Services_Twilio($sid, $token);
-					// Loop over the list of records and echo a property for each one
-					foreach ($client->account->usage_records->monthly as $record) {
-						echo $record->price . "; ";
-					}
-					echo "\n";
-					// echo (var_dump($client->account->usage_records));
-
+				// echo (var_dump($accountInfo));
+				// echo "start looping \n";
+				$response = array();
+				$response['columns'] = '["Client Name","Total Price"]';
+				$response['data'] = array();
+				for ($i = 0; $i < sizeof($accountInfo); $i++) {
+					$row = array();
+					// $row["clientName"] = $accountInfo[$i]["ClientName"];
+					array_push($row, $accountInfo[$i]["ClientName"]);
+					$sid = $accountInfo[$i]["SID"];
+					$token = $accountInfo[$i]["Token"];
+					// $client = new Services_Twilio($sid, $token);
+					$requestURL = "https://" . $sid . ":" . $token . "@api.twilio.com/2010-04-01/Accounts/" . $sid . "/Usage/Records/Monthly.json?Category=totalprice";
+					$json = json_decode(file_get_contents($requestURL));
+					// echo (var_dump($json));
+					// $row["totalPrice"] = $json->usage_records[0]->price;
+					array_push($row, $json->usage_records[0]->price);
+					array_push($response['data'], $row);
 				}
-
-				// Your Account Sid and Auth Token from twilio.com/user/account
-				// $client = new Services_Twilio($sid, $token);
-				// $numTo = $numberTo;
-				// $numTo = "+19192654757";
-				// $numFrom = "+19195900174";
-
-				// $data = array(
-				// 	'From' => $numFrom,
-				// 	'To' => $numTo,
-				// 	'Body' => $_POST["Body"],
-				// 	'StatusCallback' => "http://chai.yinanfang.webfactional.com/Twilio/twilio/twilio_callback.php",
-				// 	// 'StatusCallback' => "http://protectthem.152.23.4.176.xip.io/twilio_callback.php",
-				// );
-				// // Add mediaUrl if there's one
-				// if (isset($_POST["MediaUrl"])) {
-				// 	$data["MediaUrl"] = $_POST["MediaUrl"];
-				// }
-				// $client->account->messages->create($data);
+				// echo (var_dump($response));
+				echo json_encode($response);
+				die();
 
 			}
 
