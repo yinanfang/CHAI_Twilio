@@ -42,6 +42,8 @@
   <link rel="import" href="./components/core-collapse/core-collapse.html">
   <link rel="import" href="./components/core-label/core-label.html">
   <link rel="import" href="./components/sortable-table/sortable-table.html">
+  <link rel="import" href="./components/paper-date-picker/paper-date-picker.html">
+  <link rel="import" href="./components/paper-date-picker/paper-date-picker-dialog.html" >
 </head>
 <body>
 
@@ -69,6 +71,17 @@
         </sortable-table>
       </div>
     </div>
+    <div class="row">
+      <div class="heading" onclick="document.querySelector('#collapse1').toggle();">Collapse #1</div>
+      <core-collapse id="collapse1">
+        <paper-date-picker-dialog date="2014/1/1" min="2013/9/1" max="2014/8/31"></paper-date-picker-dialog>
+        <paper-button raised onClick="document.querySelectorAll('paper-date-picker-dialog')[0].open()">Open date picker dialog for academic year 2013-2014</paper-button>
+      </core-collapse>
+    </div>
+
+    
+
+    
   </div>
 
   <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->

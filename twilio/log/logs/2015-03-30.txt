@@ -1,0 +1,42 @@
+[00:27:24 GMT]Received query request in twilio_query.php
+[00:27:24 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (2)chai_twilio
+[00:30:07 GMT]Received query request in twilio_query.php
+[00:30:07 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[00:30:58 GMT]Received query request in twilio_query.php
+[00:30:58 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[00:38:55 GMT]Received query request in twilio_query.php
+[00:38:55 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[00:42:30 GMT]Received query request in twilio_query.php
+[00:42:30 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[00:42:42 GMT]Received query request in twilio_query.php
+[00:42:42 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[00:46:54 GMT]Received query request in twilio_query.php
+[00:46:54 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[00:48:31 GMT]Received query request in twilio_query.php
+[00:48:31 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[00:59:51 GMT]Received query request in twilio_query.php
+[00:59:51 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[01:01:26 GMT]Received query request in twilio_query.php
+[01:01:26 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[01:04:39 GMT]Received query request in twilio_query.php
+[01:04:39 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[01:07:11 GMT]Received query request in twilio_query.php
+[01:07:11 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[01:13:50 GMT]Received query request in twilio_query.php
+[01:13:50 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[01:23:24 GMT]Received query request in twilio_query.php
+[01:23:24 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[01:23:51 GMT]Received query request in twilio_query.php
+[01:23:51 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[01:24:03 GMT]Received query request in twilio_query.php
+[01:24:03 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[01:31:43 GMT]Received query request in twilio_query.php
+[01:31:43 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[01:31:50 GMT]Received query request in twilio_query.php
+[01:31:50 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[01:33:02 GMT]Received query request in twilio_query.php
+[01:33:02 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[01:36:03 GMT]Received query request in twilio_query.php
+[01:36:03 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio
+[01:36:17 GMT]Received query request in twilio_query.php
+[01:36:17 GMT]hereSQLSTATE[HY000] [2005] Unknown MySQL server host 'web404.webfaction.com:3306' (0)chai_twilio

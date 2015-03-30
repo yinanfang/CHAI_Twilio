@@ -11,6 +11,5 @@
   },
   "_source": "git://github.com/Polymer/polymer-gestures.git",
   "_target": "~0.5.5",
-  "_originalSource": "Polymer/polymer-gestures",
-  "_direct": true
+  "_originalSource": "Polymer/polymer-gestures"
 }

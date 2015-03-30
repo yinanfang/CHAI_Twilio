@@ -935,6 +935,390 @@ html /deep/ .core-collapse-closed {
 
 
 
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
+`core-transition-pages` represents a page transition, which may include CSS and/or
+script. It will look for a `core-style` element with the same `id` to install in the
+scope of the `core-animated-pages` that's using the transition.
+
+Example:
+
+    <core-style id="fooTransition">
+        // some CSS here
+    </core-style>
+    <core-transition-pages id="fooTransition"></core-transition-pages>
+
+There are three stages to a page transition:
+
+1. `prepare`: Called to set up the incoming and outgoing pages to the "before" state,
+  e.g. setting the incoming page to `opacity: 0` for `cross-fade` or find and
+  measure hero elements for `hero-transition`.
+
+2. `go`: Called to run the transition. For CSS-based transitions, this generally
+  applies a CSS `transition` property.
+
+3. `complete`: Called when the elements are finished transitioning.
+
+See the individual transition documentation for specific details.
+
+@element core-transition-pages
+@extends core-transition
+@status beta
+@homepage github.io
+-->
+<!--
+Fired when the transition completes.
+
+@event core-transitionend
+-->
+
+
+
+
+
+
+
+<!--
+
+`core-animated-pages` selects one of its children "pages" to show and runs a transition
+when switching between them. The transitions are designed to be pluggable, and can
+accept any object that is an instance of a `core-transition-pages`. Transitions to run
+are specified in the `transitions` attribute as a space-delimited string of `id`s of
+transition elements. Several transitions are available with `core-animated-pages` by
+default, including `hero-transition`, `cross-fade`, and `tile-cascade`.
+
+Example:
+
+    <style>
+      #hero1 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 300px;
+        height: 300px;
+        background-color: orange;
+      }
+      #hero2 {
+        position: absolute;
+        top: 200px;
+        left: 300px;
+        width: 300px;
+        height: 300px;
+        background-color: orange;
+      }
+      #bottom1, #bottom2 {
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        left: 0;
+        height: 50px;
+      }
+      #bottom1 {
+        background-color: blue;
+      }
+      #bottom2 {
+        background-color: green;
+      }
+    </style>
+    // hero-transition and cross-fade are declared elsewhere
+    <core-animated-pages transitions="hero-transition cross-fade">
+      <section id="page1">
+        <div id="hero1" hero-id="hero" hero></div>
+        <div id="bottom1" cross-fade></div>
+      </section>
+      <section id="page2">
+        <div id="hero2" hero-id="hero" hero></div>
+        <div id="bottom2" cross-fade></div>
+      </section>
+    </core-animated-pages>
+
+In the above example, two transitions (`hero-transition` and `cross-fade`) are run when switching
+between `page1` and `page2`. `hero-transition` transforms elements with the same `hero-id` such
+that they appear to be shared across different pages. `cross-fade` fades out the elements marked
+`cross-fade` in the outgoing page, and fades in those in the incoming page. See the individual
+transition's documentation for specific details.
+
+Finding elements to transition
+------------------------------
+
+In general, a transition is applied to elements marked with a certain attribute. For example,
+`hero-transition` applies the transition on elements with the `hero` and `hero-id` attribute.
+Among the transitions included with `core-animated-pages`, script-based transitions such as
+`hero-transition` generally look for elements up to one level of shadowRoot from the
+`core-animated-pages` element, and CSS-based transitions such as `cross-fade` look for elements
+within any shadowRoot within the `core-animated-pages` element. This means you can use 
+custom elements as pages and mark elements in their shadowRoots as heroes, or mark 
+elements in deeper shadowRoots with other transitions.
+
+Example:
+
+    <polymer-element name="x-el" noscript>
+    <template>
+      <style>
+        #hero {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 50px;
+          height: 300px;
+          background-color: blue;
+        }
+      </style>
+      <div id="hero" hero-id="bar" hero></div>
+    </template>
+    </polymer-element>
+
+    <polymer-element name="x-page-1" noscript>
+    <template>
+      <style>
+        #hero1 {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 300px;
+          height: 300px;
+          background-color: orange;
+        }
+      </style>
+      <div id="hero1" hero-id="foo" hero></div>
+      <div id="hero2" hero-id="bar" hero></div>
+    </template>
+    </polymer-element>
+
+    <polymer-element name="x-page-2" noscript>
+    <template>
+      <style>
+        #hero1 {
+          position: absolute;
+          top: 200px;
+          left: 300px;
+          width: 300px;
+          height: 300px;
+          background-color: orange;
+        }
+        #hero2 {
+          background-color: blue;
+          height: 150px;
+          width: 400px;
+        }
+      </style>
+      // The below element is one level of shadow from the core-animated-pages and will
+      // be transitioned.
+      <div id="hero1" hero-id="foo" hero></div>
+      // The below element contains a hero inside its shadowRoot making it two levels away
+      // from the core-animated-pages, and will not be transitioned.
+      <x-el></x-el>
+    </template>
+    </polymer-element>
+
+    <core-animated-pages transitions="hero-transition">
+      <x-page-1></x-page-1>
+      <x-page-2></x-page-2>
+    </core-animated-pages>
+
+Note that the container element of the page does not participate in the transition.
+
+    // This does not work
+    <core-animated-pages transitions="cross-fade">
+      <section cross-fade></section>
+      <section cross-fade></section>
+    </core-animated-pages>
+
+    // This works
+    <core-animated-pages transitions="cross-fade">
+      <section>
+        <div cross-fade></div>
+      </section>
+      <section>
+        <div cross-fade></div>
+      </section>
+    </core-animated-pages>
+
+Dynamically setting up transitions
+----------------------------------
+
+An easy way to set up transitions dynamically is to use property binding on
+the transition attributes. 
+
+Example:
+
+    <core-animated-pages selected="{{selected}}">
+      <section id="page1">
+        <div hero-id="hero" hero></div>
+      </section>
+      <section id="page2">
+        <div id="foo" hero-id="hero" hero?="{{selected === 1 || selected === 0}}" cross-fade="{{selected === 2}}"></div>
+      </section>
+      <section id="page3">
+      </section>
+    </core-animated-pages>
+
+In the above example, the "foo" element only behaves as a hero element if transitioning between
+`#page1` and `#page2`. It gets cross-faded when transition to or from `#page3`.
+
+Nesting pages
+-------------
+
+It is possible to nest core-animated-pages elements for organization. Excessive nesting is
+not encouraged, however, since it makes setting up the transition more complex.
+
+To nest core-animated-pages, the page containing the nested core-animated-pages element should
+have a `selectedItem` property bound to the `selectedItem` property of the nested element. This
+will allow the outer core-animated-pages to know which nested page it is actually transitioning
+to.
+
+Example:
+
+    <polymer-element name="nested-page" attributes="selectedItem">
+    <template>
+      <core-animated-pages selectedItem="{{selectedItem}}">
+        ...
+      </core-animated-pages>
+    </template>
+    </polymer-element>
+
+    <core-animated-pages>
+      <section id="page1"></section>
+      <nested-page id="page2"></nested-page>
+    </core-animated-pages>
+
+@element core-animated-pages
+@extends core-selector
+@mixins Polymer.CoreResizer https://github.com/polymer/core-resizable
+@status beta
+@homepage github.io
+-->
+<!--
+Fired before a page transition occurs. Both pages involved in the transition are visible when
+this event fires. This is useful if there is something the client needs to do when a page becomes
+visible.
+
+@event core-animated-pages-transition-prepare
+-->
+<!--
+Fired when a page transition completes.
+
+@event core-animated-pages-transition-end
+-->
+
+
+
+
+
+
+
+
+<style shim-shadowdom="">
+  html /deep/ .date-picker-dialog::shadow #scroller {
+    padding:0px;
+  }
+
+  html /deep/ .date-picker-dialog .header {
+    text-align: center;
+    color: rgba(255,255,255,.5);
+    background-color: #009688;
+  }
+  
+  html /deep/ .date-picker-dialog .header .dayOfWeekContainer {
+    padding: 5px;
+    background-color: #00695C;
+  }
+  
+  html /deep/ .date-picker-dialog .header .dayOfMonthContainer {
+    cursor: pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  
+  html /deep/ .date-picker-dialog .header .monthContainer {
+    cursor: pointer;
+    font-size: 24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:24px;
+    font-weight: 300;
+  }
+  
+  html /deep/ .date-picker-dialog .header .yearContainer {
+    cursor: pointer;
+    font-size: 24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:24px;
+    font-weight: 400;
+  }
+  
+  html /deep/ .date-picker-dialog .datePickerContainer {
+    height: 255px;
+    width: 280px;
+  }
+  html /deep/ .date-picker-dialog #datePicker {
+    width: 280px;
+  }
+  
+  html /deep/ .date-picker-dialog .selected {
+    color: #FFFFFF;
+  }
+  
+  @media only screen and (orientation : portrait) {
+    html /deep/ .date-picker-dialog .header .yearContainer{
+      padding-bottom:10px;
+    }
+    html /deep/ .date-picker-dialog .header .monthContainer{
+      padding-top:10px;
+    }
+    html /deep/ .date-picker-dialog .header .dayOfMonthContainer {
+      font-size: 60px;
+      min-height: 60px;
+    }
+  }
+  @media only screen and (orientation : landscape) {
+    html /deep/ .date-picker-dialog {
+      width:570px;
+    }
+    
+    /* the second selector is for the polyfill version */
+    html /deep/ .date-picker-dialog >  #container , html /deep/ .date-picker-dialog #scroller >  #container {
+      display:flex;
+      flex-direction: row;
+      overflow:hidden;
+    }
+    
+    html /deep/ .date-picker-dialog .header .dayOfMonthContainer {
+      font-size: 89px;
+      min-height: 89px;
+    }
+  }
+  
+</style>
+
+
 </head>
 <body><div hidden="">
 <polymer-element name="paper-shadow" assetpath="components/paper-shadow/">
@@ -1543,7 +1927,7 @@ html /deep/ .core-collapse-closed {
           // Declare the next wave that has mouse down to be mouse'ed up.
           var wave = this.waves[i];
           if (wave.isMouseDown) {
-            wave.isMouseDown = false
+            wave.isMouseDown = false;
             wave.mouseUpStart = now();
             wave.mouseDownStart = 0;
             wave.tUp = 0.0;
@@ -5750,6 +6134,7 @@ polyfill-next-selector {
        * Returns an array of all items.
        *
        * @property items
+       * @type array
        */
       get items() {
         if (!this.target) {
@@ -5819,9 +6204,9 @@ polyfill-next-selector {
       updateSelected: function() {
         this.validateSelected();
         if (this.multi) {
-          this.clearSelection(this.selected)
+          this.clearSelection(this.selected);
           this.selected && this.selected.forEach(function(s) {
-            this.setValueSelected(s, true)
+            this.setValueSelected(s, true);
           }, this);
         } else {
           this.valueToSelection(this.selected);
@@ -5987,7 +6372,7 @@ polyfill-next-selector {
        *
        * @method selectPrevious
        * @param {boolean} wrapped if true and it is already at the first item,
-       *                  wrap to the end
+       * wrap to the end
        * @returns the previous item or undefined if there is none
        */
       selectPrevious: function(wrapped) {
@@ -6001,7 +6386,7 @@ polyfill-next-selector {
        *
        * @method selectNext
        * @param {boolean} wrapped if true and it is already at the last item,
-       *                  wrap to the front
+       * wrap to the front
        * @returns the next item or undefined if there is none
        */
       selectNext: function(wrapped) {
@@ -7301,7 +7686,1787 @@ polyfill-next-selector { content: ':host > core-item'; }
 	}
 </script>
 </polymer-element>
-</div>
+
+<polymer-element name="paper-date-picker" assetpath="components/paper-date-picker/">
+
+<template>
+
+  <style>
+  
+    :host {
+      display: inline-block;
+      position: relative;
+      height: 250px;
+      width: 300px;
+    }
+    
+    #container{
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 0px 9px;
+      box-sizing: border-box;
+    }
+    
+    #container::-webkit-scrollbar {
+      width: 4px;
+    }
+    
+    #container::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1); 
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+    }
+    
+    #container::-webkit-scrollbar-thumb {
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.1); 
+    }
+    
+    #container::-webkit-scrollbar-thumb:window-inactive {
+    	background: rgba(255,0,0,0.2); 
+    }
+    
+    .days{
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      align-content: stretch;
+      min-height: 210px;
+    }
+    
+    .day{
+      width: calc(14% - 6px);
+      text-align: center;
+      margin: 3px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .day[data-date]{
+      cursor: pointer;
+    }
+    
+    .day span{
+      display: block;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+    }
+    
+    .day.selected span{
+      background-color: #009688;
+      color: white;
+      border-radius: 100%;
+    }
+    
+    .day.title{
+      padding-top: 0px;
+      padding-bottom: 4px;
+      font-weight: bold;
+      color: rgba(0,0,0,.6);
+      cursor: default;
+    }
+    
+    .day[enabled='false']{
+      pointer-events: none;
+      color: rgba(0,0,0,.3);
+    }
+    
+    h1{
+      text-align: center;
+      font-size: 13px;
+      color: rgba(0,0,0,.8);
+      margin: 0px;
+      padding: 0.67em 0px;
+    }
+    
+  </style>
+  
+  <div on-tap="{{pickDate}}" id="container" on-scroll="{{scrollFinished}}">
+    <template repeat="{{ month in months }}">
+      <div class="month" data-month="{{month.number}}" data-year="{{month.year}}">
+        <h1>{{month.name}}</h1>
+          <div class="days">
+          
+          <template repeat="{{name in weekDayNames}}">
+            <div class="day title">{{name}}</div>
+          </template>
+          
+          <template repeat="{{ day in month.days }}">
+        
+            <template if="{{!day}}">
+              <div class="day"></div>
+            </template>
+            <template if="{{day}}">
+              <div class="day {{ { selected : day.n == currentDay &amp;&amp; month.number == currentMonth &amp;&amp; month.year == currentYear } | tokenList }}" enabled="{{day.enabled}}" data-date="{{day.n}}" data-month="{{month.number}}" data-year="{{month.year}}">
+                <span>{{day.day}}</span>
+              </div>
+            </template>
+            
+          </template>
+          
+        </div>
+      </div>
+    </template>
+  </div>
+  
+</template>
+
+<script>
+
+  (function(){
+
+    //temp function before I think of better solution
+    var cleanMonthDateArrayObject = function(obj){
+      var m = obj[0] % 12;
+      return [m < 0 ? m + 12: m, obj[1]+Math.floor(obj[0]/12)];
+    }
+
+    Polymer('paper-date-picker', {
+
+      publish: {
+        /**
+         * Current date
+         *
+         * @attribute date
+         * @type Date
+         * @default 'today\'s date'
+         */
+        date: new Date(),
+        
+        /**
+         * Lowest selectable date (inclusive)
+         *
+         * @attribute min
+         * @type Date
+         * @default 1/1/1900
+         */
+        min: new Date(1900,0,1),
+        
+        /**
+         * Highest selectable date (inclusive)
+         *
+         * @attribute max
+         * @type Date
+         * @default 31/12/2100
+         */
+        max: new Date(2100,11,31),
+        
+        /**
+         * Show only a single year at a time
+         * `'auto'` will cause this to be
+         * `false` for (most) mobile devices
+         * and `true` for other devices.
+         *
+         * @attribute infiniteScrolling
+         * @type String or boolean
+         * @default 'auto'
+         */
+        infiniteScrolling: 'auto',
+        
+        /**
+         * Locale setting per the HTML5 Intl API
+         * 
+         * @attribute locale
+         * @type Array
+         * @default undefined
+         * 
+         */
+        locale: undefined,
+        
+        /**
+         * Start day of week, expressed as 0-6
+         * 
+         * @attribute startDayOfWeek
+         * @type Integer
+         * @default 1
+         * 
+         */
+        startDayOfWeek: 1
+      },
+      
+      currentYear : 0,
+      currentMonth : 0,
+      currentDay : 0,
+      
+      loadedRange: 14,
+      triggerRange: 1,
+      loadPerTrigger: 7,
+      
+      weekDayNames: [],
+
+      months: [],
+      
+      nonNumericDates: false,
+      
+      intl: {
+        
+      },
+
+      renderMonths: function(start,end){
+        start = cleanMonthDateArrayObject(start);
+        end = cleanMonthDateArrayObject(end);
+
+        var curMonth = start[0];
+        var curYear = start[1];
+        var date, start, end;
+        
+        this.months = [];
+        
+        while(curYear < end[1] || (curYear == end[1] && curMonth <= end[0])){
+          
+          var month = {
+            days: [],
+            name: "",
+            number: curMonth,
+            year: curYear
+          };
+          
+          date = new Date(curYear, curMonth-1, 1);
+          startPoint = (date.getDay() - this.startDayOfWeek + 7) % 7;
+          month.name = Intl.DateTimeFormat(this.locale, {month: 'long', year: 'numeric' }).format(date);
+          date = new Date(curYear, curMonth, 0);
+          endPoint = date.getDate();      
+          
+          for(i=0;i<startPoint;i++){
+            month.days.push(undefined);
+          }
+          
+          for(i=1;i<=endPoint;i++){
+            var thisDate = new Date(curYear, curMonth-1, i);
+            month.days.push({
+              n:i,
+              day: this.intl.day(thisDate),
+              enabled: thisDate >= this.min && thisDate <= this.max
+            });
+          }
+          
+          this.months.push(month);
+          
+          curMonth++;
+          if(curMonth == 13){
+            curMonth = 1;
+            curYear++;
+          }
+          
+        }
+      },
+      
+      localeChanged: function(){
+        this.intl = {};
+        this.intl.day = Intl.DateTimeFormat(this.locale, {day: 'numeric' }).format;
+      },
+
+      pickDate: function(e){
+        var data = e.path[1].dataset.date ? e.path[1].dataset : e.path[0].dataset;
+        var day = data.date;
+        var month = data.month;
+        var year = data.year;
+        if(day && month && year){
+          console.log("set date?");
+          this.date = new Date(year, month-1, day);
+          this.fire("selection-changed");
+        }
+      },
+
+      refreshScrollPosition: function(){
+        var that = this;
+        
+        setTimeout(function(){
+          
+          var monthElements = that.shadowRoot.querySelectorAll(".month");
+          var startLoadedDateOutsideTriggerRange = new Date(monthElements[that.triggerRange].dataset.year,monthElements[that.triggerRange].dataset.month*1-1,1);
+          var endLoadedDateOutsideTriggerRange = new Date(monthElements[monthElements.length - that.triggerRange - 1].dataset.year,monthElements[monthElements.length - that.triggerRange - 1].dataset.month*1-1+1,1);
+          
+          if(!(that.date >= startLoadedDateOutsideTriggerRange && that.date < endLoadedDateOutsideTriggerRange)){
+            that.surroundDate(that.date);
+          }
+          
+        },0);
+        
+        setTimeout(function(){
+          
+          var monthElements = that.shadowRoot.querySelectorAll(".month");
+          var scrollTop = 0;
+          
+          for(var i=0;i<monthElements.length;i++){
+            if(monthElements[i].querySelector(".day.selected")){
+              break;
+            }else{
+              scrollTop += monthElements[i].clientHeight;
+            }
+          }
+
+          if(Math.abs(that.$.container.scrollTop-scrollTop) > that.$.container.clientHeight){
+            that.$.container.scrollTop = scrollTop;
+          }
+          
+        },0);
+        
+      },
+
+      dateChanged: function(){
+        this.setCurrentDateValues();
+        this.refreshScrollPosition();
+      },
+      
+      setCurrentDateValues:function() {
+        this.currentYear = this.date.getFullYear();
+        this.currentMonth = this.date.getMonth() + 1;
+        this.currentDay = this.date.getDate();
+      },
+      
+      scrollFinished: function(){
+        
+        if(this.infiniteScrolling == true){
+          var monthElements = this.shadowRoot.querySelectorAll(".month");
+          
+          for(var i=monthElements.length-1;i>=0;i--){
+            if(this.$.container.scrollTop+this.$.container.clientHeight/2 > monthElements[i].offsetTop){
+              
+              if(i<this.triggerRange){
+                var newStart = [monthElements[0].dataset.month*1-this.loadPerTrigger,monthElements[0].dataset.year*1];
+                var newEnd = [monthElements[monthElements.length-1].dataset.month*1-this.loadPerTrigger,monthElements[monthElements.length-1].dataset.year*1];
+                this.renderMonths(newStart, newEnd);
+                this.$.container.scrollTop += monthElements[0].clientHeight*this.loadPerTrigger;
+              }
+              
+              if(i>monthElements.length-this.triggerRange-1){
+                var newStart = [monthElements[0].dataset.month*1+this.loadPerTrigger,monthElements[0].dataset.year*1];
+                var newEnd = [monthElements[monthElements.length-1].dataset.month*1+this.loadPerTrigger,monthElements[monthElements.length-1].dataset.year*1];
+                this.renderMonths(newStart, newEnd);
+                this.$.container.scrollTop -= monthElements[0].clientHeight*this.loadPerTrigger;
+              }
+              
+              break;
+              
+            }
+          }
+        }
+        
+      },
+
+      surroundDate: function(date){
+        if(this.infiniteScrolling == true){
+          var prevDate = [date.getMonth()+1-Math.floor(this.loadedRange/2),date.getFullYear()];
+          var nextDate = [date.getMonth()+1+Math.ceil(this.loadedRange/2),date.getFullYear()];
+        }else{
+          var prevDate = [1,date.getFullYear()];
+          var nextDate = [12,date.getFullYear()];
+        }
+        
+        this.renderMonths(prevDate,nextDate);
+      },
+
+      ready: function(){
+        
+        this.weekDayNames = [];
+        for(var i=this.startDayOfWeek-1;i<this.startDayOfWeek+6;i++){
+          var date = new Date(2000, 1, i, 0, 0, 0);
+          this.weekDayNames.push(new Intl.DateTimeFormat(this.locale, {weekday:'narrow'}).format(date));
+        }
+        
+        //Infininte scrolling doesn't work (nicely) on mobile devices, so
+        // it is disabled by default.
+        if(this.infiniteScrolling == 'auto'){
+          if(typeof window.orientation !== 'undefined'){
+            this.infiniteScrolling = false;
+          }else{
+            this.infiniteScrolling = true;
+          }
+        }
+
+        this.localeChanged();
+        this.surroundDate(this.date);
+        this.dateChanged();
+
+      }
+
+    });
+
+  })();
+
+</script>
+
+</polymer-element>
+
+<polymer-element name="paper-dialog-base" extends="core-overlay" role="dialog" on-core-overlay-open="{{openAction}}" assetpath="components/paper-dialog/">
+
+<script>
+
+  Polymer('paper-dialog-base',{
+
+    publish: {
+
+      /**
+       * The title of the dialog.
+       *
+       * @attribute heading
+       * @type string
+       * @default ''
+       */
+      heading: '',
+
+      /**
+       * @attribute transition
+       * @type string
+       * @default ''
+       */
+      transition: '',
+
+      /**
+       * @attribute layered
+       * @type boolean
+       * @default true
+       */
+      layered: true
+    },
+
+    ready: function() {
+      this.super();
+      this.sizingTarget = this.$.scroller;
+    },
+
+    headingChanged: function(old) {
+      var label = this.getAttribute('aria-label');
+      if (!label || label === old) {
+        this.setAttribute('aria-label', this.heading);
+      }
+    },
+
+    openAction: function() {
+      if (this.$.scroller.scrollTop) {
+        this.$.scroller.scrollTop = 0;
+      }
+    }
+
+  });
+
+</script>
+
+</polymer-element>
+<polymer-element name="paper-action-dialog" extends="paper-dialog-base" role="dialog" layout="" vertical="" assetpath="components/paper-dialog/">
+
+<template>
+
+  <style>
+    :host {
+      background: #fff;
+      color: rgba(0, 0, 0, 0.87);
+      margin: 32px;
+      overflow: visible !important;
+    }
+
+    h1 {
+      font-size: 20px;
+    }
+
+    #scroller {
+      overflow: auto;
+      box-sizing: border-box;
+      padding: 24px 24px 0 24px;
+    }
+
+    #actions {
+      padding: 16px;
+    }
+  </style>
+
+  <paper-shadow z="3" fit=""></paper-shadow>
+
+  <!-- need this because the host needs to be overflow: visible -->
+  <div id="scroller" relative="" flex="" auto="">
+    <template if="{{heading}}">
+      <h1>{{heading}}</h1>
+    </template>
+
+    <content select=":not([affirmative]):not([dismissive])"></content>
+  </div>
+
+  <div id="actions" relative="" layout="" horizontal="">
+    <content select="[dismissive]"></content>
+    <div flex=""></div>
+    <content select="[affirmative]"></content>
+  </div>
+
+</template>
+
+<script>
+
+  Polymer('paper-action-dialog',{
+
+    publish: {
+
+      /**
+       * @attribute closeSelector
+       * @type string
+       * @default '[affirmative],[dismissive]'
+       */
+      closeSelector: '[affirmative],[dismissive]'
+    }
+
+  });
+
+</script>
+
+</polymer-element>
+
+<polymer-element name="core-transition-pages" extends="core-transition" assetpath="components/core-animated-pages/transitions/">
+<script>
+
+(function () {
+
+// create some basic transition styling data.
+var transitions = CoreStyle.g.transitions = CoreStyle.g.transitions || {};
+transitions.duration = '500ms';
+transitions.heroDelay = '50ms';
+transitions.scaleDelay = '500ms';
+transitions.cascadeFadeDuration = '250ms';
+
+Polymer('core-transition-pages',{
+
+  publish: {
+    /**
+     * This class will be applied to the scope element in the `prepare` function.
+     * It is removed in the `complete` function. Used to activate a set of CSS
+     * rules that need to apply before the transition runs, e.g. a default opacity
+     * or transform for the non-active pages.
+     *
+     * @attribute scopeClass
+     * @type string
+     * @default ''
+     */
+    scopeClass: '',
+
+    /**
+     * This class will be applied to the scope element in the `go` function. It is
+     * remoived in the `complete' function. Generally used to apply a CSS transition
+     * rule only during the transition.
+     *
+     * @attribute activeClass
+     * @type string
+     * @default ''
+     */
+    activeClass: '',
+
+    /**
+     * Specifies which CSS property to look for when it receives a `transitionEnd` event
+     * to determine whether the transition is complete. If not specified, the first
+     * transitionEnd event received will complete the transition.
+     *
+     * @attribute transitionProperty
+     * @type string
+     * @default ''
+     */
+    transitionProperty: ''
+  },
+
+  /**
+   * True if this transition is complete.
+   *
+   * @attribute completed
+   * @type boolean
+   * @default false
+   */
+  completed: false,
+
+  prepare: function(scope, options) {
+    this.boundCompleteFn = this.complete.bind(this, scope);
+    if (this.scopeClass) {
+      scope.classList.add(this.scopeClass);
+    }
+  },
+
+  go: function(scope, options) {
+    this.completed = false;
+    if (this.activeClass) {
+      scope.classList.add(this.activeClass);
+    }
+    scope.addEventListener('transitionend', this.boundCompleteFn, false);
+  },
+
+  setup: function(scope) {
+    if (!scope._pageTransitionStyles) {
+      scope._pageTransitionStyles = {};
+    }
+
+    var name = this.calcStyleName();
+    
+    if (!scope._pageTransitionStyles[name]) {
+      this.installStyleInScope(scope, name);
+      scope._pageTransitionStyles[name] = true;
+    }
+  },
+
+  calcStyleName: function() {
+    return this.id || this.localName;
+  },
+
+  installStyleInScope: function(scope, id) {
+    if (!scope.shadowRoot) {
+      scope.createShadowRoot().innerHTML = '<content></content>';
+    }
+    var root = scope.shadowRoot;
+    var scopeStyle = document.createElement('core-style');
+    root.insertBefore(scopeStyle, root.firstChild);
+    scopeStyle.applyRef(id);
+  },
+
+  complete: function(scope, e) {
+    // TODO(yvonne): hack, need to manage completion better
+    if (e.propertyName !== 'box-shadow' && (!this.transitionProperty || e.propertyName.indexOf(this.transitionProperty) !== -1)) {
+      this.completed = true;
+      this.fire('core-transitionend', this, scope);
+    }
+  },
+
+  // TODO(sorvell): ideally we do this in complete.
+  ensureComplete: function(scope) {
+    scope.removeEventListener('transitionend', this.boundCompleteFn, false);
+    if (this.scopeClass) {
+      scope.classList.remove(this.scopeClass);
+    }
+    if (this.activeClass) {
+      scope.classList.remove(this.activeClass);
+    }
+  }
+
+});
+
+})();
+
+</script>
+</polymer-element>
+<core-style id="hero-transition">
+  /* Hide heroes that are not currently transitioning */
+  polyfill-next-selector { content: ':host &gt; [animate]:not(.core-selected) [hero]'; }
+  ::content &gt; [animate]:not(.core-selected) /deep/ [hero] {
+    opacity: 0;
+  }
+
+  polyfill-next-selector { content: ':host &gt; .core-selected[animate] [hero]'; }
+  ::content &gt; .core-selected[animate] /deep/ [hero] {
+    opacity: 1;
+    z-index: 10000;
+  }
+
+  polyfill-next-selector { content: ':host &gt; * [hero-p]'; }
+  ::content &gt; * /deep/ [hero-p] {
+    -webkit-transition: box-shadow 100ms ease-out;
+    transition: box-shadow 100ms ease-out;
+  }
+
+  polyfill-next-selector { content: ':host &gt; [animate] [hero-p]'; }
+  ::content &gt; [animate] /deep/ [hero-p] {
+    box-shadow: none !important;
+  }
+</core-style>
+
+
+<!--
+
+`hero-transition` transforms two elements in different pages such that they appear
+to be shared across the pages.
+
+Example:
+
+    <core-animated-pages transition="hero-transition">
+      <section layout horizontal>
+        <div id="div1" flex></div>
+        <div id="div2" flex hero-id="shared" hero></div>
+      </section>
+      <section>
+      <section layout horizontal>
+        <div id="div3" flex hero-id="shared" hero></div>
+        <div id="div4" flex></div>
+      </section>
+      </section>
+    </core-animated-pages>
+
+In the above example, the elements `#div2` and `#div3` shares the same `hero-id`
+attribute and a single element appears to translate and scale smoothly between
+the two positions during a page transition.
+
+Both elements from the source and destination pages must share the same `hero-id`
+and must both contain the `hero` attribute to trigger the transition. The separate
+`hero` attribute allows you to use binding to configure the transition:
+
+Example:
+
+    <core-animated-pages transition="hero-transition">
+      <section layout horizontal>
+        <div id="div1" flex hero-id="shared" hero?="{{selected == 0}}"></div>
+        <div id="div2" flex hero-id="shared" hero?="{{selected == 1}}"></div>
+      </section>
+      <section>
+      <section layout horizontal>
+        <div id="div3" flex hero-id="shared" hero></div>
+      </section>
+      </section>
+    </core-animated-pages>
+
+In the above example, either `#div1` or `#div2` scales to `#div3` during a page transition,
+depending on the value of `selected`.
+
+Because it is common to share elements with different `border-radius` values, by default
+this transition will also animate the `border-radius` property.
+
+You can configure the duration of the hero transition with the global variable
+`CoreStyle.g.transitions.heroDuration`.
+
+@class hero-transition
+@extends core-transition-pages
+@status beta
+@homepage github.io
+-->
+<polymer-element name="hero-transition" extends="core-transition-pages" assetpath="components/core-animated-pages/transitions/">
+<script>
+(function() {
+
+  var webkitStyles = '-webkit-transition' in document.documentElement.style
+  var TRANSITION_CSSNAME = webkitStyles ? '-webkit-transition' : 'transition';
+  var TRANSFORM_CSSNAME = webkitStyles ? '-webkit-transform' : 'transform';
+  var TRANSITION_NAME = webkitStyles ? 'webkitTransition' : 'transition';
+  var TRANSFORM_NAME = webkitStyles ? 'webkitTransform' : 'transform';
+
+  var hasShadowDOMPolyfill = window.ShadowDOMPolyfill;
+
+  Polymer('hero-transition',{
+
+    go: function(scope, options) {
+      var props = [
+        'border-radius',
+        'width',
+        'height',
+        TRANSFORM_CSSNAME
+      ];
+
+      var duration = options && options.duration || 
+          (CoreStyle.g.transitions.heroDuration || 
+          CoreStyle.g.transitions.duration);
+
+      scope._heroes.forEach(function(h) {
+        var d = h.h0.hasAttribute('hero-delayed') ? CoreStyle.g.transitions.heroDelay : '';
+        var wt = [];
+        props.forEach(function(p) {
+          wt.push(p + ' ' + duration + ' ' + options.easing + ' ' + d);
+        });
+
+        h.h1.style[TRANSITION_NAME] = wt.join(', ');
+        h.h1.style.borderRadius = h.r1;
+        h.h1.style[TRANSFORM_NAME] = '';
+      });
+
+      this.super(arguments);
+
+      if (!scope._heroes.length) {
+        this.completed = true;
+      }
+    },
+
+    prepare: function(scope, options) {
+      this.super(arguments);
+      var src = options.src, dst = options.dst;
+
+      if (scope._heroes && scope._heroes.length) {
+        this.ensureComplete(scope);
+      } else {
+        scope._heroes = [];
+      }
+
+      // FIXME(yvonne): basic support for nested pages.
+      // Look for heroes in the light DOM and one level of shadow DOM of the src and dst,
+      // and also in src.selectedItem or dst.selectedItem, then transform the dst hero to src
+      var ss = '[hero]';
+      var h$ = this.findAllInShadows(src, ss);
+      if (src.selectedItem) {
+        hs$ = this.findAllInShadows(src.selectedItem, ss);
+        hsa$ = [];
+        // De-duplicate items
+        Array.prototype.forEach.call(hs$, function(hs) {
+          if (h$.indexOf(hs) === -1) {
+            hsa$.push(hs);
+          }
+        })
+        h$ = h$.concat(hsa$);
+      }
+
+      for (var i=0, h0; h0=h$[i]; i++) {
+        var v = h0.getAttribute('hero-id');
+        var ds = '[hero][hero-id="' + v + '"]';
+        var h1 = this.findInShadows(dst, ds);
+
+        if (!h1 && dst.selectedItem) {
+          h1 = this.findInShadows(dst.selectedItem, ds);
+        }
+
+        // console.log('src', src);
+        // console.log('dst', dst, dst.selectedItem);
+        // console.log(v, h0, h1);
+        if (v && h1) {
+          var c0 = getComputedStyle(h0);
+          var c1 = getComputedStyle(h1);
+          var h = {
+            h0: h0,
+            b0: h0.getBoundingClientRect(),
+            r0: c0.borderRadius,
+            h1: h1,
+            b1: h1.getBoundingClientRect(),
+            r1: c1.borderRadius
+          };
+
+          var dl = h.b0.left - h.b1.left;
+          var dt = h.b0.top - h.b1.top;
+          var sw = h.b0.width / h.b1.width;
+          var sh = h.b0.height / h.b1.height;
+
+          // h.scaley = h.h0.hasAttribute('scaley');
+          // if (!h.scaley && (sw !== 1 || sh !== 1)) {
+          //   sw = sh = 1;
+          //   h.h1.style.width = h.b0.width + 'px';
+          //   h.h1.style.height = h.b0.height + 'px';
+          // }
+
+          // Also animate the border-radius for the circle-to-square transition
+          if (h.r0 !== h.r1) {
+            h.h1.style.borderRadius = h.r0;
+          }
+
+          // console.log(h);
+
+          h.h1.style[TRANSFORM_NAME] = 'translate(' + dl + 'px,' + dt + 'px)' + ' scale(' + sw + ',' + sh + ')';
+          h.h1.style[TRANSFORM_NAME + 'Origin'] = '0 0';
+
+          scope._heroes.push(h);
+        }
+      }
+
+    },
+
+    // carefully look into ::shadow with polyfill specific hack
+    findInShadows: function(node, selector) {
+      return node.querySelector(selector) || (hasShadowDOMPolyfill ? 
+          queryAllShadows(node, selector) :
+          node.querySelector('::shadow ' + selector));
+    },
+
+    findAllInShadows: function(node, selector) {
+      if (hasShadowDOMPolyfill) {
+        var nodes = node.querySelectorAll(selector).array();
+        var shadowNodes = queryAllShadows(node, selector, true);
+        return nodes.concat(shadowNodes);
+      } else {
+        return node.querySelectorAll(selector).array().concat(node.shadowRoot ? node.shadowRoot.querySelectorAll(selector).array() : []);
+      }
+    },
+
+    ensureComplete: function(scope) {
+      this.super(arguments);
+      if (scope._heroes) {
+        scope._heroes.forEach(function(h) {
+          h.h1.style[TRANSITION_NAME] = '';
+          h.h1.style[TRANSFORM_NAME] = '';
+        });
+        scope._heroes = [];
+      }
+    },
+
+    complete: function(scope, e) {
+      // if (e.propertyName === TRANSFORM_CSSNAME) {
+        var done = false;
+        scope._heroes.forEach(function(h) {
+          if (h.h1 === e.path[0]) {
+            done = true;
+          }
+        });
+
+        if (done) {
+          this.super(arguments);
+        }
+      // }
+    }
+
+  });
+
+  
+  // utility method for searching through shadowRoots.
+  function queryShadow(node, selector) {
+    var m, el = node.firstElementChild;
+    var shadows, sr, i;
+    shadows = [];
+    sr = node.shadowRoot;
+    while(sr) {
+      shadows.push(sr);
+      sr = sr.olderShadowRoot;
+    }
+    for(i = shadows.length - 1; i >= 0; i--) {
+      m = shadows[i].querySelector(selector);
+      if (m) {
+        return m;
+      }
+    }
+    while(el) {
+      m = queryShadow(el, selector);
+      if (m) {
+        return m;
+      }
+      el = el.nextElementSibling;
+    }
+    return null;
+  }
+
+  function _queryAllShadows(node, selector, results) {
+    var el = node.firstElementChild;
+    var temp, sr, shadows, i, j;
+    shadows = [];
+    sr = node.shadowRoot;
+    while(sr) {
+      shadows.push(sr);
+      sr = sr.olderShadowRoot;
+    }
+    for (i = shadows.length - 1; i >= 0; i--) {
+      temp = shadows[i].querySelectorAll(selector);
+      for(j = 0; j < temp.length; j++) {
+        results.push(temp[j]);
+      }
+    }
+    while (el) {
+      _queryAllShadows(el, selector, results);
+      el = el.nextElementSibling;
+    }
+    return results;
+  }
+
+  queryAllShadows = function(node, selector, all) {
+    if (all) {
+      return _queryAllShadows(node, selector, []);
+    } else {
+      return queryShadow(node, selector);
+    }
+  };
+
+})();
+</script>
+</polymer-element>
+
+<hero-transition id="hero-transition"></hero-transition>
+
+<core-style id="cross-fade">
+  polyfill-next-selector { content: ':host &gt; * [cross-fade]'; }
+  ::content &gt; * /deep/ [cross-fade] {
+    -webkit-transition: opacity {{g.transitions.xfadeDuration || g.transitions.duration}} cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity {{g.transitions.xfadeDuration || g.transitions.duration}} cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  polyfill-next-selector { content: ':host &gt; * [cross-fade][bg]'; }
+  ::content &gt; * /deep/ [cross-fade][bg] {
+    -webkit-transition: background-color {{g.transitions.xfadeDuration || g.transitions.duration}} cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color {{g.transitions.xfadeDuration || g.transitions.duration}} cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  polyfill-next-selector { content: ':host &gt; * [cross-fade][hero-p]'; }
+  ::content &gt; * /deep/ [cross-fade][hero-p] {
+    -webkit-transition: background-color {{g.transitions.xfadeDuration || g.transitions.duration}} cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color {{g.transitions.xfadeDuration || g.transitions.duration}} cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  polyfill-next-selector { content: ':host &gt; .core-selected [cross-fade]'; }
+  ::content &gt; .core-selected /deep/ [cross-fade] {
+    opacity: 1;
+  }
+
+  polyfill-next-selector { content: ':host &gt; [animate]:not(.core-selected) [cross-fade]:not([hero-p]):not([bg])'; }
+  ::content &gt; [animate]:not(.core-selected) /deep/ [cross-fade]:not([hero-p]):not([bg]) {
+    opacity: 0;
+  }
+
+  polyfill-next-selector { content: ':host &gt; [animate]:not(.core-selected) [cross-fade][bg]'; }
+  ::content &gt; [animate]:not(.core-selected) /deep/ [cross-fade][bg] {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  polyfill-next-selector { content: ':host &gt; [animate]:not(.core-selected) [cross-fade][hero-p]'; }
+  ::content &gt; [animate]:not(.core-selected) /deep/ [cross-fade][hero-p] {
+    background-color: rgba(0, 0, 0, 0);
+  }
+</core-style>
+
+<core-style id="cross-fade-delayed">
+  polyfill-next-selector { content: ':host &gt; * [cross-fade-delayed]'; }
+  ::content &gt; * /deep/ [cross-fade-delayed] {
+    -webkit-transition: opacity {{g.transitions.xfadeDuration || g.transitions.duration}} ease-out;
+    transition: opacity {{g.transitions.xfadeDuration || g.transitions.duration}} ease-out;
+  }
+
+  polyfill-next-selector { content: ':host &gt; .core-selected [cross-fade-delayed]'; }
+  ::content &gt; .core-selected /deep/ [cross-fade-delayed] {
+    -webkit-transition: opacity {{g.transitions.xfadeDuration || g.transitions.duration}} ease-out {{g.transitions.xfadeDelay || g.transitions.xfadeDuration || g.transitions.duration}};
+    transition: opacity {{g.transitions.xfadeDuration || g.transitions.duration}} ease-out {{g.transitions.xfadeDelay || g.transitions.xfadeDuration || g.transitions.duration}};
+  }
+
+  polyfill-next-selector { content: ':host &gt; [animate]:not(.core-selected) [cross-fade-delayed]'; }
+  ::content &gt; [animate]:not(.core-selected) /deep/ [cross-fade-delayed] {
+    opacity: 0;
+  }
+
+  polyfill-next-selector { content: ':host &gt; .core-selected [cross-fade-delayed]'; }
+  ::content &gt; .core-selected /deep/ [cross-fade-delayed] {
+    opacity: 1;
+  }
+
+</core-style>
+
+<core-style id="cross-fade-all">
+  /* cross-fade-all: cross fade everything except for heroes and their parents */
+  polyfill-next-selector { content: ':host(.cross-fade-all) &gt; * *:not([hero]):not([hero-p]):not([cross-fade])'; }
+  :host(.cross-fade-all) ::content &gt; * /deep/ *:not([hero]):not([hero-p]):not([cross-fade]) {
+    -webkit-transition: opacity {{g.transitions.xfadeDuration || g.transitions.duration}} ease-out;
+    transition: opacity {{g.transitions.xfadeDuration || g.transitions.duration}} ease-out;
+  }
+
+  polyfill-next-selector { content: ':host(.cross-fade-all) &gt; [animate]:not(.core-selected) *:not([hero]):not([hero-p]):not([cross-fade])'; }
+  :host(.cross-fade-all) ::content &gt; [animate]:not(.core-selected) /deep/ *:not([hero]):not([hero-p]):not([cross-fade]) {
+    opacity: 0;
+  }
+
+  polyfill-next-selector { content: ':host(.cross-fade-all) &gt; .core-selected *:not([hero])'; }
+  .host(.cross-fade-all) ::content &gt; .core-selected /deep/ * {
+    opacity: 1;
+  }
+
+  /* Only background-color is allowed for the hero's parents, no opacity transitions */
+  polyfill-next-selector { content: ':host(.cross-fade-all) &gt; * [hero-p]'; }
+  :host(.cross-fade-all) ::content &gt; * /deep/ [hero-p] {
+    -webkit-transition: background-color {{g.transitions.xfadeDuration || g.transitions.duration}} ease-out;
+    transition: background-color {{g.transitions.xfadeDuration || g.transitions.duration}} ease-out;
+    opacity: 1;
+  }
+
+  polyfill-next-selector { content: ':host(.cross-fade-all) &gt; [animate]:not(.core-selected) [hero-p]'; }
+  :host(.cross-fade-all) ::content &gt; [animate]:not(.core-selected) /deep/ [hero-p] {
+    background-color: rgba(0, 0, 0, 0);
+  }
+</core-style>
+
+<!--
+
+`cross-fade` fades out elements in the outgoing page and fades in elements in the
+incoming page during a page transition. You can configure the duration of the
+transition with the global variable `CoreStyle.g.transitions.xfadeDuration`.
+
+Example:
+
+    <core-animated-pages transition="cross-fade">
+      <section>
+        <div id="div1" cross-fade></div>
+      </section>
+      <section>
+        <div id="div2" cross-fade bg>
+          <div id="div3" cross-fade></div>
+          <div id="div4"></div>
+        </div>
+      </section>
+    </core-animated-pages>
+
+In the above example, `#div1` and `#div3` has the `cross-fade` attribute. `#div1`
+will fade out and `#div3` will fade in with opacity transitions when the page switches
+from 0 to 1. Sometimes, you may want to only fade the background color of an element
+but not its children, and you can use the `bg` attribute along with the `#div1`
+attribute as in `#div2`.
+
+@class cross-fade
+@extends core-transition-pages
+@status beta
+@homepage github.io
+
+-->
+
+<!--
+
+`cross-fade-delayed` performs a cross-fade after some delay, either specified in
+the global variable `CoreStyle.g.transitions.xfadeDelay` or the duration of the
+transition.
+
+Example:
+
+    <core-animated-pages transition="hero-transition cross-fade-delayed">
+      <section>
+        <div id="div1" hero-id hero></div>
+      </section>
+      <section>
+        <div id="div2" hero-id hero>
+          <div id="div3" cross-fade-delayed></div>
+        </div>
+      </section>
+    </core-animated-pages>
+
+In the above example, `#div3` fades in after the hero transition from `#div1` to
+`#div2` completes.
+
+@class cross-fade-delayed
+@extends core-transition-pages
+@status beta
+@homepage github.io
+
+-->
+
+<core-transition-pages id="cross-fade"></core-transition-pages>
+<core-transition-pages id="cross-fade-delayed"></core-transition-pages>
+<core-transition-pages id="cross-fade-all" scopeclass="cross-fade-all"></core-transition-pages>
+<polymer-element name="core-animated-pages" extends="core-selector" notap="" attributes="transitions" assetpath="components/core-animated-pages/">
+
+<template>
+
+  <style>/*
+ * @license
+ * Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+ * This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+ * The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+ * The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+ * Code distributed by Google as part of the polymer project is also
+ * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+ */
+
+:host {
+  display: block;
+  position: relative;
+}
+
+polyfill-next-selector { content: ':host > *'; }
+::content > * {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+polyfill-next-selector { content: ':host > *:not(.core-selected):not([animate])'; }
+::content > *:not(.core-selected):not([animate]) {
+  display: none !important;
+}
+</style>
+
+  <shadow></shadow>
+
+</template>
+
+<script>
+
+  Polymer('core-animated-pages',Polymer.mixin({
+
+    eventDelegates: {
+      'core-transitionend': 'transitionEnd'
+    },
+
+    /**
+     * A space-delimited string of transitions to use when switching between pages in this element.
+     * The strings are `id`s of `core-transition-pages` elements included elsewhere. See the
+     * individual transition's document for specific details.
+     *
+     * @attribute transitions
+     * @type string
+     * @default ''
+     */
+    transitions: '',
+
+    selected: 0,
+
+    /**
+     * The last page selected. This property is useful to dynamically set transitions based
+     * on incoming and outgoing pages.
+     *
+     * @attribute lastSelected
+     * @type Object
+     * @default null
+     */
+    lastSelected: null,
+
+    registerCallback: function() {
+      this.tmeta = document.createElement('core-transition');
+    },
+
+    created: function() {
+      this._transitions = [];
+      this.transitioning = [];
+    },
+
+    attached: function() {
+      this.resizerAttachedHandler();
+    },
+
+    detached: function() {
+      this.resizerDetachedHandler();
+    },
+
+    transitionsChanged: function() {
+      this._transitions = this.transitions.split(' ');
+    },
+
+    _transitionsChanged: function(old) {
+      if (this._transitionElements) {
+        this._transitionElements.forEach(function(t) {
+          t.teardown(this);
+        }, this);
+      }
+      this._transitionElements = [];
+      this._transitions.forEach(function(transitionId) {
+        var t = this.getTransition(transitionId);
+        if (t) {
+          this._transitionElements.push(t);
+          t.setup(this);
+        }
+      }, this);
+    },
+
+    getTransition: function(transitionId) {
+      return this.tmeta.byId(transitionId);
+    },
+
+    selectionSelect: function(e, detail) {
+      this.updateSelectedItem();
+      // Wait to call applySelection when we run the transition
+    },
+
+    applyTransition: function(src, dst) {
+      if (this.animating) {
+        this.cancelAsync(this.animating);
+        this.animating = null;
+      }
+
+      Polymer.flush();
+
+      if (this.transitioning.indexOf(src) === -1) {
+        this.transitioning.push(src);
+      }
+      if (this.transitioning.indexOf(dst) === -1) {
+        this.transitioning.push(dst);
+      }
+      // force src, dst to display 
+      src.setAttribute('animate', '');
+      dst.setAttribute('animate', '');
+      //
+      var options = {
+        src: src,
+        dst: dst,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+      };
+
+      // fire an event so clients have a chance to do something when the
+      // new page becomes visible but before it draws.
+      this.fire('core-animated-pages-transition-prepare');
+
+      //
+      // prepare transition
+      this._transitionElements.forEach(function(transition) {
+        transition.prepare(this, options);
+      }, this);
+      //
+      // force layout!
+      src.offsetTop;
+
+      //
+      // apply selection
+      this.applySelection(dst, true);
+      this.applySelection(src, false);
+      //
+      // start transition
+      this._transitionElements.forEach(function(transition) {
+        transition.go(this, options);
+      }, this);
+
+      if (!this._transitionElements.length) {
+        this.complete();
+      } else {
+        this.animating = this.async(this.complete.bind(this), null, 5000);
+      }
+    },
+
+    complete: function() {
+      if (this.animating) {
+        this.cancelAsync(this.animating);
+        this.animating = null;
+      }
+
+      this.transitioning.forEach(function(t) {
+        t.removeAttribute('animate');
+      });
+      this.transitioning = [];
+
+      this._transitionElements.forEach(function(transition) {
+        transition.ensureComplete(this);
+      }, this);
+
+      this.fire('core-animated-pages-transition-end');
+    },
+    
+    transitionEnd: function(e) {
+      if (this.transitioning.length) {
+        var completed = true;
+        this._transitionElements.forEach(function(transition) {
+          if (!transition.completed) {
+            completed = false;
+          }
+        });
+        if (completed) {
+          this.job('transitionWatch', function() {
+            this.complete();
+          }, 100);
+        }
+      }
+    },
+
+    selectedChanged: function(old) {
+      this.lastSelected = old;
+      this.super(arguments);
+    },
+
+    selectedItemChanged: function(oldItem) {
+      this.super(arguments);
+
+      if (!oldItem) {
+        this.applySelection(this.selectedItem, true);
+        this.async(this.notifyResize);
+        return;
+      }
+
+      if (this.hasAttribute('no-transition') || !this._transitionElements || !this._transitionElements.length) {
+        this.applySelection(oldItem, false);
+        this.applySelection(this.selectedItem, true);
+        this.notifyResize();
+        return;
+      }
+
+      if (oldItem && this.selectedItem) {
+        // TODO(sorvell): allow bindings to update first?
+        var self = this;
+        Polymer.flush();
+        Polymer.endOfMicrotask(function() {
+          self.applyTransition(oldItem, self.selectedItem);
+          self.notifyResize();
+        });
+      }
+    },
+
+    resizerShouldNotify: function(el) {
+      // Only notify descendents of selected item
+      while (el && (el != this)) {
+        if (el == this.selectedItem) {
+          return true;
+        }
+        el = el.parentElement || (el.parentNode && el.parentNode.host);
+      }
+    }
+
+  }, Polymer.CoreResizer));
+
+</script>
+
+</polymer-element>
+
+<polymer-element name="paper-year-picker" assetpath="components/paper-date-picker/">
+  
+<template>
+
+  <style>
+  
+    :host {
+      display: block;
+      height: 250px;
+      width:100%;
+    }
+    #container {
+      display: block;
+      height: 250px;
+      width:100%;
+      overflow: auto;
+    }
+    
+    #container::-webkit-scrollbar {
+      width: 4px;
+    }
+    
+    #container::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1); 
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+    }
+    
+    #container::-webkit-scrollbar-thumb {
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.4); 
+    }
+    
+    #container::-webkit-scrollbar-thumb:window-inactive {
+    	background: rgba(255,0,0,0.2); 
+    }
+    
+    .year {
+      padding: 10px;
+      display: block;
+      text-align: center;
+      line-height: 42px;
+      cursor:pointer;
+    }
+    
+    .year.selected span {
+      background-color:rgba(0,159,136,.4);
+      border-radius:100%;
+      height: 42px;
+      display: inline-block;
+      width: 42px;
+    }
+    
+  </style>
+ 
+ <div id="container">
+    <template repeat="{{ y in yearArray }}">
+        <!--<paper-button class="year {{ { selected : y == year} | tokenList  }}" on-tap="{{ yearSelected }}" data-year="{{ y }}"><span>{{ y }}</span></paper-button>-->
+        <div class="year {{ { selected : y.n == year} | tokenList  }}" on-tap="{{ yearSelected }}" data-year="{{ y.n }}"><span>{{ y.year }}</span></div>
+    </template>
+  </div>
+
+</template>
+
+<script>
+(function(){
+  Polymer('paper-year-picker', {
+    
+    publish: {
+      /**
+       * The currently selected year
+       *
+       * @attribute year
+       * @type integer
+       * @default undefined
+       */
+      year: undefined,
+      
+      /**
+       * Lowest selectable date (inclusive)
+       *
+       * @attribute min
+       * @type Date
+       * @default 900
+       */
+      min: new Date(1900),
+      
+      /**
+       * Highest selectable date (inclusive)
+       *
+       * @attribute max
+       * @type Date
+       * @default 2100
+       */
+      max: new Date(2100),
+        
+      /**
+       * Locale setting per the HTML5 Intl API
+       * 
+       * @attribute locale
+       * @type Array
+       * @default undefined
+       * 
+       */
+      locale: undefined
+    },
+    
+    yearArray: [],
+    // TODO: Why in the world is this a hard coded variable?
+    yearElementHeight: 62,
+    
+    intl:{},
+    
+    localeChanged: function(){
+      this.intl = {};
+      this.intl.year = Intl.DateTimeFormat(this.locale, {year: 'numeric'}).format;
+    },
+    
+    setYearArray: function() {
+      this.yearArray = [];
+      for (var i = this.min.getFullYear(); i <= this.max.getFullYear(); i++) {
+        this.yearArray.push({
+          n:i,
+          year: this.intl.year(new Date(i,1,1))
+        });
+      }
+    },
+    
+    refreshScrollPosition: function(){
+      var that = this;
+      setTimeout(function(){
+        that.$.container.scrollTop = (that.year - that.min.getFullYear()+0.5) * that.yearElementHeight - that.$.container.clientHeight/2;
+      },0);
+    },
+    
+    yearChanged: function() {
+      this.setYearArray();
+      this.refreshScrollPosition();
+    },
+    
+    yearSelected: function(e) {
+      for(i=0;i<e.path.length;i++){
+        if(e.path[i].dataset && e.path[i].dataset.year){
+          return this.year = parseInt(e.path[i].dataset.year);
+        }
+      }
+    },
+    
+    ready: function(){
+      this.localeChanged();
+    }
+    
+  });
+})();
+</script>
+
+</polymer-element><polymer-element name="paper-date-picker-dialog" assetpath="components/paper-date-picker/">
+  
+<template>
+
+  <style>
+    :host {
+      
+    }
+  </style>
+
+  <paper-action-dialog id="dialog" class="date-picker-dialog" backdrop="">
+    <div id="container">
+      <div class="header" layout="" vertical="" flex="">
+        <div class="dayOfWeekContainer selected">{{ dayOfWeek }}</div>
+        <div class="monthContainer selected" on-tap="{{ showDatePicker }}" id="month" flex=""><span>{{ monthShortName }}</span></div>
+        <div class="dayOfMonthContainer selected" on-tap="{{ showDatePicker }}" id="day" flex=""><span>{{ dayOfMonth }}</span></div>
+        <div class="yearContainer" id="year" on-tap="{{ showYearPicker }}" flex=""><span>{{ formattedYear }}</span></div>
+      </div>
+      <core-animated-pages transitions="cross-fade" class="datePickerContainer" selected="{{page}}">
+        <section>
+          <paper-date-picker id="datePicker" min="{{min}}" max="{{max}}" date="{{ immediateDate }}" infinitescrolling="{{infiniteScrolling}}" locale="{{locale}}" startdayofweek="{{startDayOfWeek}}" cross-fade=""></paper-date-picker>
+        </section>
+        <section>
+          <paper-year-picker id="yearPicker" min="{{min}}" max="{{max}}" year="{{ year }}" locale="{{locale}}" cross-fade=""></paper-year-picker>
+        </section>
+      </core-animated-pages>
+    </div>
+    <paper-button affirmative="">Cancel</paper-button>
+    <paper-button affirmative="" on-tap="{{setDate}}">OK</paper-button>
+
+  </paper-action-dialog>
+</template>
+
+<script>
+(function(){
+  
+  var dayOfWeekNames = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+  ];
+  
+  var monthNames = [
+    'JAN',
+    'FEB',
+    'MAR',
+    'APR',
+    'MAY',
+    'JUN',
+    'JUL',
+    'AUG',
+    'SEP',
+    'OCT',
+    'NOV',
+    'DEC'
+  ];
+
+  Polymer('paper-date-picker-dialog', {
+    publish: {
+      
+      /**
+       * `value`, the selected date.
+       *
+       * @attribute value
+       * @type String
+       * @default undefined
+       */
+      value: undefined,
+      
+      /**
+       * immediateDate, the currently selected
+       * date. Even before hitting 'ok'.
+       *
+       * @attribute immediateDate
+       * @type Date
+       * @default today
+       */
+      immediateDate: new Date(),
+        
+      /**
+       * Lowest selectable date (inclusive)
+       *
+       * @attribute min
+       * @type Date
+       * @default 1/1/1900
+       */
+      min: new Date(1900,0,1),
+      
+      /**
+       * Highest selectable date (inclusive)
+       *
+       * @attribute max
+       * @type Date
+       * @default 31/12/2100
+       */
+      max: new Date(2100,11,31),
+        
+      /**
+       * Show only a single year at a time
+       * `'auto'` will cause this to be
+       * `false` for (most) mobile devices
+       * and `true` for other devices.
+       *
+       * @attribute infiniteScrolling
+       * @type String or boolean
+       * @default 'auto'
+       */
+      infiniteScrolling: 'auto',
+        
+      /**
+       * Locale setting per the HTML5 Intl API
+       * 
+       * @attribute locale
+       * @type Array
+       * @default user system
+       * 
+       */
+      locale: undefined,
+      
+      /**
+       * Start day of week, expressed as 0-6
+       * 
+       * @attribute startDayOfWeek
+       * @type Integer
+       * @default 1
+       * 
+       */
+      startDayOfWeek: 1
+    },
+    
+    dayOfWeek: '',
+    dayOfMonth: 0,
+    monthShortName: '',
+    formattedYear: '',
+    year: 0,
+    page: 0,
+    
+    intl: {},
+    
+    localeChanged: function(){
+      this.intl = {};
+      this.intl.dayOfWeek = Intl.DateTimeFormat(this.locale, {weekday: 'long'}).format
+      this.intl.day = Intl.DateTimeFormat(this.locale, {day: 'numeric'}).format;
+      this.intl.shortMonth = Intl.DateTimeFormat(this.locale, {month: 'short'}).format;
+      this.intl.year = Intl.DateTimeFormat(this.locale, {year: 'numeric'}).format;
+    },
+    
+    immediateDateChanged: function() {
+      this.dayOfWeek = this.intl.dayOfWeek(this.immediateDate);
+      this.dayOfMonth = this.intl.day(this.immediateDate);
+      this.monthShortName = this.intl.shortMonth(this.immediateDate);
+      this.formattedYear = this.intl.year(this.immediateDate);
+      
+      this.year = this.immediateDate.getFullYear();
+      this.fire('selection-changed');
+    },
+    
+    open: function() {
+      this.$.dialog.open();
+      this.$.datePicker.refreshScrollPosition();
+      this.$.yearPicker.refreshScrollPosition();
+    },
+    
+    yearChanged: function() {
+        var newDate = this.immediateDate.setYear(this.year);
+        if(newDate < this.min){
+          this.immediateDate = new Date(this.min); 
+        }else if(newDate > this.max){
+          this.immediateDate = new Date(this.max); 
+        }else{
+          this.immediateDate = new Date(newDate); 
+        }
+      this.page = 0;
+    },
+    
+    showYearPicker: function() {
+      this.page = 1;
+    },
+    
+    showDatePicker: function() {
+      this.page = 0;
+    },
+    
+    setDate: function(){
+      if(this.immediateDate <= this.max && this.immediateDate >= this.min){
+        this.value = this.immediateDate;
+        this.fire('value-changed');
+      }
+    },
+    
+    pageChanged: function() {
+      if (this.page == 0) {
+        this.$.day.classList.add("selected");
+        this.$.month.classList.add("selected");
+        this.$.year.classList.remove("selected");
+      } else {
+        this.$.day.classList.remove("selected");
+        this.$.month.classList.remove("selected");
+        this.$.year.classList.add("selected");
+      }
+      this.$.datePicker.refreshScrollPosition();
+      this.$.yearPicker.refreshScrollPosition();
+    },
+    
+    minChanged: function(){
+      if(typeof this.min == "string"){
+        this.min = new Date(this.min);
+      }
+    },
+    
+    maxChanged: function(){
+      if(typeof this.max == "string"){
+        this.max = new Date(this.max);
+      }
+    },
+    
+    valueChanged: function(){
+      if(typeof this.value == "string"){
+        this.value = new Date(this.value);
+      }
+    },
+    
+    ready:function() {
+      if(this.value){
+        this.valueChanged();
+        
+        this.immediateDate = this.value;
+      }
+      this.localeChanged();
+      this.immediateDateChanged();
+    }
+    
+  });
+})();
+</script>
+
+</polymer-element></div>
 
   <div id="loader-wrapper">
     <div id="loader"></div>
@@ -7327,6 +9492,17 @@ polyfill-next-selector { content: ':host > core-item'; }
         </sortable-table>
       </div>
     </div>
+    <div class="row">
+      <div class="heading" onclick="document.querySelector('#collapse1').toggle();">Collapse #1</div>
+      <core-collapse id="collapse1">
+        <paper-date-picker-dialog date="2014/1/1" min="2013/9/1" max="2014/8/31"></paper-date-picker-dialog>
+        <paper-button raised="" onclick="document.querySelectorAll('paper-date-picker-dialog')[0].open()">Open date picker dialog for academic year 2013-2014</paper-button>
+      </core-collapse>
+    </div>
+
+    
+
+    
   </div>
 
   <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
