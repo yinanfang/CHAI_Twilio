@@ -9493,10 +9493,12 @@ polyfill-next-selector { content: ':host > *:not(.core-selected):not([animate])'
       </div>
     </div>
     <div class="row">
-      <div class="heading" onclick="document.querySelector('#collapse1').toggle();">Collapse #1</div>
+      <paper-button raised="" onclick="document.querySelector('#collapse1').toggle()">Look at filtered results</paper-button>
       <core-collapse id="collapse1">
-        <paper-date-picker-dialog date="2014/1/1" min="2013/9/1" max="2014/8/31"></paper-date-picker-dialog>
-        <paper-button raised="" onclick="document.querySelectorAll('paper-date-picker-dialog')[0].open()">Open date picker dialog for academic year 2013-2014</paper-button>
+        <paper-date-picker-dialog id="pickerStart" date="2015/1/1" immediatedate="2015/1/1" min="2013/9/1" max="2016/8/31"></paper-date-picker-dialog>
+        <paper-date-picker-dialog id="pickerEnd" date="2015/1/1" immediatedate="2015/1/1" min="2013/9/1" max="2016/8/31"></paper-date-picker-dialog>
+        <paper-button raised="" onclick="document.querySelector('#pickerStart').open()">Start Date</paper-button>
+        <paper-button raised="" onclick="document.querySelector('#pickerEnd').open()">End Date</paper-button>
       </core-collapse>
     </div>
 

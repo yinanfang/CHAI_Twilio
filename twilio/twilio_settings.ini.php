@@ -1,3 +1,3 @@
 ;<?php return;?>
 [SQL]
-AUTH_KEY = 3pKtr0P1p9
+AUTH_KEY = 4W9mL8YAcE0uFkTdXnfXChtQH

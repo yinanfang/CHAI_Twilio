@@ -9,7 +9,7 @@ $logMessage = "";
 $log = new Log();
 $log->write("Received sent request in " . basename(__FILE__));
 
-if (!isset($_POST["From"]) || !isset($_POST["To"]) || !isset($_POST["Body"]) || !isset($_POST["AuthKey"])) {
+if (!isset($_POST["From"]) || !isset($_POST["To"]) || !isset($_POST["Body"]) || !isset($_POST["AuthKey"]) || !isset($_POST["Type"])) {
 	$logMessage = "Incomplete POST request; From:" . $_POST["From"] . "To: " . $_POST["To"];
 	$log->write($logMessage);
 	header("Status: 500 FAIL");
@@ -26,6 +26,11 @@ if (!isset($_POST["From"]) || !isset($_POST["To"]) || !isset($_POST["Body"]) || 
 		header("Status: 500 FAIL");
 		echo $logMessage;
 	} else {
+
+		// if ($_POST["Type"] == "message") {
+		// 	echo "crap!";
+		// }
+
 		// Twilio Service
 		try {
 			// Creates the instance
