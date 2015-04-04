@@ -1,9 +1,11 @@
 <?php
 require_once __DIR__ . "/log/Log.class.php";
 require_once __DIR__ . "/PDO/Db.class.php";
+require_once __DIR__ . '/twilio-php/Services/Twilio.php'; // Loads the Twilio library
 
 $settings = parse_ini_file(__DIR__ . "/twilio_settings.ini.php");
 $AUTH_KEY = $settings["AUTH_KEY"];
+$ServerURL = $settings["ServerURL"];
 
 $logMessage = "";
 $log = new Log();
@@ -49,7 +51,6 @@ if (!isset($_POST["From"]) || !isset($_POST["To"]) || !isset($_POST["Body"]) || 
 			// echo ($sid . " - ");
 			// echo ($token . " - ");
 
-			require_once __DIR__ . '/twilio-php/Services/Twilio.php'; // Loads the library
 			// Your Account Sid and Auth Token from twilio.com/user/account
 			$client = new Services_Twilio($sid, $token);
 			$numTo = $numberTo;
@@ -60,7 +61,7 @@ if (!isset($_POST["From"]) || !isset($_POST["To"]) || !isset($_POST["Body"]) || 
 				'From' => $numFrom,
 				'To' => $numTo,
 				'Body' => $_POST["Body"],
-				'StatusCallback' => "http://chai.yinanfang.webfactional.com/Twilio/twilio/twilio_callback.php",
+				'StatusCallback' => $ServerURL . "/twilio/twilio_callback.php",
 				// 'StatusCallback' => "http://protectthem.152.23.4.176.xip.io/twilio_callback.php",
 			);
 			// Add mediaUrl if there's one
