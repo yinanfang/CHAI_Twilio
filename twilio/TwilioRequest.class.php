@@ -17,11 +17,13 @@ class TwilioRequest {
 	private $settings;
 	private $client;
 	private $callbackURL;
-	// Specific
+	// For both message and call
 	private $clientName;
 	private $numFrom;
 	private $sid;
 	private $token;
+	// For call only
+	private $mediaUrl;
 
 	public function __construct($clientName) {
 		$this->log = new Log();
@@ -63,10 +65,10 @@ class TwilioRequest {
 			$data["MediaUrl"] = $mediaUrl;
 		}
 		$this->client->account->messages->create($data);
-		$this->createLogEntryForMessageWith();
+		$this->createLogEntryForMessage();
 	}
 
-	private function createLogEntryForMessageWith() {
+	private function createLogEntryForMessage() {
 		$response = $this->client->last_response;
 		$insert = $this->db->query("
       INSERT INTO Message(
@@ -111,5 +113,59 @@ class TwilioRequest {
 		);
 	}
 
+	// Call
+	public function makeACallTo($numberTo, $mediaUrl) {
+		$this->mediaURL = $mediaUrl;
+		$this->client->account->calls->create(
+			$this->numFrom,
+			$numberTo,
+			$mediaUrl,
+			array(
+				'Method' => 'GET',
+				'FallbackMethod' => 'GET',
+				'StatusCallback' => $this->callbackURL,
+				'StatusCallbackMethod' => 'GET',
+				'IfMachine' => 'Hangup',
+				'Record' => 'false',
+			)
+		);
+		$this->createLogEntryForCall();
+	}
+
+	private function createLogEntryForCall() {
+		$response = $this->client->last_response;
+		$insert = $this->db->query("
+	    INSERT INTO Call(
+	      CallSid,
+	      CallStatus,
+	      ClientName,
+	      NumFrom,
+	      NumTo,
+	      MediaURL,
+	      AccountSid,
+	      ApiVersion
+	      )
+	    VALUES(
+	      :sid,
+	      :status,
+	      :clientName,
+	      :from,
+	      :to,
+	      :mediaURL,
+	      :account_sid,
+	      :api_version
+	      )",
+			array(
+				"sid" => $response->sid,
+				"status" => $response->status,
+				"clientName" => $this->clientName,
+				"from" => $response->from,
+				"to" => $response->to,
+				"mediaURL" => $this->mediaURL,
+				"account_sid" => $response->account_sid,
+				"api_version" => $response->api_version,
+			)
+		);
+	}
 }
 ?>

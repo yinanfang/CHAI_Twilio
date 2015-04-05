@@ -18,8 +18,9 @@ try {
 		if ($_POST["Request"] == "message" && isset($_POST["Body"])) {
 			// $log->write("Requested to send message!");
 			$twilioRequest->sendAMessageTo($_POST["To"], $_POST["Body"], $_POST["MediaUrl"]);
-		} else if ($_POST["Request"] == "call") {
+		} else if ($_POST["Request"] == "call" && isset($_POST["MediaUrl"])) {
 			// $log->write("Request make a call!");
+			$twilioRequest->makeACallTo($_POST["To"], $_POST["MediaUrl"]);
 		} else {
 			$logMessage("Missing request parameters or unknown request type.");
 		}
