@@ -25,14 +25,34 @@ class TwilioRequest {
   // For call only
   private $mediaUrl;
 
-  public function __construct($clientName) {
+  // For Twilio Callback
+  public function __construct() {
     $this->log = new Log();
     $this->db = new DB();
     $this->settings = parse_ini_file(__DIR__ . "/twilio_settings.ini.php");
-    $this->callbackURL = $this->settings["ServerURL"] . "/twilio/twilio_callback.php";
-    $this->clientName = $clientName;
-    $this->client = $this->initTwilioClientWith($clientName);
+    $this->callbackURL = $this->settings["ServerURL"] . "/twilio/TwilioCallback.php";
   }
+
+  // For Twilio API
+  public static function withClientName($clientName) {
+    $instance = new self();
+    $instance->log = new Log();
+    $instance->db = new DB();
+    $instance->settings = parse_ini_file(__DIR__ . "/twilio_settings.ini.php");
+    $instance->callbackURL = $instance->settings["ServerURL"] . "/twilio/TwilioCallback.php";
+    $instance->clientName = $clientName;
+    $instance->client = $instance->initTwilioClientWith($clientName);
+    return $instance;
+  }
+
+  // public static function Default() {
+  //   $instance = new self();
+  //   $instance->log = new Log();
+  //   $instance->db = new DB();
+  //   $instance->settings = parse_ini_file(__DIR__ . "/twilio_settings.ini.php");
+  //   $instance->callbackURL = $instance->settings["ServerURL"] . "/twilio/twilio_callback.php";
+  //   return $instance;
+  // }
 
   private function initTwilioClientWith($clientName) {
     // Get Clients' numbers
@@ -113,6 +133,21 @@ class TwilioRequest {
     );
   }
 
+  public function updateLogMessageEntryWith($callback) {
+    // $log->write("MessageSid: " . $response["MessageSid"] . " MessageStatus: " . $MessageStatus);
+    // Update status
+    $update = $this->db->query(
+      " UPDATE Messages
+      SET MessageStatus = :MessageStatus, ErrorCode = :ErrorCode
+      WHERE MessageSid = :MessageSid",
+      array(
+        "MessageStatus" => $callback["MessageStatus"],
+        "ErrorCode" => $callback["ErrorCode"],
+        "MessageSid" => $callback["MessageSid"],
+      )
+    );
+  }
+
   // Call
   public function makeACallTo($numberTo, $mediaUrl) {
     $this->mediaURL = $mediaUrl;
@@ -131,12 +166,6 @@ class TwilioRequest {
     );
     $this->createLogEntryForCall();
   }
-
-  // private function createLogEntryForCall() {
-  //   $response = $this->client->last_response;
-  //   // $insert = $this->db->query("INSERT INTO Call(CallSid) VALUES(:sid)", array("sid" => $response->sid));
-  //   $insert = $this->db->query("INSERT INTO Call(Firstname,Age) VALUES(:f,:age)", array("f" => "Vivek", "age" => "20"));
-  // }
 
   private function createLogEntryForCall() {
     $response = $this->client->last_response;
@@ -173,5 +202,26 @@ class TwilioRequest {
       )
     );
   }
+
+  public function updateLogCallEntryWith($callback) {
+    // $log->write("MessageSid: " . $response["MessageSid"] . " MessageStatus: " . $MessageStatus);
+    // Update status
+    $update = $this->db->query(
+      "UPDATE Calls
+      SET CallStatus = :callStatus, AnsweredBy = :answeredBy, CallDuration = :callDuration
+      WHERE CallSid = :callSid",
+      array(
+        "callStatus" => $callback["CallStatus"],
+        "answeredBy" => $callback["AnsweredBy"],
+        "callSid" => $callback["CallSid"],
+        "callDuration" => $callback["CallDuration"],
+      )
+    );
+  }
+
+  // Query
+
+  //
+
 }
 ?>
