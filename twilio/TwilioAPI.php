@@ -36,9 +36,11 @@ try {
 } finally {
 	if (strlen($logMessage) == 0) {
 		$logMessage = "The request is successfully processed.";
+		header("Status: 200 OK");
+	} else {
+		header("Status: 500 FAIL");
 	}
 	$log->write($logMessage . "\r\n");
-	header("Status: 500 FAIL");
 	echo $logMessage;
 }
 

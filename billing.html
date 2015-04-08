@@ -74,6 +74,12 @@
     <div class="row">
       <paper-button raised onClick="document.querySelector('#collapse1').toggle()">Look at filtered results</paper-button>
       <core-collapse id="collapse1">
+
+        <!-- Primary tags input -->
+        <div class="tagsinput-primary">
+          <input name="tagsinput" class="tagsinput" data-role="tagsinput" value="School, Teacher, Colleague" />
+        </div>
+
         <paper-date-picker-dialog id="pickerStart" date="2015/1/1" immediateDate="2015/1/1" min="2013/9/1" max="2016/8/31"></paper-date-picker-dialog>
         <paper-date-picker-dialog id="pickerEnd" date="2015/1/1" immediateDate="2015/1/1" min="2013/9/1" max="2016/8/31"></paper-date-picker-dialog>
         <paper-button raised onClick="document.querySelector('#pickerStart').open()">Start Date</paper-button>
