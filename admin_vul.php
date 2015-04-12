@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en" ng-app="adminApp"><head>
+<!--?php
+include 'session.php';
+?--><!DOCTYPE html><html lang="en" ng-app="adminApp"><head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -4046,8 +4048,8 @@ polyfill-next-selector { content: '#drawerPanel:not([narrow]) .menuButton';}
     },
     
     viewSourceAction: function() {
-      window.open('view-source:' + this.$.frame.contentWindow.location.href, 
-          this.item.tag);
+      // window.open('view-source:' + this.$.frame.contentWindow.location.href, this.item.tag);
+      window.open('logout.php');
     }
     
   });
@@ -4922,13 +4924,15 @@ polyfill-next-selector { content: '#drawerPanel:not([narrow]) .menuButton';}
   <sampler-scaffold label="Twilio Admin" fit="">
 
     <!-- <paper-icon-button class="menuButton" icon="menu" ></paper-icon-button>-->
-    <paper-fab class="sourceButton bottom" icon="launch"></paper-fab> 
-  
+    <paper-fab class="sourceButton bottom" icon="launch"></paper-fab>
+
     <core-item label="Control" tag="control" url="./control_vul.html"></core-item>
 
     <core-item label="Logging" tag="logging" url="./logging_vul.html"></core-item>
-    
+
     <core-item label="Billing" tag="billing" url="./billing_vul.html"></core-item>
+
+    <core-item label="Account" tag="account" url="./account_vul.php"></core-item>
 
   </sampler-scaffold>
 
@@ -4969,7 +4973,7 @@ polyfill-next-selector { content: '#drawerPanel:not([narrow]) .menuButton';}
     </div>
   </core-scaffold> -->
 
-  
+
 
   <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
   <script src="FlatUI/js/vendor/jquery.min.js"></script>

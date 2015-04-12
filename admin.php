@@ -1,3 +1,6 @@
+<?php
+include 'session.php';
+?>
 <!DOCTYPE html>
 <html lang="en" ng-app="adminApp">
 <head>
@@ -51,54 +54,17 @@
   <sampler-scaffold label="Twilio Admin" fit>
 
     <!-- <paper-icon-button class="menuButton" icon="menu" ></paper-icon-button>-->
-    <paper-fab class="sourceButton bottom" icon="launch"></paper-fab> 
-  
+    <paper-fab class="sourceButton bottom" icon="launch"></paper-fab>
+
     <core-item label="Control" tag="control" url="./control_vul.html"></core-item>
 
     <core-item label="Logging" tag="logging" url="./logging_vul.html"></core-item>
-    
+
     <core-item label="Billing" tag="billing" url="./billing_vul.html"></core-item>
 
+    <core-item label="Account" tag="account" url="./account_vul.php"></core-item>
+
   </sampler-scaffold>
-
-
-  <!-- <core-scaffold>
-    <core-header-panel navigation flex mode="seamed">
-      <core-toolbar>Twilio Admin</core-toolbar>
-      <core-menu theme="core-light-theme" on-core-select="{{menuSelect}}">
-        <core-item icon="settings" label="Testing"></core-item>
-        <core-item icon="settings" label="Logging"></core-item>
-        <core-item icon="settings" label="Billing"></core-item>
-      </core-menu>
-    </core-header-panel>
-    <div tool>Title</div>
-    <div>
-
-      <div class="container cover">
-        <div class="row coverNav">
-          <div class="col-sm-6">
-            <br></br><br></br>
-            <label>Name:</label>
-            <input type="text" ng-model="yourName" placeholder="Enter a name here">
-            <hr>
-            <h1>Hello {{yourName}}!</h1>
-            <paper-button>flat button</paper-button>
-            <paper-button raised>raised button</paper-button>
-            <paper-button noink>No ripple effect</paper-button>
-          </div>
-          <div class="col-sm-6">
-            <br><br><br></br>
-            <label>right</label>
-          </div>
-          <div class="col-sm-4">
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </core-scaffold> -->
-
-  
 
   <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
   <script src="./FlatUI/js/vendor/jquery.min.js"></script>
