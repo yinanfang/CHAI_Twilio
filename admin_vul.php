@@ -4936,45 +4936,6 @@ polyfill-next-selector { content: '#drawerPanel:not([narrow]) .menuButton';}
 
   </sampler-scaffold>
 
-
-  <!-- <core-scaffold>
-    <core-header-panel navigation flex mode="seamed">
-      <core-toolbar>Twilio Admin</core-toolbar>
-      <core-menu theme="core-light-theme" on-core-select="{{menuSelect}}">
-        <core-item icon="settings" label="Testing"></core-item>
-        <core-item icon="settings" label="Logging"></core-item>
-        <core-item icon="settings" label="Billing"></core-item>
-      </core-menu>
-    </core-header-panel>
-    <div tool>Title</div>
-    <div>
-
-      <div class="container cover">
-        <div class="row coverNav">
-          <div class="col-sm-6">
-            <br></br><br></br>
-            <label>Name:</label>
-            <input type="text" ng-model="yourName" placeholder="Enter a name here">
-            <hr>
-            <h1>Hello {{yourName}}!</h1>
-            <paper-button>flat button</paper-button>
-            <paper-button raised>raised button</paper-button>
-            <paper-button noink>No ripple effect</paper-button>
-          </div>
-          <div class="col-sm-6">
-            <br><br><br></br>
-            <label>right</label>
-          </div>
-          <div class="col-sm-4">
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </core-scaffold> -->
-
-
-
   <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
   <script src="FlatUI/js/vendor/jquery.min.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->
