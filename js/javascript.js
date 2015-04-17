@@ -16,38 +16,71 @@ $(document).ready(function () {
       if (document.getElementsByTagName("html")[0].getAttribute("ng-app") == "controlApp") {
         $('body').addClass('loaded');
       }
-      $scope.request = {};
-      $scope.request.data = {};
-      $scope.request.data.From = "CHAI";
 
-      $scope.display = {};
-      $scope.display.From = ["CARE", "CHAI", "PainCoach", "ProtectThem"];
-      $scope.display.setFrom = function(item){
-        $scope.request.data.From = item;
+      // For sending message
+      $scope.requestMessage = {};
+      $scope.requestMessage.data = {
+        Request: "message",
+        From : "CHAI",
       };
-      
-      $scope.request.doClick = function(item, event) {
-        // Forging data
-        $scope.request.data = {
-          From: "CARE",
-          To: "+19194484206",
-          Body: "Dance in the rain",
-          MediaUrl: "http://upload.wikimedia.org/wikipedia/commons/e/e5/Vienna_Skyline.jpg",
-          AuthKey: "4W9mL8YAcE0uFkTdXnfXChtQH",
-          Request: "message",
-        };
-        alert(JSON.stringify($scope.request.data));
-        $http.post(TwilioAPI, $.param($scope.request.data), {
+      $scope.requestMessage.data.From = "CHAI";
+
+      $scope.requestMessage.display = {
+        status: "",
+      };
+      $scope.requestMessage.display.From = ["CARE", "CHAI", "PainCoach", "ProtectThem"];
+      $scope.requestMessage.display.setFrom = function(item){
+        $scope.requestMessage.data.From = item;
+      };
+      $scope.requestMessage.doClick = function(item, event) {
+        alert(JSON.stringify($scope.requestMessage.data));
+        $http.post(TwilioAPI, $.param($scope.requestMessage.data), {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded'},
         }).success(function(data, status, headers, config) {
-            alert("Succeeded! "+data+status);
-            $scope.request.status = "The message is queued on the server.";
+            // alert("Succeeded! "+data+status);
+            $scope.requestMessage.display.status = "The message is queued on the server.";
           })
           .error(function(data, status, headers, config, statusText) {
-            $scope.request.status = "Something went wrong :(";
-            alert("somthing wrong..."+data+status);
+            // alert("somthing wrong..."+data+status);
+            if (data === "") {
+              $scope.requestMessage.display.status = "Something went wrong :(";
+            } else {
+              $scope.requestMessage.display.status = data;
+            }
           });
+      };
 
+      // For making call
+      $scope.requestCall = {};
+      $scope.requestCall.data = {
+        Request: "call",
+        From : "CHAI",
+      };
+      $scope.requestCall.data.From = "CHAI";
+
+      $scope.requestCall.display = {
+        status: "",
+      };
+      $scope.requestCall.display.From = ["CARE", "CHAI", "PainCoach", "ProtectThem"];
+      $scope.requestCall.display.setFrom = function(item){
+        $scope.requestCall.data.From = item;
+      };
+      $scope.requestCall.doClick = function(item, event) {
+        alert(JSON.stringify($scope.requestCall.data));
+        $http.post(TwilioAPI, $.param($scope.requestCall.data), {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded'},
+        }).success(function(data, status, headers, config) {
+            // alert("Succeeded! "+data+status);
+            $scope.requestCall.display.status = "The call is queued on the server.";
+          })
+          .error(function(data, status, headers, config, statusText) {
+            // alert("somthing wrong..."+data+status);
+            if (data === "") {
+              $scope.requestCall.display.status = "Something went wrong :(";
+            } else {
+              $scope.requestCall.display.status = data;
+            }
+          });
       };
     }
   );

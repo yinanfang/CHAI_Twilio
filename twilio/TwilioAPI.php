@@ -22,7 +22,7 @@ try {
 			// $log->write("Request make a call!");
 			$twilioRequest->makeACallTo($_POST["To"], $_POST["MediaUrl"]);
 		} else {
-			$logMessage("Missing request parameters or unknown request type.");
+			$logMessage = "Missing request parameters or unknown request type.";
 		}
 
 	} else if ($_POST["Request"] == "query") {
