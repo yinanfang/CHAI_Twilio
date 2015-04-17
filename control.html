@@ -53,123 +53,116 @@
   </div>
   
   <div class="container cover" ng-controller="controller">
+    <div class="row">
+      <div class="col-xs-3 text-center">
+        <p>Text From:</p>        
+      </div>
+      <div class="col-xs-9">
 
-    <paper-button raised onClick="document.querySelector('#collapse1').toggle()">Toggle Message Controller</paper-button>
-    <core-collapse id="collapse1">
-      <div class="row">
-        <div class="col-sm-3 text-center">
-          <p>Text From:</p>        
-        </div>
-        <div class="col-sm-9">
-
-          <div class="btn-group">
-            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-              {{request.data.From}} 
-              <span class="caret"></span>
-            </button>
-            <ul id="dropdown-from" class="dropdown-menu" role="menu">
-              <li ng-repeat="item in display.From" ng-click="display.setFrom(item)"><a>{{item}}</a></li>
-            </ul>
-          </div>
+        <div class="btn-group">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+            {{request.data.From}} 
+            <span class="caret"></span>
+          </button>
+          <ul id="dropdown-from" class="dropdown-menu" role="menu">
+            <li ng-repeat="item in display.From" ng-click="display.setFrom(item)"><a>{{item}}</a></li>
+          </ul>
         </div>
       </div>
+    </div>
 
-      <div class="row">
-        <div class="col-sm-3 text-center">
-          <p>Text To:</p>        
-        </div>
-        <div class="col-sm-9">
-          <input type="text" placeholder="+19191234567" class="form-control flat" ng-model="request.data.To"></input>
+    <div class="row">
+      <div class="col-xs-3 text-center">
+        <p>Text To:</p>        
+      </div>
+      <div class="col-xs-9">
+        <input type="text" placeholder="+19191234567" class="form-control flat" ng-model="request.data.To"></input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-3 text-center">
+        <p>Message:</p>        
+      </div>
+      <div class="col-xs-9">
+        <input type="text" placeholder="Text Content" class="form-control flat" ng-model="request.data.Body"></input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-3 text-center">
+        <p>Auth Key:</p>        
+      </div>
+      <div class="col-xs-9">
+        <input type="text" placeholder="30-Character Key" class="form-control flat" ng-model="request.data.AuthKey"></input>
+      </div>
+    </div>
+
+    <div class="row coverNav">
+      <div class="col-xs-3 text-center">
+        <paper-button raised ng-click="request.doClick(item, $event)">Send</paper-button>     
+      </div>
+      <div class="col-xs-9">
+        <p>{{request.status}}</p> 
+      </div>
+    </div>
+
+    <br><br>
+
+    <div class="row">
+      <div class="col-xs-3 text-center">
+        <p>Text From:</p>        
+      </div>
+      <div class="col-xs-9">
+
+        <div class="btn-group">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+            {{request.data.From}} 
+            <span class="caret"></span>
+          </button>
+          <ul id="dropdown-from" class="dropdown-menu" role="menu">
+            <li ng-repeat="item in display.From" ng-click="display.setFrom(item)"><a>{{item}}</a></li>
+          </ul>
         </div>
       </div>
+    </div>
 
-      <div class="row">
-        <div class="col-sm-3 text-center">
-          <p>Message:</p>        
-        </div>
-        <div class="col-sm-9">
-          <input type="text" placeholder="Text Content" class="form-control flat" ng-model="request.data.Body"></input>
-        </div>
+    <div class="row">
+      <div class="col-xs-3 text-center">
+        <p>Text To:</p>        
       </div>
-
-      <div class="row">
-        <div class="col-sm-3 text-center">
-          <p>Auth Key:</p>        
-        </div>
-        <div class="col-sm-9">
-          <input type="text" placeholder="30-Character Key" class="form-control flat" ng-model="request.data.AuthKey"></input>
-        </div>
+      <div class="col-xs-9">
+        <input type="text" placeholder="+19191234567" class="form-control flat" ng-model="request.data.To"></input>
       </div>
+    </div>
 
-      <div class="row coverNav">
-        <div class="col-sm-3 text-center">
-          <paper-button raised ng-click="request.doClick(item, $event)">Send</paper-button>     
-        </div>
-        <div class="col-sm-9">
-          <p>{{request.status}}</p> 
-        </div>
+    <div class="row">
+      <div class="col-xs-3 text-center">
+        <p>Message:</p>        
       </div>
-    </core-collapse>
-
-    <br>
-
-    <paper-button raised onClick="document.querySelector('#collapse2').toggle()">Toggle Call Controller</paper-button>
-    <core-collapse id="collapse2">
-      <div class="row">
-        <div class="col-sm-3 text-center">
-          <p>Text From:</p>        
-        </div>
-        <div class="col-sm-9">
-
-          <div class="btn-group">
-            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-              {{request.data.From}} 
-              <span class="caret"></span>
-            </button>
-            <ul id="dropdown-from" class="dropdown-menu" role="menu">
-              <li ng-repeat="item in display.From" ng-click="display.setFrom(item)"><a>{{item}}</a></li>
-            </ul>
-          </div>
-        </div>
+      <div class="col-xs-9">
+        <input type="text" placeholder="Text Content" class="form-control flat" ng-model="request.data.Body"></input>
       </div>
+    </div>
 
-      <div class="row">
-        <div class="col-sm-3 text-center">
-          <p>Text To:</p>        
-        </div>
-        <div class="col-sm-9">
-          <input type="text" placeholder="+19191234567" class="form-control flat" ng-model="request.data.To"></input>
-        </div>
+    <div class="row">
+      <div class="col-xs-3 text-center">
+        <p>Auth Key:</p>        
       </div>
+      <div class="col-xs-9">
+        <input type="text" placeholder="30-Character Key" class="form-control flat" ng-model="request.data.AuthKey"></input>
+      </div>
+    </div>
 
-      <div class="row">
-        <div class="col-sm-3 text-center">
-          <p>Message:</p>        
-        </div>
-        <div class="col-sm-9">
-          <input type="text" placeholder="Text Content" class="form-control flat" ng-model="request.data.Body"></input>
-        </div>
+    <div class="row coverNav">
+      <div class="col-xs-3 text-center">
+        <paper-button raised ng-click="request.doClick(item, $event)">Send</paper-button>     
       </div>
-
-      <div class="row">
-        <div class="col-sm-3 text-center">
-          <p>Auth Key:</p>        
-        </div>
-        <div class="col-sm-9">
-          <input type="text" placeholder="30-Character Key" class="form-control flat" ng-model="request.data.AuthKey"></input>
-        </div>
+      <div class="col-xs-9">
+        <p>{{request.status}}</p> 
       </div>
-
-      <div class="row coverNav">
-        <div class="col-sm-3 text-center">
-          <paper-button raised ng-click="request.doClick(item, $event)">Send</paper-button>     
-        </div>
-        <div class="col-sm-9">
-          <p>{{request.status}}</p> 
-        </div>
-      </div>
+    </div>
   
-    </core-collapse>
   </div>
 
 
