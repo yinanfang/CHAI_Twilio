@@ -99,13 +99,13 @@ $(document).ready(function () {
       $scope.something = "Loading data...";
 
       var data = {
-            Type: "logging",
+            Request: "query_logging",
             AuthKey: "4W9mL8YAcE0uFkTdXnfXChtQH",
           };
       $http.post(TwilioAPI, $.param(data), {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded'},
       }).success(function(data, status, headers, config) {
-          // alert("Succeeded! "+JSON.stringify(data)+status);
+          alert("Succeeded! "+JSON.stringify(data)+status);
           // var myEl = angular.element( document.querySelector( '#billingTable' ) );
           // alert(myEl.attr('columns'));
           // myEl.attr('columns', '["Client","day","month","year"]');

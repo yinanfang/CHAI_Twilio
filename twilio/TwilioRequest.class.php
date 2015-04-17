@@ -219,9 +219,34 @@ class TwilioRequest {
 		);
 	}
 
-	// Query
+	// Query logging
+	public function getAllLogging() {
+		// $log->write("MessageSid: " . $response["MessageSid"] . " MessageStatus: " . $MessageStatus);
+		// Update status
+		$messageLogs = $this->db->query(
+			"SELECT id, ClientName, MessageStatus, ErrorCode, TimeStamp FROM Messages"
+		);
+		// echo (var_dump($messageLogs));
+		// echo "start looping \n";
+		$response = array();
+		$response['columns'] = '["id","Client", "Status", "Error", "Time"]';
+		$response['data'] = array();
+		for ($i = 0; $i < sizeof($messageLogs); $i++) {
+			$row = array();
+			array_push($row, $messageLogs[$i]["id"]);
+			array_push($row, $messageLogs[$i]["ClientName"]);
+			array_push($row, $messageLogs[$i]["MessageStatus"]);
+			array_push($row, $messageLogs[$i]["ErrorCode"]);
+			array_push($row, $messageLogs[$i]["TimeStamp"]);
+			array_push($response['data'], $row);
+		}
+		// echo (var_dump($response));
+		echo json_encode($response);
+		die();
 
-	//
+	}
+
+	// Query billing
 
 }
 ?>

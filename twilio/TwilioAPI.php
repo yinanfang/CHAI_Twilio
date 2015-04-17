@@ -24,8 +24,10 @@ try {
 		} else {
 			$logMessage = "Missing request parameters or unknown request type.";
 		}
-
-	} else if ($_POST["Request"] == "query") {
+	} else if ($_POST["Request"] == "query_logging") {
+		$twilioRequest = new TwilioRequest();
+		$twilioRequest->getAllLogging();
+	} else if ($_POST["Request"] == "query_billing") {
 		# code...
 	} else {
 		$logMessage = "Missing request parameters or unknown request type.";
